@@ -1262,7 +1262,7 @@
   }
   // Pure content (no actions) so the Concierge panel can embed it as a draft.
   function blueprintHtml(ev) {
-    const j = journeyOf(ev), g = gateOf(ev), svcs = liveSvcs(ev).filter(s => svcStatus(s) !== 'unavailable');
+    const j = journeyOf(ev), g = gateOf(ev), svcs = liveSvcs(ev).filter(s => ['confirmed', 'booked', 'paid'].includes(svcStatus(s)));
     const v = smeVenue(ev), a = v && D.VENUE_ANCHORS[v.id], dec = smeDecor(ev);
     const total = svcs.reduce((x, s) => x + svcTotal(s), 0), pre = svcs.reduce((x, s) => x + s.price, 0);
     const caters = svcs.filter(s => s.rate), qs = [...new Set(svcs.map(s => s.query).filter(Boolean))];
@@ -1688,7 +1688,7 @@
     miss: () => `We tried to reach you. You can call us any time on ${CALL_NO}.`,
     perk: () => 'Your walk-through is confirmed. We look forward to meeting you.',
     blueprint: () => 'Your event blueprint is ready to review and approve.',
-    payment: () => 'You can now pay on the ShaadiKart website. Your payment is protected by ShaadiKart\'s secure gateway.',
+    payment: () => 'You can now pay on the ShaadiKart website.\n' + WA_SAFE,
     booked: () => 'Congratulations! Your booking is confirmed. You will receive a detailed confirmation shortly.',
     confirm: n => `✔ ${n} has confirmed your date.`,
     unavailable: n => `${n} is not available on your date. Your host will suggest alternatives.`
