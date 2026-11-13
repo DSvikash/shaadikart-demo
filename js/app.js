@@ -264,7 +264,7 @@
     ['requests-sent', 'Requests sent'], ['partners-confirm', 'Partners confirm'], ['see-my-event', 'See My Event'],
     ['conversation', 'Conversation'], ['blueprint', 'Blueprint'], ['payment', 'Payment'], ['booked', 'Booked']
   ];
-  const signal = (ev, type) => { if (!ev) return; const j = journeyOf(ev); if (!j.signals) j.signals = []; if (!j.signals.some(x => x.type === type)) { j.signals.push({ type, t: now() }); save(); } };
+  const signal = (ev, type) => { if (!ev || S.staff) return; const j = journeyOf(ev); if (!j.signals) j.signals = []; if (!j.signals.some(x => x.type === type)) { j.signals.push({ type, t: now() }); save(); } };
   const journeyOf = ev => ev.journey || (ev.journey = { host: { name: 'Priya Kapoor', role: 'Customer Success', years: 4, languages: 'Hindi, English' }, visitRequested: null, blueprintApproved: null, waThread: [], signals: [] });
   // The stage is derived from event state each time, never stored.
   function journeyStage(ev) {
@@ -1286,7 +1286,7 @@
     const ev = S.events.find(e => e.id === id);
     if (!ev) return notFound();
     const j = journeyOf(ev), held = !!gateOf(ev).held;
-    const act = j.blueprintApproved ? `<div class="bp-approve"><span class="tag tag-green">${ic('check')}Approved ${fmtDT(j.blueprintApproved)}</span></div>`
+    const act = S.staff ? `<p class="note">${ic('info')}<span>This is how the customer will see the Blueprint. Only the customer can approve it.</span></p>` : j.blueprintApproved ? `<div class="bp-approve"><span class="tag tag-green">${ic('check')}Approved ${fmtDT(j.blueprintApproved)}</span></div>`
       : held ? `<div class="bp-approve"><button type="button" class="btn btn-gold" data-act="approve-blueprint" data-ev="${ev.id}">${ic('check')}Approve my Blueprint</button><button type="button" class="btn btn-ghost" data-act="bp-change" data-ev="${ev.id}">Request a change</button></div>`
       : `<p class="note">${ic('info')}<span>Your Blueprint is ready to approve once your meeting with ${esc(j.host.name.split(' ')[0])} is complete.</span></p>`;
     return `<div class="wrap my-event"><div class="crumbs" style="margin-bottom:10px"><a href="#/my-event/${ev.id}">My Event</a>${ic('chevronRight')}<span>Blueprint</span></div>
@@ -1684,6 +1684,7 @@
     else html = notFound();
     header();
     $('#app').innerHTML = html;
+    if (p0 === 'my-event') { const st = document.querySelector('#app .sme-stage'), sev = st && S.events.find(e => e.id === st.dataset.ev); if (sev) { signal(sev, 'viewed-sme'); if (SME.act === 3) signal(sev, 'viewed-act3'); } }
     if (r.path !== lastPath) { window.scrollTo(0, 0); lastPath = r.path; }
     dockRender();
   }
@@ -1875,14 +1876,14 @@
     'cg-draft-blueprint'(el) { go('#/blueprint/' + el.dataset.ev); },
     'approve-blueprint'(el) {
       const ev = S.events.find(e => e.id === el.dataset.ev), j = ev && journeyOf(ev);
-      if (!ev || j.blueprintApproved || !gateOf(ev).held) return;
+      if (!ev || S.staff || j.blueprintApproved || !gateOf(ev).held) return;
       j.blueprintApproved = now();
       waThreadPush(ev, 'blueprint-approved', 'Your event blueprint has been approved');
       waOnce(ev, 'payment', WA_MSG.payment());
       save(); go('#/my-event/' + ev.id); toast('Blueprint approved', 'check');
     },
     'bp-change'(el) {
-      const ev = S.events.find(e => e.id === el.dataset.ev); if (!ev) return;
+      const ev = S.events.find(e => e.id === el.dataset.ev); if (!ev || S.staff) return;
       waThreadPush(ev, 'bp-change', 'I would like to change something in my Blueprint.', 'me');
       waThreadPush(ev, 'bp-change-r', `${journeyOf(ev).host.name.split(' ')[0]} will get back to you shortly to make the change.`);
       save(); DOCK.open = true; DOCK.tab = 'wa'; dockRender();
