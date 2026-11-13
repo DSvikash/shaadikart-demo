@@ -1200,10 +1200,9 @@ textarea[data-change="cg-notes"] { width: 100%; font: inherit; padding: 12px; bo
 .dock-toggle { position: fixed; right: 18px; bottom: 80px; z-index: 57; width: 52px; height: 52px; border: 0; border-radius: 50%; background: #25d366; color: #fff; display: grid; place-items: center; box-shadow: 0 10px 28px rgba(37, 211, 102, .45); cursor: pointer; }
 .dock-toggle svg.i { width: 24px; height: 24px; }
 .dock-badge { position: absolute; top: -4px; right: -4px; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 10px; background: #d92d20; color: #fff; font-size: 12px; font-weight: 700; display: grid; place-items: center; }
-.demo-dock { position: fixed; top: 0; right: 0; height: 100vh; width: 320px; z-index: 95; display: flex; flex-direction: column; background: #fff; border-left: 1px solid var(--line); box-shadow: -8px 0 28px rgba(23, 11, 59, .18); }
+.demo-dock { position: fixed; top: 0; right: 0; height: 100vh; height: 100dvh; width: 320px; z-index: 95; display: flex; flex-direction: column; background: #fff; border-left: 1px solid var(--line); box-shadow: -8px 0 28px rgba(23, 11, 59, .18); }
 .dock-h { display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; background: var(--plum-900); color: #fff; }
 .dock-h b { display: inline-flex; align-items: center; gap: 8px; }
-.dock-h .x-btn { color: #fff; }
 .demo-clock { background: #fff3cd; color: #5c4400; padding: 8px 12px; border-bottom: 1px solid #f0d98a; font-size: 13px; }
 .dc-h { display: flex; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
 .dc-b { display: flex; gap: 6px; }
@@ -1331,7 +1330,7 @@ textarea[data-change="cg-notes"] { width: 100%; font: inherit; padding: 12px; bo
 .cg-sig-tags .tag { display: inline-flex; gap: 5px; align-items: center; }
 .cg-sig-tags .tag small { opacity: .75; }
 .cg-suggest { border: 1.5px solid var(--amber); background: var(--amber-50); }
-.cg-suggest p { margin: 0; font-weight: 600; color: #7a4d06; }
+.cg-suggest p { margin: 0; font-weight: 600; color: var(--amber-dark, #7a4d06); }
 .cg-prompts summary { cursor: pointer; font-weight: 700; color: var(--plum-900); }
 .cg-prompts label { display: flex; gap: 8px; align-items: flex-start; padding: 8px 0 0; font-size: 14px; }
 .cg-prompts input { margin-top: 3px; }

@@ -216,7 +216,7 @@
   const gateTag = ev => { const [c, l] = GATE_TAG[gateStage(ev)]; return `<span class="tag ${c}">${l}</span>`; };
   const hhmm = t => new Date(t).toLocaleTimeString('en-IN', { hour: 'numeric', minute: '2-digit' });
   const custName = ev => (ev.customer && ev.customer.name) || 'Customer';
-  const gateSig = ev => { const g = ev.gate; return g ? [gateStage(ev), g.calls.map(c => c.result || 'r').join(), g.waSent ? 1 : 0, g.waRequested ? 1 : 0, g.meeting ? g.meeting.date + g.meeting.time : ''].join('/') : '-'; };
+  const gateSig = ev => { const g = ev.gate; return g ? [gateStage(ev), g.calls.map(c => c.result || 'r').join(), g.waSent ? 1 : 0, g.waRequested ? 1 : 0, g.meeting ? g.meeting.date + g.meeting.time : '', journeyOf(ev).blueprintApproved ? 1 : 0].join('/') : '-'; };
 
   function gateBox(ev) {
     const g = gateOf(ev), st = gateStage(ev), m = g.meeting, hn = journeyOf(ev).host.name.split(' ')[0];
@@ -240,7 +240,7 @@
     else if (st !== 'open') main = `<div class="gate-card ok">${ic('calendarCheck')}<div><b>Meeting completed</b><span>${fmtDate(m.date)} · ${esc(m.mode)}</span></div></div>`;
     let callPart;
     if (st === 'unlock') callPart = `${log}<div class="gate-card ok">${ic('shield')}<div><b>Thank you, you are verified</b><span>${ans ? 'We spoke on our call, so you do not need to call us.' : `We received your call at ${hhmm(g.inbound.t)}.`} ${journeyOf(ev).blueprintApproved ? 'A ShaadiKart executive is opening payment now.' : 'Next, review and approve your Blueprint.'}</span></div></div>`;
-    else if (ans) callPart = `${log}<div class="gate-card ok">${ic('shield')}<div><b>Thank you for speaking with us</b><span>You do not need to call us back. After your meeting, a ShaadiKart executive unlocks payment.</span></div></div>`;
+    else if (ans) callPart = `${log}<div class="gate-card ok">${ic('shield')}<div><b>Thank you for speaking with us</b><span>You do not need to call us back. After your meeting, review and approve your Blueprint.</span></div></div>`;
     else callPart = `${log}<p class="gate-p">${callOk ? 'We could not reach you on our two calls. ' : ''}${callOk ? 'Please call us' : 'If you would rather not wait, you can call us'} from your registered mobile. This is how we confirm it is really you.</p>
           <a class="callno" href="tel:${CALL_NO}">${ic('phone')}<span><small>Call ShaadiKart</small><b>${CALL_NO}</b></span></a>
           <button type="button" class="btn btn-gold btn-block" data-act="call-us" data-ev="${ev.id}">I have called ${CALL_NO} <small style="opacity:.8">(demo)</small></button>`;
@@ -1254,7 +1254,7 @@
     const h = journeyOf(ev).host;
     return `<div class="host-card"><span class="host-av" aria-hidden="true">${ic('user')}</span>
       <div><b>${esc(h.name)}</b><small>${esc(h.role)} · ${h.years} years with ShaadiKart · ${esc(h.languages)}</small>
-      <p>${esc(h.name.split(' ')[0])} will call you within 2 hours to hear about your ${esc(String(ev.type || 'event').toLowerCase())}.</p></div></div>`;
+      <p>${gateOf(ev).held ? `Your host, ${esc(h.name.split(' ')[0])}` : `${esc(h.name.split(' ')[0])} will call you within 2 hours to hear about your ${esc(String(ev.type || 'event').toLowerCase())}.`}</p></div></div>`;
   }
   function blueprintCard(ev) {
     const j = journeyOf(ev), held = !!gateOf(ev).held;
