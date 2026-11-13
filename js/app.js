@@ -1550,13 +1550,14 @@
     S.events.forEach(ev => {
       if (!ev.journey || !ev.journey.waThread.length) return;
       const j = ev.journey, g = gateOf(ev), sv = liveSvcs(ev);
+      let fresh = false;
       sv.forEach(s => {
         const ss = svcStatus(s), v = partner(s.partnerId);
         if (ss === 'awaiting' || ss === 'cancelled') return;
-        if (waOnce(ev, 'confirm:' + s.id, (ss === 'unavailable' ? WA_MSG.unavailable : WA_MSG.confirm)(v.name))) {
-          ch = true; waOnce(ev, 'catalog:' + sv.filter(x => svcStatus(x) !== 'awaiting').length, waCatalog(ev, 'Your catalog'));
-        }
+        if (waOnce(ev, 'confirm:' + s.id, (ss === 'unavailable' ? WA_MSG.unavailable : WA_MSG.confirm)(v.name))) { ch = true; fresh = true; }
       });
+      // One catalog refresh per tick, after every confirm message, carrying the final count.
+      if (fresh) waOnce(ev, 'catalog:' + sv.filter(x => svcStatus(x) !== 'awaiting').length, waCatalog(ev, 'Your catalog'));
       const stg = JOURNEY.findIndex(x => x[0] === journeyStage(ev));
       if (stg >= 2 && waOnce(ev, 'preview', WA_MSG.preview())) { ch = true; waOnce(ev, 'host', WA_MSG.host(j.host)); }
       g.calls.forEach(c => { if (c.result === 'No answer' && waOnce(ev, 'miss:' + c.n, WA_MSG.miss())) ch = true; });
@@ -1605,6 +1606,8 @@
     }
     root.className = 'demo-dock';
     const h = dockHtml(ev), key = h.replace(/(<span id="dock-time">)[^<]*/, '$1');
+    const fa = document.activeElement;
+    if (key !== dockHtmlLast && fa && root.contains(fa) && /INPUT|TEXTAREA|SELECT/.test(fa.tagName)) return; // keep typing and focus
     if (key !== dockHtmlLast) {
       const old = $('.dock-body', root), top = old ? old.scrollTop : 0, wasEnd = !old || old.scrollHeight - old.scrollTop - old.clientHeight < 40;
       root.innerHTML = h; dockHtmlLast = key;
