@@ -1091,6 +1091,61 @@
       </div></div>`;
   }
 
+  /* ---------- See My Event: Act 1 (The Space), Act 2 (Dressed for you) ---------- */
+  const SME = { act: 1, tip: null, sweep: 0, dtip: null };
+  const SME_LABEL = '<span class="sme-imp">Artist\u2019s impression, not a photograph of the booked setup</span>';
+  const SME_ELEM = {
+    'mandap': ['Mandap', 'The sacred centrepiece for the pheras, framed to the stage position.', 50, 42],
+    'floral arch': ['Floral arch', 'A flower-framed entrance for the couple\u2019s walk in.', 50, 22],
+    'aisle florals': ['Aisle florals', 'Petals and floral borders lining the walkway.', 50, 72],
+    'drapes': ['Drapes', 'Soft fabric drapes on the side walls and stage backdrop.', 15, 40],
+    'lighting glow': ['Lighting glow', 'Warm fairy lights and uplighting for the evening.', 85, 24]
+  };
+  const smeSvc = (ev, cat) => liveSvcs(ev).map(s => partner(s.partnerId)).find(p => p && p.cat === cat);
+  const smeVenue = ev => smeSvc(ev, 'venues');
+  const smeDecor = ev => smeSvc(ev, 'decor');
+  function actOne(ev) {
+    const v = smeVenue(ev);
+    if (!v) return `<div class="sme-empty">${ic('info')}<p>Add a venue to your event to see the space.</p></div>`;
+    const a = D.VENUE_ANCHORS[v.id], tz = a.tableZone, c = v.cap || [0, 0];
+    const fits = ev.guests >= c[0] && ev.guests <= c[1];
+    const spots = [
+      { k: 'stage', x: a.stageX, y: a.stageY, t: 'Stage and mandap area', d: `${esc(a.kind)}. Your ceremony stage sits here.` },
+      { k: 'seat', x: tz.x + tz.w / 2, y: tz.y + tz.h / 2, t: `Seating for ${ev.guests} guests`, d: `Capacity ${c[0]} to ${c[1]} guests. ${fits ? 'Your guest count fits comfortably.' : 'Your guest count is outside this range, so your host will suggest a layout.'}` },
+      ...a.rooms.map((r, i) => ({ k: 'room' + i, x: r.x, y: r.y, t: r.name, d: 'Included with the venue for getting ready.' }))
+    ];
+    const tip = spots.find(s => s.k === SME.tip);
+    return `<div class="sme-act1"><div class="sme-photo" ${bg(a.photo, 1200)} role="img" aria-label="${esc(v.name)}">${SME_LABEL}
+      <span class="tz" style="left:${tz.x}%;top:${tz.y}%;width:${tz.w}%;height:${tz.h}%"></span>
+      ${spots.map(s => `<button type="button" class="hotspot${s.k === SME.tip ? ' on' : ''}" style="left:${s.x}%;top:${s.y}%" data-act="sme-spot" data-k="${s.k}" aria-label="${esc(s.t)}"><i></i></button>`).join('')}</div>
+      <div class="sme-tip" aria-live="polite">${tip ? `<b>${tip.t}</b><span>${tip.d}</span>` : `<span>Tap a dot to explore ${esc(v.name)}.</span>`}</div>
+      <div class="sme-facts"><span class="tag tag-plum">${esc(a.kind)}</span><span class="tag tag-grey">Capacity ${c[0]} to ${c[1]}</span><span class="tag tag-grey">${ev.guests} guests</span></div></div>`;
+  }
+  function actTwo(ev) {
+    const v = smeVenue(ev), dp = smeDecor(ev);
+    if (!v) return `<div class="sme-empty">${ic('info')}<p>Add a venue to your event to see it dressed.</p></div>`;
+    if (!dp) return `<div class="sme-empty">${ic('flower')}<p>Add a decor partner to see your venue dressed.</p><a class="btn btn-ghost btn-sm" href="#/category/decor">Browse decor</a></div>`;
+    const a = D.VENUE_ANCHORS[v.id], pr = D.DECOR_PROFILES[dp.id], pal = pr.palette;
+    const w = SME.sweep, tip = SME_ELEM[SME.dtip];
+    return `<div class="sme-act2" style="--pa:${pal[0]};--pb:${pal[1]};--pc:${pal[2]}"><div class="sme-photo" ${bg(a.photo, 1200)} role="img" aria-label="${esc(v.name)} dressed by ${esc(dp.name)}">${SME_LABEL}
+      <div class="decor-layer" id="sme-layer" style="background-image:url('${D.img(pr.overlayPhoto, 1200)}');clip-path:inset(0 ${100 - w}% 0 0)"></div>
+      <span class="sweep-line" id="sme-line" style="left:${w}%"></span>
+      <div class="decor-hs" id="sme-hs"${w < 55 ? ' hidden' : ''}>${pr.elements.map(k => `<button type="button" class="hotspot${k === SME.dtip ? ' on' : ''}" style="left:${SME_ELEM[k][2]}%;top:${SME_ELEM[k][3]}%" data-act="sme-elem" data-k="${k}" aria-label="${esc(SME_ELEM[k][0])}"><i></i></button>`).join('')}</div>
+      <input type="range" class="sweep-slider" min="0" max="100" value="${w}" data-input="sme-sweep" aria-label="Reveal decoration"></div>
+      <div class="sme-sweep-cap"><span>Your venue</span><span>With ${esc(dp.name)}</span></div>
+      <div class="sme-tip" id="sme-dtip" aria-live="polite">${tip ? `<b>${tip[0]} by ${esc(dp.name)}</b><span>${tip[1]}</span>` : `<span>Drag the line to dress the space, then tap a dot for details.</span>`}</div>
+      <div class="sme-pal">${pal.map(c => `<i style="background:${c}" title="${c}"></i>`).join('')}<span>${esc(dp.name)} palette</span></div></div>`;
+  }
+  function actThree() {
+    return `<div class="sme-empty">${ic('heart')}<p>Your celebration. Coming in Task 4.</p></div>`;
+  }
+  function seeMyEvent(ev) {
+    const tabs = [[1, 'The Space'], [2, 'Dressed for you'], [3, 'Your celebration']];
+    return `<div class="sme-stage" data-ev="${ev.id}"><div class="sme-tabs" role="tablist">${tabs.map(([n, l]) => `<button type="button" role="tab" aria-selected="${SME.act === n}" class="${SME.act === n ? 'on' : ''}" data-act="sme-tab" data-n="${n}">${l}</button>`).join('')}</div>
+      <div class="sme-body">${SME.act === 1 ? actOne(ev) : SME.act === 2 ? actTwo(ev) : actThree(ev)}</div></div>`;
+  }
+  const smeRefresh = el => { const st = el.closest('.sme-stage'), ev = S.events.find(e => e.id === st.dataset.ev); if (ev) st.outerHTML = seeMyEvent(ev); };
+
   function pageMyEvent(id) {
     const ev = S.events.find(e => e.id === id);
     if (!ev) return notFound();
@@ -1115,7 +1170,7 @@
     const stages = [
       card('requests-sent', 'Requests sent', `<p class="gate-p">Requests sent to ${n} partner${n === 1 ? '' : 's'}. Each partner checks its own calendar.</p>${list}`),
       card('partners-confirm', 'Partners confirm', `<p class="gate-p">${ok} of ${n} confirmed.</p>`),
-      card('see-my-event', 'See My Event', soon('A visual preview of your event.', 3)),
+      card('see-my-event', 'See My Event', seeMyEvent(ev)),
       card('conversation', 'Conversation', soon('Your meeting and WhatsApp thread with ShaadiKart.', 4)),
       card('blueprint', 'Blueprint', soon('Your approved event blueprint.', 5)),
       card('payment', 'Payment', `<p class="gate-p">Pay your advance once the steps above are complete.</p><a class="btn btn-gold" href="#/checkout/${ev.id}">${ic('receipt')}Go to payment</a>`),
@@ -1672,6 +1727,9 @@
   }
 
   const ACT = {
+    'sme-tab'(el) { SME.act = +el.dataset.n; smeRefresh(el); },
+    'sme-spot'(el) { SME.tip = SME.tip === el.dataset.k ? null : el.dataset.k; smeRefresh(el); },
+    'sme-elem'(el) { SME.dtip = SME.dtip === el.dataset.k ? null : el.dataset.k; smeRefresh(el); },
     'dock-toggle'() { DOCK.open = !DOCK.open; dockRender(); },
     'dock-tab'(el) { DOCK.tab = el.dataset.tab; dockRender(); },
     'clock-speed'(el) { clockSet(+el.dataset.speed || 1); dockRender(); },
@@ -2089,6 +2147,14 @@
     if (!el || !ACT[el.dataset.act]) return;
     if (el.dataset.act !== 'modal-bg') e.preventDefault();
     ACT[el.dataset.act](el, e);
+  });
+  document.addEventListener('input', e => {
+    const el = e.target.closest('[data-input="sme-sweep"]');
+    if (!el) return;
+    const w = SME.sweep = +el.value, st = el.closest('.sme-act2');
+    st.querySelector('#sme-layer').style.clipPath = `inset(0 ${100 - w}% 0 0)`;
+    st.querySelector('#sme-line').style.left = w + '%';
+    st.querySelector('#sme-hs').hidden = w < 55;
   });
   document.addEventListener('change', e => {
     const el = e.target.closest('[data-change]');

@@ -353,5 +353,21 @@
       facts: ['Open 5 am – 9 pm'], sources: [['Bhakti Bharat', 'https://www.bhaktibharat.com/amp/en/mandir/arya-samaj-mandir-mayur-vihar']] }
   ];
 
-  window.SK_DATA = { img, BRAND, PHOTOS, CATEGORIES, LOCALITIES, EVENT_TYPES, PARTNERS, POLICY, MANDIRS, MANDIR_COST, MANDIR_CHECKED };
+  // See My Event, Act 1: where things sit in each venue photo (percent of photo width and height).
+  const VENUE_ANCHORS = {
+    'royal-banquet': { id: 'royal-banquet', kind: 'Banquet hall', stageX: 50, stageY: 38, tableZone: { x: 12, y: 58, w: 76, h: 30 }, rooms: [{ name: 'Bridal room', x: 12, y: 30 }, { name: 'Groom room', x: 88, y: 30 }], photo: 'photo-1768851142332-75f3d1b47452' },
+    'grand-lawns': { id: 'grand-lawns', kind: 'Open lawn', stageX: 50, stageY: 42, tableZone: { x: 8, y: 62, w: 84, h: 28 }, rooms: [{ name: 'Bridal suite', x: 14, y: 36 }, { name: 'Family rooms', x: 86, y: 36 }], photo: 'photo-1783314867628-220ab03cac99' },
+    'shubh-vivah': { id: 'shubh-vivah', kind: 'Farmhouse lawn', stageX: 52, stageY: 40, tableZone: { x: 10, y: 60, w: 80, h: 30 }, rooms: [{ name: 'Bridal room', x: 15, y: 32 }, { name: 'Guest rooms', x: 85, y: 34 }], photo: 'photo-1675247488725-22d1b78e75db' },
+    'neelkamal': { id: 'neelkamal', kind: 'Convention hall', stageX: 50, stageY: 36, tableZone: { x: 14, y: 56, w: 72, h: 32 }, rooms: [{ name: 'Green room', x: 14, y: 28 }, { name: 'Bridal room', x: 86, y: 28 }], photo: 'photo-1542665952-14513db15293' },
+    'aangan-rooftop': { id: 'aangan-rooftop', kind: 'Rooftop terrace', stageX: 48, stageY: 40, tableZone: { x: 16, y: 60, w: 68, h: 28 }, rooms: [{ name: 'Lounge', x: 84, y: 34 }], photo: 'photo-1779301674216-506de8607c87' }
+  };
+  // See My Event, Act 2: how each decor partner dresses a space. overlayPhoto is the partner's own work.
+  const DECOR_PROFILES = {
+    'phoolwari': { id: 'phoolwari', partnerId: 'phoolwari', palette: ['#e8638c', '#f7c548', '#fff6dc'], elements: ['mandap', 'floral arch', 'aisle florals', 'drapes', 'lighting glow'], overlayPhoto: 'photo-1757589227072-0dd17af42433' },
+    'mandap-magic': { id: 'mandap-magic', partnerId: 'mandap-magic', palette: ['#c0392b', '#eea73a', '#fff1d6'], elements: ['mandap', 'floral arch', 'aisle florals', 'drapes', 'lighting glow'], overlayPhoto: 'photo-1587271636175-90d58cdad458' },
+    'gulmohar-decor': { id: 'gulmohar-decor', partnerId: 'gulmohar-decor', palette: ['#e4572e', '#76b041', '#fff4e0'], elements: ['mandap', 'floral arch', 'aisle florals', 'drapes', 'lighting glow'], overlayPhoto: 'photo-1769812343353-ae6ca1250bc2' },
+    'rangoli-theme': { id: 'rangoli-theme', partnerId: 'rangoli-theme', palette: ['#4a22b0', '#f7c548', '#f4eefc'], elements: ['mandap', 'floral arch', 'aisle florals', 'drapes', 'lighting glow'], overlayPhoto: 'photo-1530103862676-de8c9debad1d' }
+  };
+
+  window.SK_DATA = { img, BRAND, PHOTOS, CATEGORIES, LOCALITIES, EVENT_TYPES, PARTNERS, POLICY, MANDIRS, MANDIR_COST, MANDIR_CHECKED, VENUE_ANCHORS, DECOR_PROFILES };
 })();
