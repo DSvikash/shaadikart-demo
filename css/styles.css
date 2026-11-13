@@ -1180,3 +1180,18 @@ textarea[data-change="cg-notes"] { width: 100%; font: inherit; padding: 12px; bo
 .po-more svg.i { width: 16px; height: 16px; stroke-width: 2.8; }
 .pt-h b { font-weight: 800; color: var(--gold); }
 @media (max-width: 600px) { .pt-go { bottom: 50%; transform: translateY(50%); } }
+
+/* ---------- My Event hub ---------- */
+.my-event .me-timeline { display: flex; gap: 0; list-style: none; margin: 0 0 14px; padding: 4px 0 10px; overflow-x: auto; }
+.me-timeline li { flex: 1 0 84px; display: flex; flex-direction: column; align-items: center; gap: 6px; position: relative; text-align: center; font-size: 12px; color: var(--muted); }
+.me-timeline li::before { content: ''; position: absolute; top: 12px; left: -50%; width: 100%; height: 2px; background: var(--line, #e5e0d6); z-index: 0; }
+.me-timeline li:first-child::before { display: none; }
+.me-timeline li.done::before, .me-timeline li.cur::before { background: var(--green); }
+.me-dot { width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; font-size: 12px; font-weight: 700; background: #fff; border: 2px solid var(--line, #e5e0d6); position: relative; z-index: 1; }
+.me-dot svg { width: 14px; height: 14px; }
+.me-timeline li.done .me-dot { background: var(--green); border-color: var(--green); color: #fff; }
+.me-timeline li.cur .me-dot { background: var(--gold); border-color: var(--gold-600); color: #2a1a00; }
+.me-timeline li.cur { color: inherit; font-weight: 700; }
+.me-status { margin: 0 0 14px; }
+.me-stage { margin-bottom: 14px; }
+.me-stage.cur { border-color: var(--gold-600); box-shadow: 0 0 0 2px var(--gold-50); }

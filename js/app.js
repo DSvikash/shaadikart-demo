@@ -3,6 +3,9 @@
   'use strict';
   const D = window.SK_DATA;
   const GST = 0.18, ADV = 0.25, DAY = 864e5, KEY = 'shaadikart-demo-v3';
+  // Demo clock: the dock can shift CLOCK.offset to time-travel; display, SLA and demo-interaction times use now().
+  const CLOCK = window.CLOCK = { offset: 0, speed: 1 };
+  const now = () => Date.now() + CLOCK.offset;
   // ShaadiKart platform fee: 0.5% of the cart's total value (services incl. GST) + 18% GST on the fee.
   // Charged once, with the first payment of the booking. Non-refundable.
   const FEE_PCT = 0.005;
@@ -19,7 +22,7 @@
   const fmtDate = d => new Date(d).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
   const fmtDT = t => new Date(t).toLocaleString('en-IN', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
   const code = p => p + '-' + Math.random().toString(36).slice(2, 7).toUpperCase();
-  const isoPlus = days => new Date(Date.now() + days * DAY).toISOString().slice(0, 10);
+  const isoPlus = days => new Date(now() + days * DAY).toISOString().slice(0, 10);
 
   const ICONS = {
     landmark: '<line x1="3" x2="21" y1="22" y2="22"/><line x1="6" x2="6" y1="18" y2="11"/><line x1="10" x2="10" y1="18" y2="11"/><line x1="14" x2="14" y1="18" y2="11"/><line x1="18" x2="18" y1="18" y2="11"/><polygon points="12 2 20 7 4 7"/>',
@@ -88,29 +91,29 @@
 
   /* ---------- state ---------- */
   function seed() {
-    const now = Date.now();
+    const t0 = now();
     const ev = {
       id: 'SK-EV-24871', name: 'Priya & Arjun Wedding', type: 'Wedding', date: '2027-02-14', guests: 300, locality: 'Delhi',
-      createdAt: now - 20 * DAY, services: [], payments: [], refunds: [], cancellations: [], reschedules: [], tickets: []
+      createdAt: t0 - 20 * DAY, services: [], payments: [], refunds: [], cancellations: [], reschedules: [], tickets: []
     };
     const picks = [['royal-banquet', 'silver'], ['phoolwari', 'silver'], ['candid-frames', 'silver'], ['mithaas', 'silver'], ['glam-neha', 'silver'], ['sound-wave', 'silver']];
     picks.forEach(([vid, pid], i) => {
       const v = partner(vid);
       const p = pkgOf(v, pid);
-      ev.services.push({ id: 'SV-' + (101 + i), partnerId: vid, pkg: pid, price: v.perPlate ? p.veg * ev.guests : p.price, rate: v.perPlate ? p.veg : 0, guests: ev.guests, diet: 'veg', requestedAt: now - 20 * DAY, respondAt: now - 20 * DAY + (2 + i) * 3600e3, response: 'confirmed', confirmId: 'CNF-' + (5521 + i * 7), paid: 0, query: '', reply: '', qConfirmed: true });
+      ev.services.push({ id: 'SV-' + (101 + i), partnerId: vid, pkg: pid, price: v.perPlate ? p.veg * ev.guests : p.price, rate: v.perPlate ? p.veg : 0, guests: ev.guests, diet: 'veg', requestedAt: t0 - 20 * DAY, respondAt: t0 - 20 * DAY + (2 + i) * 3600e3, response: 'confirmed', confirmId: 'CNF-' + (5521 + i * 7), paid: 0, query: '', reply: '', qConfirmed: true });
     });
-    const pay = { id: 'PAY-70412', t: now - 19 * DAY, method: 'UPI', kind: 'Advance (25%)', items: [] };
+    const pay = { id: 'PAY-70412', t: t0 - 19 * DAY, method: 'UPI', kind: 'Advance (25%)', items: [] };
     ev.services.forEach(s => { const a = Math.round(svcTotal(s) * ADV); s.paid = a; pay.items.push({ svcId: s.id, amount: a }); });
     pay.fee = feeParts(ev.services.reduce((a, x) => a + svcTotal(x), 0)).total; ev.feePaid = true;
     pay.amount = pay.items.reduce((a, b) => a + b.amount, 0) + pay.fee;
     ev.payments.push(pay);
     // Earlier cancellation of the DJ only — venue, catering etc. remain booked.
     const dj = ev.services[5];
-    dj.cancelledAt = now - 9 * DAY;
-    const rf = { id: 'RF-31877', t: now - 9 * DAY, svcIds: [dj.id], amount: Math.round(dj.paid * 0.9), method: 'UPI' };
+    dj.cancelledAt = t0 - 9 * DAY;
+    const rf = { id: 'RF-31877', t: t0 - 9 * DAY, svcIds: [dj.id], amount: Math.round(dj.paid * 0.9), method: 'UPI' };
     ev.refunds.push(rf);
-    ev.cancellations.push({ id: 'CN-20931', t: now - 9 * DAY, scope: 'service', svcIds: [dj.id], reason: 'Changed plans — booking a live band instead', paid: dj.paid, pct: 90, refundAmount: rf.amount, refundId: rf.id });
-    ev.tickets.push({ id: 'TK-1042', t: now - 15 * DAY, type: 'Question', svcId: ev.services[1].id, subject: 'Can the mandap colours be changed to peach?', desc: 'We would like peach and ivory instead of red.', resolved: true, reply: 'Phoolwari confirmed the colour change at no extra cost.' });
+    ev.cancellations.push({ id: 'CN-20931', t: t0 - 9 * DAY, scope: 'service', svcIds: [dj.id], reason: 'Changed plans — booking a live band instead', paid: dj.paid, pct: 90, refundAmount: rf.amount, refundId: rf.id });
+    ev.tickets.push({ id: 'TK-1042', t: t0 - 15 * DAY, type: 'Question', svcId: ev.services[1].id, subject: 'Can the mandap colours be changed to peach?', desc: 'We would like peach and ivory instead of red.', resolved: true, reply: 'Phoolwari confirmed the colour change at no extra cost.' });
     return {
       v: 1, user: null, locality: 'Delhi',
       cart: { event: { type: 'Wedding', name: '', date: isoPlus(120), guests: 300, locality: 'Delhi', budget: 500000 }, items: [], saved: [] },
@@ -126,7 +129,7 @@
   function svcStatus(s) {
     if (s.removed) return 'removed';
     if (s.cancelledAt) return 'cancelled';
-    if (Date.now() < s.respondAt) return 'awaiting';
+    if (now() < s.respondAt) return 'awaiting';
     if (s.response === 'unavailable') return 'unavailable';
     if (s.paid >= svcTotal(s) - 1) return 'paid';
     if (s.paid > 0) return 'booked';
@@ -155,12 +158,12 @@
   const svcDate = (ev, s) => s.date || ev.date;
   const REFUND_STEPS = ['Refund initiated', 'Approved by partner', 'Processing to source', 'Credited'];
   const REFUND_AT = [0, 8e3, 20e3, 40e3];
-  const refundStage = rf => { const el = Date.now() - rf.t; let k = 0; REFUND_AT.forEach((a, i) => { if (el >= a) k = i; }); return k; };
-  const ticketStatus = tk => tk.resolved ? ['tag-green', 'Resolved'] : (Date.now() - tk.t > 20e3 ? ['tag-plum', 'In review'] : ['tag-amber', 'Open']);
+  const refundStage = rf => { const el = now() - rf.t; let k = 0; REFUND_AT.forEach((a, i) => { if (el >= a) k = i; }); return k; };
+  const ticketStatus = tk => tk.resolved ? ['tag-green', 'Resolved'] : (now() - tk.t > 20e3 ? ['tag-plum', 'In review'] : ['tag-amber', 'Open']);
   function policyFor(s, ev) {
     const v = partner(s.partnerId);
     const tiers = D.POLICY[v.cat] || D.POLICY.default;
-    const days = Math.max(0, Math.floor((new Date(svcDate(ev, s)) - Date.now()) / DAY));
+    const days = Math.max(0, Math.floor((new Date(svcDate(ev, s)) - now()) / DAY));
     const tier = tiers.find(t => days >= t.minDays);
     return { days, pct: tier.pct, tiers };
   }
@@ -170,7 +173,7 @@
   function tick() {
     let changed = false;
     S.events.forEach(ev => ev.reschedules.forEach(r => {
-      if (!r.applied && Object.values(r.responses).every(t => Date.now() >= t)) {
+      if (!r.applied && Object.values(r.responses).every(t => now() >= t)) {
         r.applied = true; changed = true;
         if (r.scope === 'event') ev.date = r.to;
         else r.svcIds.forEach(id => { const s = ev.services.find(x => x.id === id); if (s) s.date = r.to; });
@@ -181,7 +184,7 @@
   // Snapshot of every time-simulated status; the page re-renders whenever it changes.
   const liveSignature = () => S.events.map(ev => [
     ev.services.map(svcStatus).join(), ev.refunds.map(refundStage).join(),
-    ev.reschedules.map(r => Object.values(r.responses).filter(t => Date.now() >= t).length).join(),
+    ev.reschedules.map(r => Object.values(r.responses).filter(t => now() >= t).length).join(),
     ev.tickets.map(t => ticketStatus(t)[1]).join(), gateSig(ev)
   ].join('|')).join('#');
 
@@ -253,6 +256,24 @@
       <label class="field">Time<select name="time">${SLOTS.map(x => `<option ${m && m.time === x ? 'selected' : ''}>${x}</option>`).join('')}</select></label>
       <label class="field">How would you like to meet?<select name="mode">${MODES.map(x => `<option ${m && m.mode === x ? 'selected' : ''}>${x}</option>`).join('')}</select></label>
       <button class="btn btn-primary" type="submit">${m ? 'Save new time' : 'Confirm meeting'}</button></form>`);
+  }
+
+  /* ---------- My Event journey: wraps the gate; ev.gate stays the source of truth for meeting/calls/unlock ---------- */
+  const JOURNEY = [
+    ['requests-sent', 'Requests sent'], ['partners-confirm', 'Partners confirm'], ['see-my-event', 'See My Event'],
+    ['conversation', 'Conversation'], ['blueprint', 'Blueprint'], ['payment', 'Payment'], ['booked', 'Booked']
+  ];
+  const journeyOf = ev => ev.journey || (ev.journey = { host: { name: 'Priya Kapoor', role: 'Customer Success', years: 4, languages: 'Hindi, English' }, visitRequested: null, blueprintApproved: null, waThread: [] });
+  // The stage is derived from event state each time, never stored.
+  function journeyStage(ev) {
+    const j = journeyOf(ev), svcs = liveSvcs(ev), st = svcs.map(svcStatus);
+    if (ev.payments.length && st.length && st.every(x => x === 'paid' || x === 'unavailable')) return 'booked';
+    if (ev.payments.length) return 'payment';
+    if (j.blueprintApproved) return 'blueprint';
+    if (gateOf(ev).held) return 'conversation';
+    if (st.length && !st.includes('awaiting')) return 'see-my-event';
+    if (st.some(x => x !== 'awaiting')) return 'partners-confirm';
+    return 'requests-sent';
   }
 
   /* ---------- cart ---------- */
@@ -1070,6 +1091,45 @@
       </div></div>`;
   }
 
+  function pageMyEvent(id) {
+    const ev = S.events.find(e => e.id === id);
+    if (!ev) return notFound();
+    const svcs = liveSvcs(ev), n = svcs.length, ok = svcs.filter(s => ['confirmed', 'booked', 'paid'].includes(svcStatus(s))).length;
+    const cur = journeyStage(ev), ci = JOURNEY.findIndex(x => x[0] === cur);
+    const timeline = `<ol class="me-timeline">${JOURNEY.map(([k, l], i) => `<li class="${i < ci ? 'done' : i === ci ? 'cur' : ''}"><span class="me-dot">${i < ci ? ic('check') : i + 1}</span><span class="me-lbl">${l}</span></li>`).join('')}</ol>`;
+    const status = {
+      'requests-sent': `Requests sent to ${n} partner${n === 1 ? '' : 's'}`,
+      'partners-confirm': `${ok} of ${n} confirmed`,
+      'see-my-event': `${ok} of ${n} confirmed. Your event preview is ready`,
+      conversation: 'Meeting with ShaadiKart completed',
+      blueprint: 'Blueprint approved',
+      payment: 'Payment in progress',
+      booked: 'All services booked'
+    }[cur];
+    const list = svcs.map(s => { const v = partner(s.partnerId), ss = svcStatus(s); return `<div class="status-row">
+        <div class="ph" ${bg(v.photos[0], 200)}></div>
+        <div><h4>${esc(v.name)}</h4><div class="sub">${esc(catOf(v.cat).short)} · ${pkgOf(v, s.pkg).name} · ${inr(svcTotal(s))} incl. GST</div></div>
+        <div>${ss === 'awaiting' ? `<span class="tag tag-amber"><span class="spin"></span>Checking date…</span>` : statusTag(ss)}</div></div>`; }).join('');
+    const card = (k, title, body) => `<div class="box me-stage${k === cur ? ' cur' : ''}"><h2>${title}</h2>${body}</div>`;
+    const soon = (what, task) => `<p class="note">${ic('info')}<span>${what} Coming in Task ${task}.</span></p>`;
+    const stages = [
+      card('requests-sent', 'Requests sent', `<p class="gate-p">Requests sent to ${n} partner${n === 1 ? '' : 's'}. Each partner checks its own calendar.</p>${list}`),
+      card('partners-confirm', 'Partners confirm', `<p class="gate-p">${ok} of ${n} confirmed.</p>`),
+      card('see-my-event', 'See My Event', soon('A visual preview of your event.', 3)),
+      card('conversation', 'Conversation', soon('Your meeting and WhatsApp thread with ShaadiKart.', 4)),
+      card('blueprint', 'Blueprint', soon('Your approved event blueprint.', 5)),
+      card('payment', 'Payment', `<p class="gate-p">Pay your advance once the steps above are complete.</p><a class="btn btn-gold" href="#/checkout/${ev.id}">${ic('receipt')}Go to payment</a>`),
+      card('booked', 'Booked', ev.payments.length ? `<a class="btn btn-ghost" href="#/confirmed/${ev.id}">View confirmation</a>` : `<p class="gate-p">Your confirmation appears here after payment.</p>`)
+    ].join('');
+    return `<div class="wrap my-event">
+      <div class="page-h"><h1>${ic('heart')} My Event</h1><p>${esc(ev.name)} · ${fmtDate(ev.date)} · ${ev.guests} guests · ${esc(ev.locality)} · Booking ID ${ev.id}</p></div>
+      ${timeline}<p class="me-status"><b>${esc(status)}</b></p>${stages}</div>`;
+  }
+  function pageBlueprint(id) {
+    const ev = S.events.find(e => e.id === id);
+    return ev ? `<div class="wrap my-event"><div class="page-h"><h1>${ic('receipt')} Blueprint</h1><p>Coming in Task 5.</p></div><a class="btn btn-ghost" href="#/my-event/${ev.id}">Back to My Event</a></div>` : notFound();
+  }
+
   function pageCheckout(id) {
     const ev = S.events.find(e => e.id === id);
     if (!ev) return notFound();
@@ -1205,13 +1265,13 @@
       steps.push(['Cancelled', fmtDate(s.cancelledAt), 'bad']);
       steps.push(rf ? [REFUND_STEPS[refundStage(rf)], inr(rf.amount), refundStage(rf) === 3 ? 'done' : 'cur'] : ['No refund due', '', 'done']);
     } else {
-      const now = Date.now();
+      const t0 = now();
       steps = [
         ['Requested', fmtDate(s.requestedAt), 'done'],
         ['Partner confirmed', ss === 'awaiting' ? 'Pending' : fmtDate(s.respondAt), ss === 'awaiting' ? 'cur' : 'done'],
         ['Advance paid', pay ? fmtDate(pay.t) : 'Due now', pay ? 'done' : (ss === 'confirmed' ? 'cur' : '')],
         ['Balance', ss === 'paid' ? 'Paid' : 'Due ' + fmtDate(new Date(d - 30 * DAY)), ss === 'paid' ? 'done' : (ss === 'booked' ? 'cur' : '')],
-        ['Event day', fmtDate(d), now > d ? 'done' : '']
+        ['Event day', fmtDate(d), t0 > d ? 'done' : '']
       ];
     }
     return `<div class="timeline">${steps.map(([l, sub, cls], i) => `<div class="tl ${cls}">${i ? '<span class="bar"></span>' : ''}<span class="d">${cls === 'done' ? ic('check') : cls === 'bad' ? ic('x') : ''}</span><span class="lb"><b>${l}</b>${esc(sub)}</span></div>`).join('')}</div>`;
@@ -1300,7 +1360,7 @@
           <h3 style="margin:0 0 10px;color:var(--plum-900)">Requests</h3>
           ${ev.reschedules.length ? ev.reschedules.slice().reverse().map(r => `<div class="ticket"><div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap"><b>${fmtDate(r.from)} → ${fmtDate(r.to)}</b><span class="tag ${r.applied ? 'tag-green' : 'tag-amber'}">${r.applied ? 'New date confirmed' : 'Waiting for partners'}</span></div>
             <div style="color:var(--muted);font-size:12.5px;margin:2px 0 8px">${r.id} · ${r.scope === 'event' ? 'Entire event' : 'Single service'} · ${esc(r.reason || 'No reason given')}</div>
-            ${Object.entries(r.responses).map(([sid, t]) => `<div class="sum-row"><span>${esc(partner(ev.services.find(s => s.id === sid).partnerId).name)}</span>${Date.now() >= t ? `<span class="tag tag-green">${ic('check')}Accepted</span>` : `<span class="tag tag-amber"><span class="spin"></span>Pending</span>`}</div>`).join('')}</div>`).join('') : `<div class="empty" style="padding:30px">${ic('calendar')}<p>No reschedule requests.</p></div>`}
+            ${Object.entries(r.responses).map(([sid, t]) => `<div class="sum-row"><span>${esc(partner(ev.services.find(s => s.id === sid).partnerId).name)}</span>${now() >= t ? `<span class="tag tag-green">${ic('check')}Accepted</span>` : `<span class="tag tag-amber"><span class="spin"></span>Pending</span>`}</div>`).join('')}</div>`).join('') : `<div class="empty" style="padding:30px">${ic('calendar')}<p>No reschedule requests.</p></div>`}
         </div></div>`;
     },
     support(ev, q) {
@@ -1346,10 +1406,10 @@
         <div class="wa-top"><span class="wa-av">${ic('shield')}</span><div><b>ShaadiKart Customer Service</b><small>Business account · demo</small></div></div>
         <div class="wa-chat" id="wa-chat">
           <div class="wa-b" id="wa-1"><p>Namaste${first ? ' ' + esc(first) : ''},</p><p>This is ShaadiKart Customer Service. You asked about your ${esc(label)} on ${fmtDate(e.date)} for ${e.guests} guests in ${esc(e.locality)}. Here is your selection:</p>
-            <ol>${lines.map(l => `<li>${esc(l.v.name)}, ${esc(l.tier)}: <b>${inr(l.amount)}</b></li>`).join('')}</ol><p><b>Total: ${inr(total)}</b> (incl. GST)</p><i>${hhmm(Date.now())}</i></div>
+            <ol>${lines.map(l => `<li>${esc(l.v.name)}, ${esc(l.tier)}: <b>${inr(l.amount)}</b></li>`).join('')}</ol><p><b>Total: ${inr(total)}</b> (incl. GST)</p><i>${hhmm(now())}</i></div>
           <div class="wa-cat" id="wa-2"><div class="wa-cat-h">Your catalog · ${lines.length} ${lines.length === 1 ? 'service' : 'services'}</div>${cards}</div>
           <div class="wa-b" id="wa-3"><p><b>What happens next</b></p><ol><li>We call you within 2 hours of your enquiry</li><li>Meeting with a ShaadiKart executive: ${esc(when)}</li><li>Payment then opens on the ShaadiKart website. If we miss you, please call ${CALL_NO}</li></ol>
-            <p id="wa-safe" class="wa-safe">${ic('shield')}For your safety, we never ask for your OTP, card number or UPI PIN on WhatsApp.</p><i>${hhmm(Date.now())}</i></div>
+            <p id="wa-safe" class="wa-safe">${ic('shield')}For your safety, we never ask for your OTP, card number or UPI PIN on WhatsApp.</p><i>${hhmm(now())}</i></div>
         </div>
         <div class="wa-chips"><button type="button" data-act="wa-chip" data-q="Reschedule my meeting">Reschedule meeting</button><button type="button" data-act="wa-chip" data-q="I have a question">Ask a question</button><button type="button" data-act="wa-chip" data-q="Please call me">Speak to us</button></div>
       </div>
@@ -1384,7 +1444,7 @@
     const canUnlock = !!g.held && verified(g) && !g.unlocked;
     const lastOpen = g.calls.find(c => !c.result);
     const chk = (ok, t) => `<li class="${ok ? 'ok' : ''}">${ic(ok ? 'check' : 'clock')}${t}</li>`;
-    const late = !g.calls.length && Date.now() > dueBy(ev);
+    const late = !g.calls.length && now() > dueBy(ev);
     return `<div class="crumbs" style="margin-bottom:10px"><a href="#/concierge">Queue</a>${ic('chevronRight')}<span>${esc(ev.id)}</span></div>
     <div class="two-col"><div>
       <div class="box"><h2>${esc(custName(ev))} · ${esc(ev.name)} ${gateTag(ev)}</h2>
@@ -1431,6 +1491,8 @@
     else if (p0 === 'search') html = pageSearch(r.q);
     else if (p0 === 'cart') html = pageCart();
     else if (p0 === 'checkout') html = pageCheckout(p1);
+    else if (p0 === 'my-event') html = pageMyEvent(p1);
+    else if (p0 === 'blueprint') html = pageBlueprint(p1);
     else if (p0 === 'confirmed') html = pageConfirmed(p1);
     else if (p0 === 'bookings') html = pageBookings(r.parts, r.q);
     else if (p0 === 'categories') html = pageCategories();
@@ -1449,7 +1511,7 @@
   // Refresh time-simulated states (partner replies, refunds, reschedules) without disturbing typing.
   setInterval(() => {
     const p0 = route().parts[0];
-    if (!['checkout', 'bookings', 'concierge'].includes(p0) || liveSignature() === lastSig) return;
+    if (!['checkout', 'my-event', 'bookings', 'concierge'].includes(p0) || liveSignature() === lastSig) return;
     const a = document.activeElement;
     if (a && $('#app').contains(a) && /INPUT|TEXTAREA|SELECT/.test(a.tagName)) return;
     const y = window.scrollY; render(); window.scrollTo(0, y);
@@ -1491,13 +1553,13 @@
     const lines = cartLines();
     if (!lines.length) return;
     const ce = S.cart.event;
-    const ev = { id: 'SK-EV-' + Math.floor(10000 + Math.random() * 89999), name: ce.name || `My ${ce.type}`, type: ce.type, date: ce.date, guests: ce.guests, locality: ce.locality, createdAt: Date.now(), services: [], payments: [], refunds: [], cancellations: [], reschedules: [], tickets: [], customer: S.user ? { name: S.user.name, phone: S.user.phone } : null };
-    addSvcsToEvent(ev, lines, Date.now());
+    const ev = { id: 'SK-EV-' + Math.floor(10000 + Math.random() * 89999), name: ce.name || `My ${ce.type}`, type: ce.type, date: ce.date, guests: ce.guests, locality: ce.locality, createdAt: now(), services: [], payments: [], refunds: [], cancellations: [], reschedules: [], tickets: [], customer: S.user ? { name: S.user.name, phone: S.user.phone } : null };
+    addSvcsToEvent(ev, lines, now());
     S.events.push(ev);
     S.cart.query = '';
     S.cart.items = [];
     save();
-    go('#/checkout/' + ev.id);
+    go('#/my-event/' + ev.id);
     toast(`Requests sent to ${lines.length} partners`, 'arrowRight');
   }
 
@@ -1552,8 +1614,8 @@
     'staff-login'() { loginModal(null, 'staff'); },
     'staff-logout'() { S.staff = null; save(); closeModal(); go('#/'); toast('Staff logged out', 'headset'); },
     'meet-open'(el) { const ev = S.events.find(e => e.id === el.dataset.ev); if (ev) meetingModal(ev); },
-    'call-us'(el) { const ev = S.events.find(e => e.id === el.dataset.ev), g = gateOf(ev); if (g.inbound || answered(g)) return; g.inbound = { t: Date.now() }; save(); render(); toast(`Thank you. We received your call to ${CALL_NO}.`, 'phone'); },
-    'wa-open'(el) { const ev = el.dataset.ev ? S.events.find(e => e.id === el.dataset.ev) : null; if (ev) { gateOf(ev).waRequested = Date.now(); save(); } waModal(ev); },
+    'call-us'(el) { const ev = S.events.find(e => e.id === el.dataset.ev), g = gateOf(ev); if (g.inbound || answered(g)) return; g.inbound = { t: now() }; save(); render(); toast(`Thank you. We received your call to ${CALL_NO}.`, 'phone'); },
+    'wa-open'(el) { const ev = el.dataset.ev ? S.events.find(e => e.id === el.dataset.ev) : null; if (ev) { gateOf(ev).waRequested = now(); save(); } waModal(ev); },
     'wa-chip'(el) {
       const q = el.dataset.q, rep = { 'Reschedule my meeting': 'Of course. Please tell us a date and time that suits you and we will confirm it here.', 'I have a question': 'Please type your question here. Our team replies during working hours, 10 am to 7 pm.', 'Please call me': `You can call us any day from 10 am to 7 pm on ${CALL_NO}. We will be happy to help.` }[q];
       const c = $('#wa-chat'); if (!c) return;
@@ -1565,21 +1627,21 @@
       box.querySelectorAll('.ps-tabs button').forEach(b => b.classList.toggle('on', b === el));
       box.querySelectorAll('.ps-panel').forEach(p => { p.hidden = p.dataset.p !== i; });
     },
-    'cg-held'(el) { const g = gateOf(S.events.find(e => e.id === el.dataset.ev)); g.held = Date.now(); save(); render(); toast('Meeting marked completed', 'check'); },
-    'cg-dial'(el) { const g = gateOf(S.events.find(e => e.id === el.dataset.ev)); if (g.calls.length) return; g.calls.push({ n: 1, t: Date.now(), result: null }); save(); render(); },
+    'cg-held'(el) { const g = gateOf(S.events.find(e => e.id === el.dataset.ev)); g.held = now(); save(); render(); toast('Meeting marked completed', 'check'); },
+    'cg-dial'(el) { const g = gateOf(S.events.find(e => e.id === el.dataset.ev)); if (g.calls.length) return; g.calls.push({ n: 1, t: now(), result: null }); save(); render(); },
     'cg-result'(el) {
       const g = gateOf(S.events.find(e => e.id === el.dataset.ev)), c = g.calls.find(x => !x.result); if (!c) return;
       c.result = el.dataset.res;
-      if (c.result === 'No answer' && g.calls.length < 2) g.calls.push({ n: 2, t: Date.now(), result: null }); // second attempt, back to back
+      if (c.result === 'No answer' && g.calls.length < 2) g.calls.push({ n: 2, t: now(), result: null }); // second attempt, back to back
       save(); render();
     },
-    'cg-inbound'(el) { const g = gateOf(S.events.find(e => e.id === el.dataset.ev)); if (!g.inbound) g.inbound = { t: Date.now() }; save(); render(); toast('Customer call logged', 'phone'); },
+    'cg-inbound'(el) { const g = gateOf(S.events.find(e => e.id === el.dataset.ev)); if (!g.inbound) g.inbound = { t: now() }; save(); render(); toast('Customer call logged', 'phone'); },
     'cg-unlock'(el) {
       const g = gateOf(S.events.find(e => e.id === el.dataset.ev));
-      if (!g.held || !verified(g)) return; g.unlocked = { t: Date.now(), by: S.staff ? S.staff.name : 'ShaadiKart executive' }; save(); render(); toast('Payment unlocked for the customer', 'check');
+      if (!g.held || !verified(g)) return; g.unlocked = { t: now(), by: S.staff ? S.staff.name : 'ShaadiKart executive' }; save(); render(); toast('Payment unlocked for the customer', 'check');
     },
     'cg-wa-preview'(el) { waModal(S.events.find(e => e.id === el.dataset.ev)); },
-    'cg-wa-send'(el) { const g = gateOf(S.events.find(e => e.id === el.dataset.ev)); g.waSent = Date.now(); save(); render(); toast('WhatsApp catalog sent to the customer (demo)', 'message'); },
+    'cg-wa-send'(el) { const g = gateOf(S.events.find(e => e.id === el.dataset.ev)); g.waSent = now(); save(); render(); toast('WhatsApp catalog sent to the customer (demo)', 'message'); },
     'login-tab'(el) { loginModal(undefined, el.dataset.tab); },
     account() {
       if (!S.user && !S.partner && !S.staff) return loginModal(() => render());
@@ -1842,17 +1904,17 @@
     },
     cancel(f) {
       const ev = S.events.find(e => e.id === f.dataset.ev), scope = f.dataset.scope, ids = f.dataset.svcs.split(',');
-      const now = Date.now(); let paid = 0, refund = 0, pct = 0, refundId = null;
+      const t0 = Date.now(); let paid = 0, refund = 0, pct = 0, refundId = null;
       ids.forEach(id => {
         const s = ev.services.find(x => x.id === id); const p = policyFor(s, ev); const r = Math.round(s.paid * p.pct / 100);
-        s.cancelledAt = now; paid += s.paid; refund += r; pct = p.pct;
+        s.cancelledAt = t0; paid += s.paid; refund += r; pct = p.pct;
         if (r > 0) {
           const pay = ev.payments.find(x => x.items.some(i => i.svcId === id));
-          const rf = { id: code('RF'), t: now, svcIds: [id], amount: r, method: pay ? pay.method : 'UPI' };
+          const rf = { id: code('RF'), t: t0, svcIds: [id], amount: r, method: pay ? pay.method : 'UPI' };
           ev.refunds.push(rf); refundId = refundId || rf.id;
         }
       });
-      ev.cancellations.push({ id: code('CN'), t: now, scope, svcIds: ids, reason: f.reason.value, paid, pct, refundAmount: refund, refundId: scope === 'service' ? refundId : null });
+      ev.cancellations.push({ id: code('CN'), t: t0, scope, svcIds: ids, reason: f.reason.value, paid, pct, refundAmount: refund, refundId: scope === 'service' ? refundId : null });
       save(); closeModal();
       toast(scope === 'event' ? 'Event cancelled. Refunds initiated.' : `${partner(ev.services.find(x => x.id === ids[0]).partnerId).name} cancelled. Other services stay confirmed.`, 'undo');
       go(`#/bookings/${ev.id}/${refund > 0 ? 'refunds' : 'cancellations'}`);
@@ -1861,9 +1923,9 @@
       const ev = S.events.find(e => e.id === f.dataset.ev);
       const scope = f.scope.value, to = f.to.value;
       const svcs = scope === 'event' ? activeSvcs(ev).filter(s => svcStatus(s) !== 'awaiting') : [ev.services.find(s => s.id === scope)];
-      const now = Date.now(), responses = {};
-      svcs.forEach((s, i) => { responses[s.id] = now + 4000 * (i + 1); });
-      ev.reschedules.push({ id: code('RS'), t: now, from: scope === 'event' ? ev.date : svcDate(ev, svcs[0]), to, scope: scope === 'event' ? 'event' : 'service', svcIds: svcs.map(s => s.id), reason: f.reason.value.trim(), responses, applied: false });
+      const t0 = now(), responses = {};
+      svcs.forEach((s, i) => { responses[s.id] = t0 + 4000 * (i + 1); });
+      ev.reschedules.push({ id: code('RS'), t: t0, from: scope === 'event' ? ev.date : svcDate(ev, svcs[0]), to, scope: scope === 'event' ? 'event' : 'service', svcIds: svcs.map(s => s.id), reason: f.reason.value.trim(), responses, applied: false });
       save(); go(`#/bookings/${ev.id}/reschedule`); render(); toast('Reschedule request sent to ' + svcs.length + ' partner' + (svcs.length > 1 ? 's' : ''), 'calendar');
     },
     ticket(f) {
