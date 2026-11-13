@@ -1507,6 +1507,7 @@
     header();
     $('#app').innerHTML = html;
     if (r.path !== lastPath) { window.scrollTo(0, 0); lastPath = r.path; }
+    dockRender();
   }
   // Refresh time-simulated states (partner replies, refunds, reschedules) without disturbing typing.
   setInterval(() => {
@@ -1516,6 +1517,109 @@
     if (a && $('#app').contains(a) && /INPUT|TEXTAREA|SELECT/.test(a.tagName)) return;
     const y = window.scrollY; render(); window.scrollTo(0, y);
   }, 1000);
+
+  /* ---------- Demo dock: WhatsApp live thread, Concierge tab, demo clock (session-only state, never persisted) ---------- */
+  const WA_SAFE = 'We never ask for OTP, card number or UPI PIN on WhatsApp.';
+  // Spec section 7 message table. Moments not yet wired (perk, blueprint) are ready for later tasks to push.
+  const WA_MSG = {
+    preview: () => 'Your event is ready to see.',
+    host: h => `${h.name}, your ShaadiKart host, will call you within 2 hours.`,
+    miss: () => `We tried to reach you. You can call us any time on ${CALL_NO}.`,
+    perk: () => 'Your walk-through is confirmed. We look forward to meeting you.',
+    blueprint: () => 'Your blueprint is ready to approve.',
+    payment: () => 'You can now pay on the ShaadiKart website.\n' + WA_SAFE,
+    booked: () => 'Your booking is confirmed. Your receipt and event preview are ready in My Event.',
+    confirm: n => `✔ ${n} has confirmed your date.`,
+    unavailable: n => `${n} is not available on your date. Your host will suggest alternatives.`
+  };
+  function waThreadPush(ev, type, text, from) {
+    const th = journeyOf(ev).waThread, t = now();
+    if (th.some(m => m.type === type && m.text === text && t - m.t < 2000)) return false;
+    th.push({ t, type, text, status: 'sent', from: from || 'sk' });
+    return true;
+  }
+  const waOnce = (ev, type, text) => journeyOf(ev).waThread.some(m => m.type === type) ? false : waThreadPush(ev, type, text);
+  function waCatalog(ev, head) {
+    const sv = liveSvcs(ev), st = sv.map(svcStatus), done = st.filter(x => x !== 'awaiting').length;
+    const lines = sv.map((s, i) => `${st[i] === 'awaiting' ? '⏳' : '✔'} ${partner(s.partnerId).name} · ${catOf(partner(s.partnerId).cat).short}`);
+    return `${head}\n${lines.join('\n')}\n${done === 0 ? `0 of ${sv.length} confirmed` : `${done} completed · ${sv.length - done} pending`}`;
+  }
+  // Pushes messages as each moment is reached. Only events that already have a thread (created via Send requests) take part.
+  function waWatch() {
+    let ch = false;
+    S.events.forEach(ev => {
+      if (!ev.journey || !ev.journey.waThread.length) return;
+      const j = ev.journey, g = gateOf(ev), sv = liveSvcs(ev);
+      sv.forEach(s => {
+        const ss = svcStatus(s), v = partner(s.partnerId);
+        if (ss === 'awaiting' || ss === 'cancelled') return;
+        if (waOnce(ev, 'confirm:' + s.id, (ss === 'unavailable' ? WA_MSG.unavailable : WA_MSG.confirm)(v.name))) {
+          ch = true; waOnce(ev, 'catalog:' + sv.filter(x => svcStatus(x) !== 'awaiting').length, waCatalog(ev, 'Your catalog'));
+        }
+      });
+      const stg = JOURNEY.findIndex(x => x[0] === journeyStage(ev));
+      if (stg >= 2 && waOnce(ev, 'preview', WA_MSG.preview())) { ch = true; waOnce(ev, 'host', WA_MSG.host(j.host)); }
+      g.calls.forEach(c => { if (c.result === 'No answer' && waOnce(ev, 'miss:' + c.n, WA_MSG.miss())) ch = true; });
+      if (g.unlocked && waOnce(ev, 'payment', WA_MSG.payment())) ch = true;
+      if (stg === 6 && waOnce(ev, 'booked', WA_MSG.booked())) ch = true;
+    });
+    if (ch) save();
+    return ch;
+  }
+
+  const DOCK = { open: false, tab: 'wa', seen: {} };
+  let dockHtmlLast = '';
+  function dockEvent() {
+    const r = route(), id = ['my-event', 'blueprint', 'confirmed'].includes(r.parts[0]) ? r.parts[1] : null;
+    return S.events.find(e => e.id === id) || [...S.events].reverse().find(e => e.journey && e.journey.waThread.length) || S.events[S.events.length - 1];
+  }
+  const clockText = () => new Date(now()).toLocaleString('en-IN', { day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit', second: '2-digit' });
+  const waUnread = ev => ev ? Math.max(0, journeyOf(ev).waThread.length - (DOCK.seen[ev.id] || 0)) : 0;
+  function dockHtml(ev) {
+    const th = ev ? journeyOf(ev).waThread : [];
+    if (DOCK.open && DOCK.tab === 'wa' && ev) DOCK.seen[ev.id] = th.length;
+    const clock = `<div class="demo-clock"><div class="dc-h"><b>Demo clock</b><span id="dock-time">${clockText()}</span></div>
+      <div class="dc-b">${[1, 60, 180].map(n => `<button type="button" class="${CLOCK.speed === n ? 'on' : ''}" data-act="clock-speed" data-speed="${n}" aria-pressed="${CLOCK.speed === n}">${n}×</button>`).join('')}<button type="button" class="dc-reset" data-act="clock-reset">Reset</button></div></div>`;
+    const wa = !ev ? '<p class="dock-empty">No event yet.</p>' : `<div class="wa-thread" id="wa-thread" role="log" aria-live="polite">
+        ${th.length ? th.map(m => `<div class="wa-msg ${m.from === 'me' ? 'me' : 'sk'}"><span class="wa-t">${esc(m.text)}</span><small>${hhmm(m.t)}</small></div>`).join('') : '<p class="dock-empty">Messages appear here after you send your requests.</p>'}
+      </div>
+      <div class="wa-foot"><p class="wa-safe">${ic('info')}<span>${WA_SAFE}</span></p>
+        <div class="wa-chips">${['Reschedule', 'Ask a question', 'Speak to my host'].map(c => `<button type="button" data-act="dock-chip" data-chip="${c}">${c}</button>`).join('')}</div></div>`;
+    const cg = !ev ? '<p class="dock-empty">No event yet.</p>' : `<div class="dock-cg">${cgDetail(ev)}</div>`;
+    return `<div class="dock-h"><b>${ic('message')} Demo mode</b><button type="button" class="x-btn" data-act="dock-toggle" aria-label="Close demo dock">${ic('x')}</button></div>
+      ${clock}
+      <div class="dock-tabs" role="tablist"><button role="tab" aria-selected="${DOCK.tab === 'wa'}" class="${DOCK.tab === 'wa' ? 'on' : ''}" data-act="dock-tab" data-tab="wa">WhatsApp</button><button role="tab" aria-selected="${DOCK.tab === 'cg'}" class="${DOCK.tab === 'cg' ? 'on' : ''}" data-act="dock-tab" data-tab="cg">Concierge</button></div>
+      <div class="dock-body ${DOCK.tab === 'wa' ? 'wa' : 'cg'}">${DOCK.tab === 'wa' ? wa : cg}</div>`;
+  }
+  // Re-renders only the dock (not the page). Skips the DOM write when nothing but the ticking clock changed.
+  function dockRender() {
+    let root = $('#demo-dock'); if (!root) return;
+    const ev = dockEvent();
+    document.body.classList.toggle('dock-open', DOCK.open);
+    if (!DOCK.open) {
+      const n = waUnread(ev);
+      root.className = 'dock-closed';
+      const h = ev ? `<button type="button" class="dock-toggle" data-act="dock-toggle" aria-label="Open demo dock${n ? ', ' + n + ' new messages' : ''}">${ic('message')}${n ? `<span class="dock-badge">${n}</span>` : ''}</button>` : '';
+      if (h !== dockHtmlLast) { root.innerHTML = h; dockHtmlLast = h; }
+      return;
+    }
+    root.className = 'demo-dock';
+    const h = dockHtml(ev), key = h.replace(/(<span id="dock-time">)[^<]*/, '$1');
+    if (key !== dockHtmlLast) {
+      const old = $('.dock-body', root), top = old ? old.scrollTop : 0, wasEnd = !old || old.scrollHeight - old.scrollTop - old.clientHeight < 40;
+      root.innerHTML = h; dockHtmlLast = key;
+      const nb = $('.dock-body', root);
+      if (nb) nb.scrollTop = DOCK.tab === 'wa' && wasEnd ? nb.scrollHeight : top;
+    } else { const t = $('#dock-time', root); if (t) t.textContent = clockText(); }
+  }
+  // Demo clock: at speed N, every real second adds (N - 1) seconds so now() runs N times faster.
+  let clockTimer = null;
+  function clockSet(speed) {
+    CLOCK.speed = speed;
+    if (clockTimer) { clearInterval(clockTimer); clockTimer = null; }
+    if (speed !== 1) clockTimer = setInterval(() => { CLOCK.offset += (CLOCK.speed - 1) * 1000; }, 1000);
+  }
+  setInterval(() => { waWatch(); dockRender(); }, 1000);
 
   /* ---------- auth (demo OTP) ---------- */
   let afterLogin = null;
@@ -1556,6 +1660,7 @@
     const ev = { id: 'SK-EV-' + Math.floor(10000 + Math.random() * 89999), name: ce.name || `My ${ce.type}`, type: ce.type, date: ce.date, guests: ce.guests, locality: ce.locality, createdAt: now(), services: [], payments: [], refunds: [], cancellations: [], reschedules: [], tickets: [], customer: S.user ? { name: S.user.name, phone: S.user.phone } : null };
     addSvcsToEvent(ev, lines, now());
     S.events.push(ev);
+    waThreadPush(ev, 'catalog', waCatalog(ev, 'Your catalog'));
     S.cart.query = '';
     S.cart.items = [];
     save();
@@ -1564,6 +1669,17 @@
   }
 
   const ACT = {
+    'dock-toggle'() { DOCK.open = !DOCK.open; dockRender(); },
+    'dock-tab'(el) { DOCK.tab = el.dataset.tab; dockRender(); },
+    'clock-speed'(el) { clockSet(+el.dataset.speed || 1); dockRender(); },
+    'clock-reset'() { CLOCK.offset = 0; clockSet(1); render(); },
+    'dock-chip'(el) {
+      const ev = dockEvent(); if (!ev) return;
+      const c = el.dataset.chip, h = journeyOf(ev).host;
+      const rep = { 'Reschedule': 'No problem. You can change your walk-through time from My Event, or tell your host on the call.', 'Ask a question': 'Of course. Your host will answer every question on your call.', 'Speak to my host': `${h.name} will call you within 2 hours.` }[c];
+      if (waThreadPush(ev, 'q:' + c, c, 'me')) waThreadPush(ev, 'qr:' + c, rep);
+      save(); dockRender();
+    },
     'close-modal': closeModal,
     'modal-bg': (el, e) => { if (e.target === el) closeModal(); },
     scroll(el) {
@@ -1991,7 +2107,7 @@
   // Two windows on the same browser (customer and Concierge) stay in sync.
   window.addEventListener('storage', e => {
     if (e.key !== KEY || !e.newValue) return;
-    try { const n = JSON.parse(e.newValue); if (n && n.v === 1) { S = n; render(); } } catch (err) { /* ignore */ }
+    try { const n = JSON.parse(e.newValue); if (n && n.v === 1) { S = n; render(); dockRender(); } } catch (err) { /* ignore */ }
   });
   document.addEventListener('submit', e => {
     const f = e.target.closest('form[data-form]');

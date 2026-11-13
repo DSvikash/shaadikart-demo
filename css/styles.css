@@ -1195,3 +1195,48 @@ textarea[data-change="cg-notes"] { width: 100%; font: inherit; padding: 12px; bo
 .me-status { margin: 0 0 14px; }
 .me-stage { margin-bottom: 14px; }
 .me-stage.cur { border-color: var(--gold-600); box-shadow: 0 0 0 2px var(--gold-50); }
+
+/* ---------- Demo dock: WhatsApp live thread, Concierge tab, demo clock ---------- */
+.dock-toggle { position: fixed; right: 18px; bottom: 80px; z-index: 57; width: 52px; height: 52px; border: 0; border-radius: 50%; background: #25d366; color: #fff; display: grid; place-items: center; box-shadow: 0 10px 28px rgba(37, 211, 102, .45); cursor: pointer; }
+.dock-toggle svg.i { width: 24px; height: 24px; }
+.dock-badge { position: absolute; top: -4px; right: -4px; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 10px; background: #d92d20; color: #fff; font-size: 12px; font-weight: 700; display: grid; place-items: center; }
+.demo-dock { position: fixed; top: 0; right: 0; height: 100vh; width: 320px; z-index: 95; display: flex; flex-direction: column; background: #fff; border-left: 1px solid var(--line); box-shadow: -8px 0 28px rgba(23, 11, 59, .18); }
+.dock-h { display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; background: var(--plum-900); color: #fff; }
+.dock-h b { display: inline-flex; align-items: center; gap: 8px; }
+.dock-h .x-btn { color: #fff; }
+.demo-clock { background: #fff3cd; color: #5c4400; padding: 8px 12px; border-bottom: 1px solid #f0d98a; font-size: 13px; }
+.dc-h { display: flex; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+.dc-b { display: flex; gap: 6px; }
+.dc-b button { flex: 1; border: 1px solid #d9b94d; background: #fff; border-radius: 8px; padding: 5px 0; font-weight: 600; cursor: pointer; color: #5c4400; }
+.dc-b button.on { background: #5c4400; color: #fff; border-color: #5c4400; }
+.dock-tabs { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid var(--line); }
+.dock-tabs button { border: 0; background: none; padding: 10px; font-weight: 600; color: var(--muted); border-bottom: 3px solid transparent; cursor: pointer; }
+.dock-tabs button.on { color: var(--plum-900); border-bottom-color: #25d366; }
+.dock-body { flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; }
+.dock-body.wa { background: #ece5dd; }
+.dock-empty { padding: 20px 16px; color: var(--muted); text-align: center; margin: 0; }
+.wa-thread { flex: 1; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+.wa-msg { max-width: 88%; padding: 7px 10px; border-radius: 10px; font-size: 14px; line-height: 1.4; box-shadow: 0 1px 1px rgba(0, 0, 0, .12); }
+.wa-msg.sk { align-self: flex-start; background: #dcf8c6; }
+.wa-msg.me { align-self: flex-end; background: #fff; }
+.wa-t { white-space: pre-line; display: block; }
+.wa-msg small { display: block; text-align: right; color: var(--muted); font-size: 11px; margin-top: 2px; }
+.wa-foot { position: sticky; bottom: 0; background: #f7f3ee; border-top: 1px solid var(--line); padding: 8px 12px; }
+.demo-dock .wa-safe { display: flex; gap: 6px; margin: 0 0 8px; background: none; padding: 0; font-size: 12px; color: var(--muted); }
+.demo-dock .wa-safe svg.i { width: 14px; height: 14px; flex: none; margin-top: 2px; }
+.demo-dock .wa-chips { display: flex; flex-wrap: wrap; gap: 6px; padding: 0; background: none; overflow: visible; }
+.demo-dock .wa-chips button { border: 1px solid #25d366; background: #fff; color: #0b6b36; border-radius: 999px; padding: 6px 12px; font-size: 13px; font-weight: 600; cursor: pointer; }
+.dock-cg { padding: 10px; font-size: 13px; }
+.dock-cg .two-col { display: block; }
+.dock-cg .two-col > * + * { margin-top: 12px; }
+.dock-cg .sticky { position: static; }
+@media (min-width: 769px) {
+  body.dock-open { padding-right: 320px; }
+  body.dock-open .chat-fab { right: 338px; }
+  body.dock-open .chat { right: 338px; }
+}
+@media (max-width: 768px) {
+  .dock-toggle { bottom: 140px; right: 14px; }
+  .demo-dock { top: auto; bottom: 0; width: 100%; height: 75vh; border-left: 0; border-radius: 16px 16px 0 0; overflow: hidden; }
+}
+.dock-h .x-btn { background: rgba(255, 255, 255, .15); color: #fff; }
