@@ -218,16 +218,16 @@
   const gateSig = ev => { const g = ev.gate; return g ? [gateStage(ev), g.calls.map(c => c.result || 'r').join(), g.waSent ? 1 : 0, g.waRequested ? 1 : 0, g.meeting ? g.meeting.date + g.meeting.time : ''].join('/') : '-'; };
 
   function gateBox(ev) {
-    const g = gateOf(ev), st = gateStage(ev), m = g.meeting;
+    const g = gateOf(ev), st = gateStage(ev), m = g.meeting, hn = journeyOf(ev).host.name.split(' ')[0];
     const callOk = callsDone(g), ans = answered(g);
     const flags = [true, !!g.held, callOk, verified(g), !!g.unlocked];
     const cur = flags.indexOf(false);
     const labels = [
       ['Partners confirmed', 'Dates confirmed and replies reviewed'],
-      ['Meeting with ShaadiKart', m ? `${fmtDate(m.date)} · ${m.time} · ${m.mode}` : 'Required before payment'],
-      ['ShaadiKart calls you', ans ? 'We spoke at ' + hhmm(g.calls.find(c => c.result === 'Answered').t) : callOk ? 'We could not reach you' : 'By ' + hhmm(dueBy(ev)) + ', within 2 hours of your enquiry'],
+      [`Meet your host, ${hn}`, m ? `${fmtDate(m.date)} · ${m.time} · ${m.mode}` : 'Required before payment'],
+      [`${hn} calls you`, ans ? 'We spoke at ' + hhmm(g.calls.find(c => c.result === 'Answered').t) : callOk ? 'We could not reach you' : 'By ' + hhmm(dueBy(ev)) + ', within 2 hours of your enquiry'],
       ['Verification', ans ? 'Done on our call' : g.inbound ? 'Verified ' + hhmm(g.inbound.t) : `Only if we miss you: call ${CALL_NO}`],
-      ['Payment opens', 'Unlocked by a ShaadiKart executive']
+      ['Payment opens', 'After you approve your Blueprint']
     ];
     const steps = `<ol class="gate-steps">${labels.map(([a, b], i) => `<li class="${flags[i] ? 'done' : i === cur ? 'cur' : ''}"><span class="gs-n">${flags[i] ? ic('check') : i + 1}</span><span><b>${a}</b><small>${esc(b)}</small></span></li>`).join('')}</ol>`;
     const log = g.calls.length ? `<div class="gate-log">${g.calls.map(c => `<div><span>${ic('phone')}ShaadiKart call ${c.n} of 2 · ${hhmm(c.t)}</span><b class="${c.result === 'Answered' ? 'ok' : 'miss'}">${c.result ? (c.result === 'Answered' ? 'Answered' : 'Missed') : 'Ringing…'}</b></div>`).join('')}</div>` : `<p class="gate-p">Our executive will call you by <b>${hhmm(dueBy(ev))}</b>, within 2 hours of your enquiry. We try twice, back to back, so please keep your phone nearby.</p>`;
@@ -238,13 +238,13 @@
       <button type="button" class="btn btn-ghost btn-block" data-act="meet-open" data-ev="${ev.id}">Reschedule meeting</button>`;
     else if (st !== 'open') main = `<div class="gate-card ok">${ic('calendarCheck')}<div><b>Meeting completed</b><span>${fmtDate(m.date)} · ${esc(m.mode)}</span></div></div>`;
     let callPart;
-    if (st === 'unlock') callPart = `${log}<div class="gate-card ok">${ic('shield')}<div><b>Thank you, you are verified</b><span>${ans ? 'We spoke on our call, so you do not need to call us.' : `We received your call at ${hhmm(g.inbound.t)}.`} A ShaadiKart executive is unlocking payment now.</span></div></div>`;
+    if (st === 'unlock') callPart = `${log}<div class="gate-card ok">${ic('shield')}<div><b>Thank you, you are verified</b><span>${ans ? 'We spoke on our call, so you do not need to call us.' : `We received your call at ${hhmm(g.inbound.t)}.`} ${journeyOf(ev).blueprintApproved ? 'A ShaadiKart executive is opening payment now.' : 'Next, review and approve your Blueprint.'}</span></div></div>`;
     else if (ans) callPart = `${log}<div class="gate-card ok">${ic('shield')}<div><b>Thank you for speaking with us</b><span>You do not need to call us back. After your meeting, a ShaadiKart executive unlocks payment.</span></div></div>`;
     else callPart = `${log}<p class="gate-p">${callOk ? 'We could not reach you on our two calls. ' : ''}${callOk ? 'Please call us' : 'If you would rather not wait, you can call us'} from your registered mobile. This is how we confirm it is really you.</p>
           <a class="callno" href="tel:${CALL_NO}">${ic('phone')}<span><small>Call ShaadiKart</small><b>${CALL_NO}</b></span></a>
           <button type="button" class="btn btn-gold btn-block" data-act="call-us" data-ev="${ev.id}">I have called ${CALL_NO} <small style="opacity:.8">(demo)</small></button>`;
     const act = main + callPart;
-    return `<div class="gate"><div class="gate-h">${ic('shield')}<div><b>Payment is locked for now</b><small>A few quick steps keep your booking safe</small></div></div>${steps}<div class="gate-act">${act}</div>
+    return `<div class="gate"><div class="gate-h">${ic('shield')}<div><b>Your booking journey</b><small>A few quick steps keep your booking safe</small></div></div>${steps}<div class="gate-act">${act}</div>
       <button type="button" class="btn btn-ghost btn-block" style="margin-top:10px" data-act="wa-open" data-ev="${ev.id}"><span class="wa-dot"></span>Get my cart on WhatsApp</button></div>`;
   }
 
@@ -1234,14 +1234,13 @@
         <div><h4>${esc(v.name)}</h4><div class="sub">${esc(catOf(v.cat).short)} · ${pkgOf(v, s.pkg).name} · ${inr(svcTotal(s))} incl. GST</div></div>
         <div>${ss === 'awaiting' ? `<span class="tag tag-amber"><span class="spin"></span>Checking date…</span>` : statusTag(ss)}</div></div>`; }).join('');
     const card = (k, title, body) => `<div class="box me-stage${k === cur ? ' cur' : ''}"><h2>${title}</h2>${body}</div>`;
-    const soon = (what, task) => `<p class="note">${ic('info')}<span>${what} Coming in Task ${task}.</span></p>`;
     const stages = [
       card('requests-sent', 'Requests sent', `<p class="gate-p">Requests sent to ${n} partner${n === 1 ? '' : 's'}. Each partner checks its own calendar.</p>${list}`),
       card('partners-confirm', 'Partners confirm', `<p class="gate-p">${ok} of ${n} confirmed.</p>`),
       card('see-my-event', 'See My Event', seeMyEvent(ev)),
       journeyStage(ev) === 'see-my-event' || journeyOf(ev).visitRequested ? perkCard(ev) : '',
-      card('conversation', 'Conversation', soon('Your meeting and WhatsApp thread with ShaadiKart.', 4)),
-      card('blueprint', 'Blueprint', soon('Your approved event blueprint.', 5)),
+      card('conversation', 'Conversation', hostCard(ev) + (gateOn(ev) ? gateBox(ev) : `<p class="gate-p">Your meeting with ShaadiKart is complete.</p>`)),
+      card('blueprint', 'Blueprint', blueprintCard(ev)),
       card('payment', 'Payment', `<p class="gate-p">Pay your advance once the steps above are complete.</p><a class="btn btn-gold" href="#/checkout/${ev.id}">${ic('receipt')}Go to payment</a>`),
       card('booked', 'Booked', ev.payments.length ? `<a class="btn btn-ghost" href="#/confirmed/${ev.id}">View confirmation</a>` : `<p class="gate-p">Your confirmation appears here after payment.</p>`)
     ].join('');
@@ -1249,9 +1248,47 @@
       <div class="page-h"><h1>${ic('heart')} My Event</h1><p>${esc(ev.name)} · ${fmtDate(ev.date)} · ${ev.guests} guests · ${esc(ev.locality)} · Booking ID ${ev.id}</p></div>
       ${timeline}<p class="me-status"><b>${esc(status)}</b></p>${stages}</div>`;
   }
+  function hostCard(ev) {
+    const h = journeyOf(ev).host;
+    return `<div class="host-card"><span class="host-av" aria-hidden="true">${ic('user')}</span>
+      <div><b>${esc(h.name)}</b><small>${esc(h.role)} · ${h.years} years with ShaadiKart · ${esc(h.languages)}</small>
+      <p>${esc(h.name.split(' ')[0])} will call you within 2 hours to hear about your ${esc(String(ev.type || 'event').toLowerCase())}.</p></div></div>`;
+  }
+  function blueprintCard(ev) {
+    const j = journeyOf(ev), held = !!gateOf(ev).held;
+    if (j.blueprintApproved) return `<p class="gate-p"><span class="tag tag-green">${ic('check')}Approved ${fmtDT(j.blueprintApproved)}</span></p><a class="btn btn-ghost" href="#/blueprint/${ev.id}">View your Blueprint</a>`;
+    if (!held) return `<p class="gate-p">Your Blueprint is prepared after your meeting with ${esc(j.host.name.split(' ')[0])}. You approve it before paying.</p>`;
+    return `<p class="gate-p">Your Blueprint is ready. Please review it and approve it to go to payment.</p><a class="btn btn-gold" href="#/blueprint/${ev.id}">${ic('receipt')}Review your Blueprint</a>`;
+  }
+  // Pure content (no actions) so the Concierge panel can embed it as a draft.
+  function blueprintHtml(ev) {
+    const j = journeyOf(ev), g = gateOf(ev), svcs = liveSvcs(ev).filter(s => svcStatus(s) !== 'unavailable');
+    const v = smeVenue(ev), a = v && D.VENUE_ANCHORS[v.id], dec = smeDecor(ev);
+    const total = svcs.reduce((x, s) => x + svcTotal(s), 0), pre = svcs.reduce((x, s) => x + s.price, 0);
+    const caters = svcs.filter(s => s.rate), qs = [...new Set(svcs.map(s => s.query).filter(Boolean))];
+    const m = g.meeting, cap = v && v.cap;
+    const sec = (t, body) => `<section class="bp-section"><h3>${t}</h3>${body}</section>`;
+    const preview = a ? `<div class="bp-preview" ${bg(a.photo, 800)} role="img" aria-label="${esc(v.name)}"><span class="bp-pv-lbl">${esc(v.name)}${dec ? ' · styled by ' + esc(dec.name) : ''}</span></div>` : '';
+    const ms = [['Event date', fmtDate(ev.date)], m ? ['Meeting with your host', `${fmtDate(m.date)} · ${m.time}`] : null, g.held ? ['Meeting held', fmtDT(g.held)] : null, j.blueprintApproved ? ['Blueprint approved', fmtDT(j.blueprintApproved)] : null].filter(Boolean);
+    return `<div class="blueprint">${preview}
+      ${sec('Selections', svcs.map(s => { const p = partner(s.partnerId); return `<div class="bp-row"><span><b>${esc(p.name)}</b><small>${esc(catOf(p.cat).short)} · ${esc(pkgOf(p, s.pkg).name)}</small></span><b>${inr(svcTotal(s))}</b></div>`; }).join('') || '<p class="gate-p">No confirmed services yet.</p>')}
+      ${sec('Guests', `<div class="bp-row"><span><b>${ev.guests} guests</b><small>${cap ? `${esc(v.name)} seats ${cap[0]} to ${cap[1]}` : 'Layout planned with your host'}</small></span><b>${Math.ceil(ev.guests / 10)} tables of 10</b></div>`)}
+      ${sec('Menu', caters.length ? caters.map(s => `<div class="bp-row"><span><b>${esc(partner(s.partnerId).name)}</b><small>${esc(pkgOf(partner(s.partnerId), s.pkg).name)} · ${dietLabel(s.diet)}</small></span><b>${inr(s.rate)} × ${s.guests}</b></div>`).join('') : '<p class="gate-p">No catering in this event yet.</p>')}
+      ${sec('Budget', `<div class="bp-row"><span><b>Services</b><small>Before GST</small></span><b>${inr(pre)}</b></div><div class="bp-row"><span><b>GST</b></span><b>${inr(total - pre)}</b></div><div class="bp-row bp-total"><span><b>Total</b><small>Incl. GST</small></span><b>${inr(total)}</b></div>`)}
+      ${sec('Timeline', ms.map(([l, d]) => `<div class="bp-row"><span><b>${l}</b></span><span>${d}</span></div>`).join(''))}
+      ${sec('Special requests', qs.length ? qs.map(q => `<p class="bp-q">${esc(q)}</p>`).join('') : '<p class="gate-p">None added. Tell your host anything you would like changed.</p>')}</div>`;
+  }
+  window.blueprintHtml = blueprintHtml;
   function pageBlueprint(id) {
     const ev = S.events.find(e => e.id === id);
-    return ev ? `<div class="wrap my-event"><div class="page-h"><h1>${ic('receipt')} Blueprint</h1><p>Coming in Task 5.</p></div><a class="btn btn-ghost" href="#/my-event/${ev.id}">Back to My Event</a></div>` : notFound();
+    if (!ev) return notFound();
+    const j = journeyOf(ev), held = !!gateOf(ev).held;
+    const act = j.blueprintApproved ? `<div class="bp-approve"><span class="tag tag-green">${ic('check')}Approved ${fmtDT(j.blueprintApproved)}</span></div>`
+      : held ? `<div class="bp-approve"><button type="button" class="btn btn-gold" data-act="approve-blueprint" data-ev="${ev.id}">${ic('check')}Approve my Blueprint</button><button type="button" class="btn btn-ghost" data-act="bp-change" data-ev="${ev.id}">Request a change</button></div>`
+      : `<p class="note">${ic('info')}<span>Your Blueprint is ready to approve once your meeting with ${esc(j.host.name.split(' ')[0])} is complete.</span></p>`;
+    return `<div class="wrap my-event"><div class="crumbs" style="margin-bottom:10px"><a href="#/my-event/${ev.id}">My Event</a>${ic('chevronRight')}<span>Blueprint</span></div>
+      <div class="page-h"><h1>${ic('receipt')} Your Blueprint</h1><p>${esc(ev.name)} · ${fmtDate(ev.date)} · ${ev.guests} guests · Booking ID ${ev.id}</p></div>
+      <div class="box">${blueprintHtml(ev)}${act}</div></div>`;
   }
 
   function pageCheckout(id) {
@@ -1565,7 +1602,7 @@
     const g = gateOf(ev), st = gateStage(ev), m = g.meeting, svcs = liveSvcs(ev), pend = svcs.some(s => svcStatus(s) === 'awaiting');
     const total = svcs.filter(s => ['confirmed', 'booked', 'paid'].includes(svcStatus(s))).reduce((a, s) => a + svcTotal(s), 0);
     const qs = svcs.filter(s => s.query);
-    const canUnlock = !!g.held && verified(g) && !g.unlocked;
+    const canUnlock = !!g.held && verified(g) && !!journeyOf(ev).blueprintApproved && !g.unlocked;
     const lastOpen = g.calls.find(c => !c.result);
     const chk = (ok, t) => `<li class="${ok ? 'ok' : ''}">${ic(ok ? 'check' : 'clock')}${t}</li>`;
     const late = !g.calls.length && now() > dueBy(ev);
@@ -1590,8 +1627,8 @@
         <div class="cg-step ${answered(g) ? 'off' : ''}"><h4><span class="cg-n">3</span>Customer calls ${CALL_NO} <small style="font-weight:500;color:var(--muted)">(only if our call is missed)</small></h4>
           ${answered(g) ? '<p class="muted">Not needed. The customer answered our call.</p>' : g.inbound ? `<span class="tag tag-green">${ic('check')}Call received ${fmtDT(g.inbound.t)}</span>` : `<p class="muted">Waiting for the customer's call.</p><button class="btn btn-ghost btn-sm" data-act="cg-inbound" data-ev="${ev.id}">Log customer's call (demo)</button>`}</div>
         <div class="cg-step"><h4><span class="cg-n">4</span>Unlock payment</h4>
-          <ul class="cg-chk">${chk(!pend, 'Partners confirmed')}${chk(!!m, 'Meeting scheduled')}${chk(!!g.held, 'Meeting held')}${chk(g.calls.length > 0, 'Outbound call attempted')}${chk(verified(g), 'Verified: customer answered our call, or called ' + CALL_NO)}</ul>
-          ${g.unlocked ? `<span class="tag tag-green">${ic('check')}Unlocked ${fmtDT(g.unlocked.t)} by ${esc(g.unlocked.by)}</span>` : `<button class="btn btn-gold btn-block" data-act="cg-unlock" data-ev="${ev.id}" ${canUnlock ? '' : 'disabled'}>Unlock payment for customer</button>${canUnlock ? '' : '<p class="note" style="margin-top:8px">' + ic('info') + '<span>Needs the meeting held and verification (answered call, or the customer\'s call).</span></p>'}`}</div>
+          <ul class="cg-chk">${chk(!pend, 'Partners confirmed')}${chk(!!m, 'Meeting scheduled')}${chk(!!g.held, 'Meeting held')}${chk(g.calls.length > 0, 'Outbound call attempted')}${chk(verified(g), 'Verified: customer answered our call, or called ' + CALL_NO)}${chk(!!journeyOf(ev).blueprintApproved, 'Blueprint approved by the customer')}</ul>
+          ${g.unlocked ? `<span class="tag tag-green">${ic('check')}Unlocked ${fmtDT(g.unlocked.t)} by ${esc(g.unlocked.by)}</span>` : `<button class="btn btn-gold btn-block" data-act="cg-unlock" data-ev="${ev.id}" ${canUnlock ? '' : 'disabled'}>Unlock payment for customer</button>${canUnlock ? '' : '<p class="note" style="margin-top:8px">' + ic('info') + '<span>Needs the meeting held, verification (answered call, or the customer\'s call) and the customer\'s Blueprint approval.</span></p>'}`}</div>
       </div>
       <div class="box"><h3><span class="wa-dot"></span> WhatsApp catalog</h3>
         <p class="gate-p">${g.waRequested ? 'The customer opened the WhatsApp catalog. ' : ''}${g.waSent ? `Sent ${fmtDT(g.waSent)}.` : 'Not sent yet.'}</p>
@@ -1650,9 +1687,9 @@
     host: h => `${h.name}, your ShaadiKart host, will call you within 2 hours.`,
     miss: () => `We tried to reach you. You can call us any time on ${CALL_NO}.`,
     perk: () => 'Your walk-through is confirmed. We look forward to meeting you.',
-    blueprint: () => 'Your blueprint is ready to approve.',
-    payment: () => 'You can now pay on the ShaadiKart website.\n' + WA_SAFE,
-    booked: () => 'Your booking is confirmed. Your receipt and event preview are ready in My Event.',
+    blueprint: () => 'Your event blueprint is ready to review and approve.',
+    payment: () => 'You can now pay on the ShaadiKart website. Your payment is protected by ShaadiKart\'s secure gateway.',
+    booked: () => 'Congratulations! Your booking is confirmed. You will receive a detailed confirmation shortly.',
     confirm: n => `✔ ${n} has confirmed your date.`,
     unavailable: n => `${n} is not available on your date. Your host will suggest alternatives.`
   };
@@ -1685,7 +1722,8 @@
       const stg = JOURNEY.findIndex(x => x[0] === journeyStage(ev));
       if (stg >= 2 && waOnce(ev, 'preview', WA_MSG.preview())) { ch = true; waOnce(ev, 'host', WA_MSG.host(j.host)); }
       g.calls.forEach(c => { if (c.result === 'No answer' && waOnce(ev, 'miss:' + c.n, WA_MSG.miss())) ch = true; });
-      if (g.unlocked && waOnce(ev, 'payment', WA_MSG.payment())) ch = true;
+      if (g.held && waOnce(ev, 'blueprint', WA_MSG.blueprint())) ch = true;
+      if (j.blueprintApproved && waOnce(ev, 'payment', WA_MSG.payment())) ch = true;
       if (stg === 6 && waOnce(ev, 'booked', WA_MSG.booked())) ch = true;
     });
     if (ch) save();
@@ -1807,6 +1845,20 @@
       document.querySelectorAll('.perk-card[data-ev="' + ev.id + '"]').forEach(c => { c.outerHTML = perkCard(ev); });
     },
     'sme-elem'(el) { SME.dtip = SME.dtip === el.dataset.k ? null : el.dataset.k; smeRefresh(el); },
+    'approve-blueprint'(el) {
+      const ev = S.events.find(e => e.id === el.dataset.ev), j = ev && journeyOf(ev);
+      if (!ev || j.blueprintApproved || !gateOf(ev).held) return;
+      j.blueprintApproved = now();
+      waThreadPush(ev, 'blueprint-approved', 'Your event blueprint has been approved');
+      waOnce(ev, 'payment', WA_MSG.payment());
+      save(); go('#/my-event/' + ev.id); toast('Blueprint approved', 'check');
+    },
+    'bp-change'(el) {
+      const ev = S.events.find(e => e.id === el.dataset.ev); if (!ev) return;
+      waThreadPush(ev, 'bp-change', 'I would like to change something in my Blueprint.', 'me');
+      waThreadPush(ev, 'bp-change-r', `${journeyOf(ev).host.name.split(' ')[0]} will get back to you shortly to make the change.`);
+      save(); DOCK.open = true; DOCK.tab = 'wa'; dockRender();
+    },
     'dock-toggle'() { DOCK.open = !DOCK.open; dockRender(); },
     'dock-tab'(el) { DOCK.tab = el.dataset.tab; dockRender(); },
     'clock-speed'(el) { clockSet(+el.dataset.speed || 1); dockRender(); },
@@ -1891,8 +1943,8 @@
     },
     'cg-inbound'(el) { const g = gateOf(S.events.find(e => e.id === el.dataset.ev)); if (!g.inbound) g.inbound = { t: now() }; save(); render(); toast('Customer call logged', 'phone'); },
     'cg-unlock'(el) {
-      const g = gateOf(S.events.find(e => e.id === el.dataset.ev));
-      if (!g.held || !verified(g)) return; g.unlocked = { t: now(), by: S.staff ? S.staff.name : 'ShaadiKart executive' }; save(); render(); toast('Payment unlocked for the customer', 'check');
+      const ev = S.events.find(e => e.id === el.dataset.ev), g = gateOf(ev);
+      if (!g.held || !verified(g) || !journeyOf(ev).blueprintApproved) return; g.unlocked = { t: now(), by: S.staff ? S.staff.name : 'ShaadiKart executive' }; save(); render(); toast('Payment unlocked for the customer', 'check');
     },
     'cg-wa-preview'(el) { waModal(S.events.find(e => e.id === el.dataset.ev)); },
     'cg-wa-send'(el) { const g = gateOf(S.events.find(e => e.id === el.dataset.ev)); g.waSent = now(); save(); render(); toast('WhatsApp catalog sent to the customer (demo)', 'message'); },
@@ -2135,7 +2187,7 @@
     },
     pay(f) {
       const ev = S.events.find(e => e.id === f.dataset.ev);
-      if (gateOn(ev) && !gateOf(ev).unlocked) { toast('Payment opens after your meeting and verification call', 'alert'); return; }
+      if (gateOn(ev) && !gateOf(ev).unlocked) { toast('Payment opens after your meeting, verification call and Blueprint approval', 'alert'); return; }
       const full = f.amt.value === 'full', method = f.method.value;
       simulatePayment(() => {
         const svcs = liveSvcs(ev).filter(s => svcStatus(s) === 'confirmed');
