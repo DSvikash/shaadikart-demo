@@ -1092,7 +1092,7 @@
   }
 
   /* ---------- See My Event: Act 1 (The Space), Act 2 (Dressed for you) ---------- */
-  const SME = { act: 1, tip: null, sweep: 0, dtip: null };
+  const SME = { act: 1, tip: null, sweep: 0, dtip: null, time: 0 };
   const SME_LABEL = '<span class="sme-imp">Artist\u2019s impression, not a photograph of the booked setup</span>';
   const SME_ELEM = {
     'mandap': ['Mandap', 'The sacred centrepiece for the pheras, framed to the stage position.', 50, 42],
@@ -1136,8 +1136,76 @@
       <div class="sme-tip" id="sme-dtip" aria-live="polite">${tip ? `<b>${tip[0]} by ${esc(dp.name)}</b><span>${tip[1]}</span>` : `<span>Drag the line to dress the space, then tap a dot for details.</span>`}</div>
       <div class="sme-pal">${pal.map(c => `<i style="background:${c}" title="${c}"></i>`).join('')}<span>${esc(dp.name)} palette</span></div></div>`;
   }
-  function actThree() {
-    return `<div class="sme-empty">${ic('heart')}<p>Your celebration. Coming in Task 4.</p></div>`;
+  /* Act 3: bird's-eye floor plan. Coordinates are in a 100 x 75 viewBox (4:3); tableZone is in photo percent. */
+  function birdEyeLayout(guests, venue) {
+    const a = D.VENUE_ANCHORS[venue.id], tz = a.tableZone, cap = venue.cap || [0, 0];
+    const n = Math.max(1, Math.ceil(guests / 10));
+    const zx = tz.x, zy = tz.y * 0.75, zw = tz.w, zh = tz.h * 0.75;
+    const cols = Math.max(1, Math.ceil(Math.sqrt(n * zw / zh))), rows = Math.ceil(n / cols);
+    const cw = zw / cols, ch = zh / rows, r = Math.min(cw, ch) * 0.3;
+    const tables = [];
+    for (let i = 0; i < n; i++) {
+      const c = i % cols, rw = Math.floor(i / cols);
+      tables.push({ cx: zx + cw * (c + 0.5), cy: zy + ch * (rw + 0.5), r, seats: Math.min(10, guests - i * 10) });
+    }
+    const overcrowded = !!cap[1] && guests > cap[1];
+    return { tables, overcrowded, stage: { x: a.stageX, y: a.stageY * 0.75 }, zone: { x: zx, y: zy, w: zw, h: zh },
+      note: overcrowded ? `${esc(venue.name)} comfortably seats up to ${cap[1]} guests. For ${guests}, your host will suggest a layout, a second hall or a staggered seating plan.` : '' };
+  }
+  const smePhase = t => t <= 33 ? 0 : t <= 66 ? 1 : 2;
+  const SME_PHASE = ['Guests arriving', 'Ceremony', 'Dinner and celebration'];
+  const hexMix = (a, b, f) => { const g = h => [1, 3, 5].map(i => parseInt(h.substr(i, 2), 16)); const x = g(a), y = g(b); return '#' + x.map((v, i) => Math.round(v + (y[i] - v) * f).toString(16).padStart(2, '0')).join(''); };
+  const skyAt = t => {
+    const K = [['#8ec9f5', '#e3f3fc'], ['#f08a5d', '#fbd0a8'], ['#0f1b4d', '#34478a']];
+    const seg = t < 50 ? 0 : 1, f = seg ? (t - 50) / 50 : t / 50;
+    return [hexMix(K[seg][0], K[seg + 1][0], f), hexMix(K[seg][1], K[seg + 1][1], f)];
+  };
+  const smeSeated = (ev, t) => { const ph = smePhase(t); return ph === 0 ? Math.round(ev.guests * t / 33) : ph === 2 ? ev.guests : 0; };
+  function silhouetteStrip(t) {
+    const [top, bot] = skyAt(t), ph = smePhase(t);
+    const stars = ph === 2 ? Array.from({ length: 18 }, (_, i) => `<i class="star" style="left:${(i * 37 + 11) % 97}%;top:${(i * 23 + 7) % 55}%;animation-delay:${(i % 6) * 0.4}s"></i>`).join('') : '';
+    const fig = Array.from({ length: 14 }, (_, i) => `<svg class="sil" viewBox="0 0 20 44" style="left:${3 + i * 7}%;animation-delay:${(i % 5) * 0.35}s;height:${ph === 1 ? 62 : 54 + (i % 3) * 5}%"><circle cx="10" cy="7" r="5"/><path d="M3 44V24a7 7 0 0 1 7-7a7 7 0 0 1 7 7v20z"/></svg>`).join('');
+    return `<div class="silhouette-strip" id="sme-strip" style="background:linear-gradient(${top},${bot})" role="img" aria-label="Eye-level view of guests, ${SME_PHASE[ph]}">${stars}${fig}</div>`;
+  }
+  function floorVis(ev, v, t) {
+    const L = birdEyeLayout(ev.guests, v), ph = smePhase(t);
+    let left = smeSeated(ev, t);
+    const tbl = L.tables.map(tb => {
+      const fill = Math.min(tb.seats, left); left -= fill;
+      const dots = Array.from({ length: tb.seats }, (_, k) => { const an = k / tb.seats * Math.PI * 2 - Math.PI / 2, d = tb.r + Math.max(0.55, tb.r * 0.28);
+        return `<circle class="fp-guest${k < fill ? ' on' : ''}" cx="${(tb.cx + Math.cos(an) * d).toFixed(2)}" cy="${(tb.cy + Math.sin(an) * d).toFixed(2)}" r="${Math.max(0.45, tb.r * 0.22).toFixed(2)}" style="animation-delay:${((k * 7 + Math.round(tb.cx)) % 10) * 0.2}s"/>`; }).join('');
+      return `<g class="fp-table${L.overcrowded ? ' crowded' : ''}"><circle cx="${tb.cx.toFixed(2)}" cy="${tb.cy.toFixed(2)}" r="${tb.r.toFixed(2)}"/>${dots}</g>`;
+    }).join('');
+    let crowd = '';
+    if (ph === 1) { const n = Math.min(ev.guests, 80), cols = 16; crowd = Array.from({ length: n }, (_, i) => `<circle class="fp-guest on" cx="${(L.stage.x - 24 + (i % cols) * 3.2).toFixed(1)}" cy="${(L.stage.y + 9 + Math.floor(i / cols) * 3).toFixed(1)}" r="0.9" style="animation-delay:${(i % 8) * 0.25}s"/>`).join(''); }
+    const ctr = [8, 92].map(x => `<rect class="fp-food${ph === 2 ? ' on' : ''}" x="${x - 5}" y="${(L.zone.y + L.zone.h / 2 - 3).toFixed(1)}" width="10" height="6" rx="1.2"/>`).join('');
+    return `<svg class="fp-svg" viewBox="0 0 100 75" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Bird's-eye floor plan, ${L.tables.length} tables"><rect class="fp-floor" x="1" y="1" width="98" height="73" rx="3" style="fill:${skyAt(t)[1]}"/>
+      <rect class="fp-zone" x="${L.zone.x}" y="${L.zone.y}" width="${L.zone.w}" height="${L.zone.h}" rx="2"/>
+      <rect class="fp-stage${ph === 1 ? ' on' : ''}" x="${L.stage.x - 14}" y="${L.stage.y - 7}" width="28" height="12" rx="2"/><text class="fp-lbl" x="${L.stage.x}" y="${L.stage.y - 0.5}" text-anchor="middle">Stage</text>
+      ${ctr}${tbl}${crowd}</svg>`;
+  }
+  function counterText(ev, t) {
+    const n = Math.ceil(ev.guests / 10), ph = smePhase(t);
+    return `<b>${ev.guests} guests</b> · ${n} table${n === 1 ? '' : 's'} of 10${ph === 1 ? ' · everyone at the stage' : ` · ${smeSeated(ev, t)} seated`}`;
+  }
+  function actThree(ev) {
+    const v = smeVenue(ev);
+    if (!v) return `<div class="sme-empty">${ic('info')}<p>Add a venue to your event to see your celebration.</p></div>`;
+    const t = SME.time, L = birdEyeLayout(ev.guests, v);
+    return `<div class="sme-act3"><div class="floor-plan" id="sme-fp">${SME_LABEL}<div id="sme-fpvis">${floorVis(ev, v, t)}</div></div>
+      <div class="fp-counter" id="sme-fpc" aria-live="polite">${counterText(ev, t)}</div>
+      ${L.overcrowded ? `<p class="note crowd-note">${ic('info')}<span>${L.note}</span></p>` : ''}
+      <div class="time-slider"><label for="sme-time"><b id="sme-phase">${SME_PHASE[smePhase(t)]}</b></label>
+        <input type="range" id="sme-time" min="0" max="100" value="${t}" data-input="sme-time" aria-label="Time of the celebration">
+        <div class="sme-sweep-cap"><span>Arrival</span><span>Ceremony</span><span>Dinner</span></div></div>
+      ${silhouetteStrip(t)}
+      ${perkCard(ev)}</div>`;
+  }
+  function perkCard(ev) {
+    const done = !!journeyOf(ev).visitRequested;
+    return `<div class="perk-card${done ? ' done' : ''}" data-ev="${ev.id}"><span class="perk-ic">${ic('gift')}</span>
+      <div><b>A gift from ShaadiKart</b><p>Your hall hosts a private walk-through and tasting this Saturday, hosted by ShaadiKart. Reserve a seat, no obligation.</p></div>
+      ${done ? `<span class="perk-done">Reserved ${ic('check')}</span>` : `<button type="button" class="btn btn-gold" data-act="reserve-perk">Reserve a seat</button>`}</div>`;
   }
   function seeMyEvent(ev) {
     const tabs = [[1, 'The Space'], [2, 'Dressed for you'], [3, 'Your celebration']];
@@ -1171,6 +1239,7 @@
       card('requests-sent', 'Requests sent', `<p class="gate-p">Requests sent to ${n} partner${n === 1 ? '' : 's'}. Each partner checks its own calendar.</p>${list}`),
       card('partners-confirm', 'Partners confirm', `<p class="gate-p">${ok} of ${n} confirmed.</p>`),
       card('see-my-event', 'See My Event', seeMyEvent(ev)),
+      journeyStage(ev) === 'see-my-event' || journeyOf(ev).visitRequested ? perkCard(ev) : '',
       card('conversation', 'Conversation', soon('Your meeting and WhatsApp thread with ShaadiKart.', 4)),
       card('blueprint', 'Blueprint', soon('Your approved event blueprint.', 5)),
       card('payment', 'Payment', `<p class="gate-p">Pay your advance once the steps above are complete.</p><a class="btn btn-gold" href="#/checkout/${ev.id}">${ic('receipt')}Go to payment</a>`),
@@ -1729,6 +1798,14 @@
   const ACT = {
     'sme-tab'(el) { SME.act = +el.dataset.n; smeRefresh(el); },
     'sme-spot'(el) { SME.tip = SME.tip === el.dataset.k ? null : el.dataset.k; smeRefresh(el); },
+    'reserve-perk'(el) {
+      const box = el.closest('.perk-card'), ev = S.events.find(e => e.id === box.dataset.ev);
+      if (!ev) return;
+      journeyOf(ev).visitRequested = now();
+      waOnce(ev, 'visit', 'Walk-through confirmed \u2714 Your private walk-through and tasting this Saturday is reserved. Your host will share the time and gate details here.');
+      save();
+      document.querySelectorAll('.perk-card[data-ev="' + ev.id + '"]').forEach(c => { c.outerHTML = perkCard(ev); });
+    },
     'sme-elem'(el) { SME.dtip = SME.dtip === el.dataset.k ? null : el.dataset.k; smeRefresh(el); },
     'dock-toggle'() { DOCK.open = !DOCK.open; dockRender(); },
     'dock-tab'(el) { DOCK.tab = el.dataset.tab; dockRender(); },
@@ -2149,6 +2226,17 @@
     ACT[el.dataset.act](el, e);
   });
   document.addEventListener('input', e => {
+    const tm = e.target.closest('[data-input="sme-time"]');
+    if (tm) {
+      const st = tm.closest('.sme-stage'), ev = S.events.find(x => x.id === st.dataset.ev), v = ev && smeVenue(ev);
+      if (!v) return;
+      const t = SME.time = +tm.value;
+      st.querySelector('#sme-fpvis').innerHTML = floorVis(ev, v, t);
+      st.querySelector('#sme-fpc').innerHTML = counterText(ev, t);
+      st.querySelector('#sme-phase').textContent = SME_PHASE[smePhase(t)];
+      st.querySelector('#sme-strip').outerHTML = silhouetteStrip(t);
+      return;
+    }
     const el = e.target.closest('[data-input="sme-sweep"]');
     if (!el) return;
     const w = SME.sweep = +el.value, st = el.closest('.sme-act2');
