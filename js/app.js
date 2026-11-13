@@ -33,6 +33,7 @@
     sparkles: '<path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>',
     calendarCheck: '<rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/><path d="m9 16 2 2 4-4"/>',
     calendar: '<rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/>',
+    eye: '<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
     gift: '<rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5C9.5 3 11 5 12 8c1-3 2.5-5 4.5-5a2.5 2.5 0 0 1 0 5"/>',
     car: '<path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/>',
     armchair: '<path d="M19 9V6a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v3"/><path d="M3 16a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5a2 2 0 0 0-4 0v1.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V11a2 2 0 0 0-4 0z"/><path d="M5 18v2"/><path d="M19 18v2"/>',
@@ -263,7 +264,8 @@
     ['requests-sent', 'Requests sent'], ['partners-confirm', 'Partners confirm'], ['see-my-event', 'See My Event'],
     ['conversation', 'Conversation'], ['blueprint', 'Blueprint'], ['payment', 'Payment'], ['booked', 'Booked']
   ];
-  const journeyOf = ev => ev.journey || (ev.journey = { host: { name: 'Priya Kapoor', role: 'Customer Success', years: 4, languages: 'Hindi, English' }, visitRequested: null, blueprintApproved: null, waThread: [] });
+  const signal = (ev, type) => { if (!ev) return; const j = journeyOf(ev); if (!j.signals) j.signals = []; if (!j.signals.some(x => x.type === type)) { j.signals.push({ type, t: now() }); save(); } };
+  const journeyOf = ev => ev.journey || (ev.journey = { host: { name: 'Priya Kapoor', role: 'Customer Success', years: 4, languages: 'Hindi, English' }, visitRequested: null, blueprintApproved: null, waThread: [], signals: [] });
   // The stage is derived from event state each time, never stored.
   function journeyStage(ev) {
     const j = journeyOf(ev), svcs = liveSvcs(ev), st = svcs.map(svcStatus);
@@ -1276,6 +1278,7 @@
       ${sec('Menu', caters.length ? caters.map(s => `<div class="bp-row"><span><b>${esc(partner(s.partnerId).name)}</b><small>${esc(pkgOf(partner(s.partnerId), s.pkg).name)} · ${dietLabel(s.diet)}</small></span><b>${inr(s.rate)} × ${s.guests}</b></div>`).join('') : '<p class="gate-p">No catering in this event yet.</p>')}
       ${sec('Budget', `<div class="bp-row"><span><b>Services</b><small>Before GST</small></span><b>${inr(pre)}</b></div><div class="bp-row"><span><b>GST</b></span><b>${inr(total - pre)}</b></div><div class="bp-row bp-total"><span><b>Total</b><small>Incl. GST</small></span><b>${inr(total)}</b></div>`)}
       ${sec('Timeline', ms.map(([l, d]) => `<div class="bp-row"><span><b>${l}</b></span><span>${d}</span></div>`).join(''))}
+      ${g.notes && g.notes.trim() ? sec('Host notes', `<p class="bp-q">${esc(g.notes).replace(/\n/g, '<br>')}</p>`) : ''}
       ${sec('Special requests', qs.length ? qs.map(q => `<p class="bp-q">${esc(q)}</p>`).join('') : '<p class="gate-p">None added. Tell your host anything you would like changed.</p>')}</div>`;
   }
   window.blueprintHtml = blueprintHtml;
@@ -1598,6 +1601,19 @@
       </div>
       <div style="margin-top:18px">${open ? cgDetail(open) : queue}</div></div>`;
   }
+  const SIG_LBL = { 'viewed-sme': ['eye', 'Viewed See My Event'], 'asked-rooms': ['home', 'Asked about rooms'], 'tapped-perk': ['gift', 'Tapped the perk'], 'viewed-act3': ['heart', 'Explored Your celebration'] };
+  const CG_PROMPTS = [['What is most important to you about the venue?'], ['Is there a colour theme or style you are drawn to?'], ['Any dietary requirements we should know?'], ['Would you like to walk through the venue before deciding?', true]];
+  const CG_ASKED = {};
+  const ago = t => { const m = Math.max(0, Math.round((now() - t) / 60000)); return m < 1 ? 'just now' : m < 60 ? m + ' min ago' : m < 1440 ? Math.round(m / 60) + ' h ago' : Math.round(m / 1440) + ' d ago'; };
+  function cgWarm(ev) {
+    const j = journeyOf(ev), sg = j.signals || [], has = t => sg.some(x => x.type === t);
+    const move = has('tapped-perk') || j.visitRequested ? 'Offer the walk-through.' : has('viewed-act3') ? 'They are imagining their event. Ask what they would change.' : (gateOf(ev).held && !j.blueprintApproved) ? 'Blueprint is ready for the customer to approve.' : 'Ask about their vision for the day.';
+    const tags = sg.length ? sg.map(x => { const l = SIG_LBL[x.type] || ['info', x.type]; return `<span class="tag tag-amber">${ic(l[0])}${l[1]} <small>${ago(x.t)}</small></span>`; }).join('') : '<span class="muted">No customer activity yet.</span>';
+    const pr = CG_PROMPTS.filter(p => !p[1] || sg.length || j.visitRequested);
+    return `<div class="box cg-signals"><h3>${ic('eye')} Warm signals</h3><div class="cg-sig-tags">${tags}</div></div>
+      <div class="box cg-suggest"><h3>${ic('message')} Suggested next move</h3><p>${move}</p></div>
+      <details class="box cg-prompts" open><summary>Conversation prompts</summary>${pr.map(p => `<label><input type="checkbox" data-change="cg-prompt" data-k="${ev.id}|${esc(p[0])}" ${CG_ASKED[ev.id + '|' + p[0]] ? 'checked' : ''}> <span>${esc(p[0])}</span></label>`).join('')}</details>`;
+  }
   function cgDetail(ev) {
     const g = gateOf(ev), st = gateStage(ev), m = g.meeting, svcs = liveSvcs(ev), pend = svcs.some(s => svcStatus(s) === 'awaiting');
     const total = svcs.filter(s => ['confirmed', 'booked', 'paid'].includes(svcStatus(s))).reduce((a, s) => a + svcTotal(s), 0);
@@ -1612,7 +1628,8 @@
         <dl class="kv"><dt>Mobile</dt><dd>${ev.customer ? '+91 ' + esc(ev.customer.phone) : 'Not on file'}</dd><dt>Event</dt><dd>${esc(ev.type)} · ${fmtDate(ev.date)} · ${ev.guests} guests · ${esc(ev.locality)}</dd><dt>Booking ID</dt><dd>${ev.id}</dd><dt>Cart value</dt><dd>${inr(total)} incl. GST</dd></dl></div>
       <div class="box"><h2>Cart and partner replies</h2>${svcs.map(s => { const v = partner(s.partnerId), ss = svcStatus(s); return `<div class="status-row"><div class="ph" ${bg(v.photos[0], 200)}></div><div><h4>${esc(v.name)}</h4><div class="sub">${esc(catOf(v.cat).short)} · ${pkgOf(v, s.pkg).name}${svcMeta(s)} · ${inr(svcTotal(s))}</div>${s.query && ss !== 'awaiting' ? `<div class="qa"><small>Customer asked: ${esc(s.query)}</small></div><div class="qa reply">${ic('message')}<span>${esc(s.reply)}</span></div>` : ''}</div><div>${statusTag(ss)}</div></div>`; }).join('')}
         ${qs.length ? '' : `<p class="note" style="margin-top:8px">${ic('info')}<span>The customer did not add special questions.</span></p>`}</div>
-      <div class="box"><h2>Notes from calls</h2><label class="field"><span class="sr-only">Notes</span><textarea data-change="cg-notes" data-ev="${ev.id}" rows="4" placeholder="Requirements, budget, family preferences, anything the partners should know…">${esc(g.notes)}</textarea></label></div>
+      ${cgWarm(ev)}
+      <div class="box"><h2>Notes from calls</h2><label class="field"><span class="sr-only">Notes</span><textarea data-change="cg-notes" data-ev="${ev.id}" rows="4" placeholder="Requirements, budget, family preferences, anything the partners should know…">${esc(g.notes)}</textarea></label><button type="button" class="btn btn-ghost btn-sm" style="margin-top:8px" data-act="cg-draft-blueprint" data-ev="${ev.id}">${ic('receipt')}Draft Blueprint</button></div>
     </div><aside class="sticky">
       <div class="box cg-steps"><h3>${ic('headset')} Verification steps</h3>
         ${pend ? `<div class="avail warn">${ic('clock')}<span>Waiting for partners to confirm.</span></div>` : ''}
@@ -1834,17 +1851,28 @@
   }
 
   const ACT = {
-    'sme-tab'(el) { SME.act = +el.dataset.n; smeRefresh(el); },
-    'sme-spot'(el) { SME.tip = SME.tip === el.dataset.k ? null : el.dataset.k; smeRefresh(el); },
+    'sme-tab'(el) {
+      SME.act = +el.dataset.n;
+      const sev = S.events.find(e => e.id === (el.closest('.sme-stage') || {dataset: {}}).dataset.ev);
+      signal(sev, 'viewed-sme'); if (SME.act === 3) signal(sev, 'viewed-act3');
+      smeRefresh(el);
+    },
+    'sme-spot'(el) {
+      SME.tip = SME.tip === el.dataset.k ? null : el.dataset.k;
+      if (/^room/.test(el.dataset.k)) signal(S.events.find(e => e.id === (el.closest('.sme-stage') || {dataset: {}}).dataset.ev), 'asked-rooms');
+      smeRefresh(el);
+    },
     'reserve-perk'(el) {
       const box = el.closest('.perk-card'), ev = S.events.find(e => e.id === box.dataset.ev);
       if (!ev) return;
       journeyOf(ev).visitRequested = now();
+      signal(ev, 'tapped-perk');
       waOnce(ev, 'visit', 'Walk-through confirmed \u2714 Your private walk-through and tasting this Saturday is reserved. Your host will share the time and gate details here.');
       save();
       document.querySelectorAll('.perk-card[data-ev="' + ev.id + '"]').forEach(c => { c.outerHTML = perkCard(ev); });
     },
     'sme-elem'(el) { SME.dtip = SME.dtip === el.dataset.k ? null : el.dataset.k; smeRefresh(el); },
+    'cg-draft-blueprint'(el) { go('#/blueprint/' + el.dataset.ev); },
     'approve-blueprint'(el) {
       const ev = S.events.find(e => e.id === el.dataset.ev), j = ev && journeyOf(ev);
       if (!ev || j.blueprintApproved || !gateOf(ev).held) return;
@@ -2252,6 +2280,7 @@
       if (!PL.bm) syncPlanBudget();
       if (custom) n.focus();
     },
+    'cg-prompt'(el) { CG_ASKED[el.dataset.k] = el.checked; },
     'cg-notes'(el) { gateOf(S.events.find(e => e.id === el.dataset.ev)).notes = el.value; save(); },
     'pl-loc'(el) { PL.locality = el.value; if (!PL.bm) syncPlanBudget(); },
     'pl-guests'(el) { PL.gc = true; PL.guests = Math.max(1, +el.value || PL.guests); if (!PL.bm) syncPlanBudget(); },

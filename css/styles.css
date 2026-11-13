@@ -1325,3 +1325,13 @@ textarea[data-change="cg-notes"] { width: 100%; font: inherit; padding: 12px; bo
 .bp-q { margin: 0 0 6px; padding: 8px 10px; background: var(--gold-50); border-radius: 10px; }
 .bp-approve { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
 @media (max-width: 600px) { .bp-approve .btn { width: 100%; min-height: 44px; justify-content: center; } .host-card { padding: 12px; } }
+
+.cg-signals h3, .cg-suggest h3 { margin: 0 0 8px; }
+.cg-sig-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.cg-sig-tags .tag { display: inline-flex; gap: 5px; align-items: center; }
+.cg-sig-tags .tag small { opacity: .75; }
+.cg-suggest { border: 1.5px solid var(--amber); background: var(--amber-50); }
+.cg-suggest p { margin: 0; font-weight: 600; color: #7a4d06; }
+.cg-prompts summary { cursor: pointer; font-weight: 700; color: var(--plum-900); }
+.cg-prompts label { display: flex; gap: 8px; align-items: flex-start; padding: 8px 0 0; font-size: 14px; }
+.cg-prompts input { margin-top: 3px; }
