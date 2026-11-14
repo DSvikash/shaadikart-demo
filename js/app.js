@@ -680,6 +680,7 @@
           </div></div>
       </nav>
       <div class="hicons">
+        <button type="button" class="btn btn-ghost btn-sm demo-pill-btn" data-act="dock-toggle" style="border-radius:999px;border:1px solid var(--gold);color:var(--gold);padding:4px 10px;font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:4px">${ic('message')}Demo Mode</button>
         <button class="hic" data-act="search-modal" aria-label="Search">${ic('search')}</button>
         <a class="hic" href="#/wishlist" aria-label="Wishlist, ${wish} items">${ic('heart')}${wish ? `<span class="badge-count">${wish}</span>` : ''}</a>
         <a class="hic" href="#/cart" aria-label="Cart, ${cartCount()} items">${ic('cart')}${cartCount() ? `<span class="badge-count">${cartCount()}</span>` : ''}</a>
@@ -1298,18 +1299,23 @@
     const ev = S.events.find(e => e.id === id);
     if (!ev) return notFound();
     const svcs = liveSvcs(ev);
+    const unavail = svcs.filter(s => svcStatus(s) === 'unavailable');
     const st = svcs.map(svcStatus);
     const pending = st.includes('awaiting');
     const payable = svcs.filter(s => svcStatus(s) === 'confirmed');
     const needQ = payable.some(x => !x.qConfirmed);
     const gated = gateOn(ev) && !gateOf(ev).unlocked;
     const totalDue = payable.reduce((a, s) => a + svcTotal(s), 0);
+    const totalPaid = payable.reduce((a, s) => a + (s.paid || 0), 0);
+    const balanceRemaining = Math.max(0, totalDue - totalPaid);
+    const isBalancePayment = totalPaid > 0 && balanceRemaining > 0;
     const advBase = payable.reduce((a, x) => a + Math.round(svcTotal(x) * ADV), 0), fp = ev.feePaid ? { fee: 0, gst: 0, total: 0 } : feeParts(totalDue);
     return `<div class="wrap">
       <div class="page-h"><h1>${ic('receipt')} Checkout summary</h1><p>${esc(ev.name)} · ${fmtDate(ev.date)} · ${ev.guests} guests · ${esc(ev.locality)} · Booking ID ${ev.id}</p></div>
       <div class="two-col${gated && !pending && payable.length && !needQ ? ' gated' : ''}">
         <div>
           <div class="box"><h2>Partner confirmations</h2>
+            ${unavail.length ? `<div class="avail warn" style="margin-bottom:12px">${ic('alert')}<span><b>${esc(unavail.map(s => partner(s.partnerId).name).join(', '))}</b> ${unavail.length > 1 ? 'are' : 'is'} fully booked on your date. The rest of your booking continues as planned.</span></div>` : ''}
             <p class="note" style="margin:-4px 0 10px">${ic('info')}<span>Each partner checks its own calendar. An unavailable partner does not cancel the rest of your cart.</span></p>
             ${svcs.map(s => { const v = partner(s.partnerId), ss = svcStatus(s); return `<div class="status-row">
               <div class="ph" ${bg(v.photos[0], 200)}></div>
@@ -1329,16 +1335,21 @@
             ${!pending && payable.length && !needQ && !gated ? `
               ${payable.map(s => `<div class="sum-row"><span>${esc(partner(s.partnerId).name)}</span><span>${inr(svcTotal(s))}</span></div>`).join('')}
               <div class="sum-row" style="border-top:1px solid var(--line);margin-top:6px;padding-top:10px"><span>Cart total value</span><span>${inr(totalDue)}</span></div>
+              ${totalPaid > 0 ? `<div class="sum-row" style="color:var(--green)"><span>Previously paid</span><span>- ${inr(totalPaid)}</span></div>` : ''}
               ${fp.total ? `<div class="sum-row"><span>ShaadiKart platform fee (0.5%)</span><span>${inr(fp.fee)}</span></div><div class="sum-row"><span>GST on platform fee (18%)</span><span>${inr(fp.gst)}</span></div>` : ''}
-              <div class="sum-row total"><span>Total</span><span>${inr(totalDue + fp.total)}</span></div>
+              <div class="sum-row total"><span>${isBalancePayment ? 'Balance Due' : 'Total'}</span><span>${inr(isBalancePayment ? balanceRemaining : totalDue + fp.total)}</span></div>
               <div class="pay-opts" style="margin-top:10px">
-                <label class="pay-opt pay-amt"><input type="radio" name="amt" value="adv" checked data-change="pay-amt" data-amount="${advBase + fp.total}"><span class="pm-t"><b>Pay 25% advance</b><small>${inr(advBase)}${fp.total ? ` + platform fee &amp; GST ${inr(fp.total)}` : ''}</small></span><span class="r">${inr(advBase + fp.total)}</span></label>
-                <label class="pay-opt pay-amt"><input type="radio" name="amt" value="full" data-change="pay-amt" data-amount="${totalDue + fp.total}"><span class="pm-t"><b>Pay in full</b><small>${inr(totalDue)}${fp.total ? ` + platform fee &amp; GST ${inr(fp.total)}` : ''}</small></span><span class="r">${inr(totalDue + fp.total)}</span></label>
+                ${isBalancePayment ? `
+                  <label class="pay-opt pay-amt"><input type="radio" name="amt" value="balance" checked data-change="pay-amt" data-amount="${balanceRemaining}"><span class="pm-t"><b>Pay remaining balance</b><small>Completes full booking for confirmed partners</small></span><span class="r">${inr(balanceRemaining)}</span></label>
+                ` : `
+                  <label class="pay-opt pay-amt"><input type="radio" name="amt" value="adv" checked data-change="pay-amt" data-amount="${advBase + fp.total}"><span class="pm-t"><b>Pay 25% advance</b><small>${inr(advBase)}${fp.total ? ` + platform fee &amp; GST ${inr(fp.total)}` : ''}</small></span><span class="r">${inr(advBase + fp.total)}</span></label>
+                  <label class="pay-opt pay-amt"><input type="radio" name="amt" value="full" data-change="pay-amt" data-amount="${totalDue + fp.total}"><span class="pm-t"><b>Pay in full</b><small>${inr(totalDue)}${fp.total ? ` + platform fee &amp; GST ${inr(fp.total)}` : ''}</small></span><span class="r">${inr(totalDue + fp.total)}</span></label>
+                `}
               </div>
-              <p class="note" style="margin-top:6px">${ic('info')}<span>ShaadiKart platform fee: 0.5% of the total cart value + 18% GST, charged once with this payment. Non-refundable.</span></p>
+              <p class="note" style="margin-top:6px">${ic('info')}<span>${isBalancePayment ? 'No extra platform fee on balance payments.' : 'ShaadiKart platform fee: 0.5% of the total cart value + 18% GST, charged once with this payment. Non-refundable.'}</span></p>
               <div class="care-line" style="margin-top:12px">${ic('medical')}<span><b>ShaadiKart Care included</b>: free priority medical help on your ${S.cart.event.type === 'Wedding' ? 'wedding' : 'event'} day.</span></div>
               <h3 style="margin-top:16px">Method</h3>
-              <div id="pay-methods">${payMethods(advBase + fp.total)}</div>
+              <div id="pay-methods">${payMethods(isBalancePayment ? balanceRemaining : advBase + fp.total)}</div>
               <button class="btn btn-gold btn-block" style="margin-top:14px" type="submit">Proceed to Pay ${ic('arrowRight')}</button>
               <p class="note" style="margin-top:10px">${ic('info')}<span>Demo only. No card or UPI details are collected and no money moves.</span></p>` : ''}
           </form>
@@ -1962,18 +1973,18 @@
       box.querySelectorAll('.ps-tabs button').forEach(b => b.classList.toggle('on', b === el));
       box.querySelectorAll('.ps-panel').forEach(p => { p.hidden = p.dataset.p !== i; });
     },
-    'cg-held'(el) { const g = gateOf(S.events.find(e => e.id === el.dataset.ev)); g.held = now(); save(); render(); toast('Meeting marked completed', 'check'); },
-    'cg-dial'(el) { const g = gateOf(S.events.find(e => e.id === el.dataset.ev)); if (g.calls.length) return; g.calls.push({ n: 1, t: now(), result: null }); save(); render(); },
+    'cg-held'(el) { const g = gateOf(S.events.find(e => e.id === el.dataset.ev)); g.held = now(); save(); render(); dockRender(); toast('Meeting marked completed', 'check'); },
+    'cg-dial'(el) { const g = gateOf(S.events.find(e => e.id === el.dataset.ev)); if (g.calls.length) return; g.calls.push({ n: 1, t: now(), result: null }); save(); render(); dockRender(); },
     'cg-result'(el) {
       const g = gateOf(S.events.find(e => e.id === el.dataset.ev)), c = g.calls.find(x => !x.result); if (!c) return;
       c.result = el.dataset.res;
       if (c.result === 'No answer' && g.calls.length < 2) g.calls.push({ n: 2, t: now(), result: null }); // second attempt, back to back
-      save(); render();
+      save(); render(); dockRender();
     },
-    'cg-inbound'(el) { const g = gateOf(S.events.find(e => e.id === el.dataset.ev)); if (!g.inbound) g.inbound = { t: now() }; save(); render(); toast('Customer call logged', 'phone'); },
+    'cg-inbound'(el) { const g = gateOf(S.events.find(e => e.id === el.dataset.ev)); if (!g.inbound) g.inbound = { t: now() }; save(); render(); dockRender(); toast('Customer call logged', 'phone'); },
     'cg-unlock'(el) {
       const ev = S.events.find(e => e.id === el.dataset.ev), g = gateOf(ev);
-      if (!g.held || !verified(g) || !journeyOf(ev).blueprintApproved) return; g.unlocked = { t: now(), by: S.staff ? S.staff.name : 'ShaadiKart executive' }; save(); render(); toast('Payment unlocked for the customer', 'check');
+      if (!g.held || !verified(g) || !journeyOf(ev).blueprintApproved) return; g.unlocked = { t: now(), by: S.staff ? S.staff.name : 'ShaadiKart executive' }; save(); render(); dockRender(); toast('Payment unlocked for the customer', 'check');
     },
     'cg-wa-preview'(el) { waModal(S.events.find(e => e.id === el.dataset.ev)); },
     'cg-wa-send'(el) { const g = gateOf(S.events.find(e => e.id === el.dataset.ev)); g.waSent = now(); save(); render(); toast('WhatsApp catalog sent to the customer (demo)', 'message'); },
@@ -2217,11 +2228,14 @@
     pay(f) {
       const ev = S.events.find(e => e.id === f.dataset.ev);
       if (gateOn(ev) && !gateOf(ev).unlocked) { toast('Payment opens after your meeting, verification call and Blueprint approval', 'alert'); return; }
-      const full = f.amt.value === 'full', method = f.method.value;
+      const isBalance = f.amt.value === 'balance', full = f.amt.value === 'full', method = f.method.value;
       simulatePayment(() => {
-        const svcs = liveSvcs(ev).filter(s => svcStatus(s) === 'confirmed');
-        const pay = { id: 'PAY-' + Math.floor(10000 + Math.random() * 89999), t: Date.now(), method, kind: full ? 'Full payment' : 'Advance (25%)', items: [] };
-        svcs.forEach(s => { const a = full ? svcTotal(s) : Math.round(svcTotal(s) * ADV); s.paid += a; pay.items.push({ svcId: s.id, amount: a }); });
+        const svcs = liveSvcs(ev).filter(s => ['confirmed', 'booked'].includes(svcStatus(s)));
+        const pay = { id: 'PAY-' + Math.floor(10000 + Math.random() * 89999), t: Date.now(), method, kind: isBalance ? 'Balance payment' : full ? 'Full payment' : 'Advance (25%)', items: [] };
+        svcs.forEach(s => {
+          const a = isBalance ? (svcTotal(s) - s.paid) : full ? (svcTotal(s) - s.paid) : Math.round(svcTotal(s) * ADV);
+          s.paid += a; pay.items.push({ svcId: s.id, amount: a });
+        });
         if (!ev.feePaid) { pay.fee = feeParts(svcs.reduce((a, x) => a + svcTotal(x), 0)).total; ev.feePaid = true; }
         pay.amount = pay.items.reduce((a, b) => a + b.amount, 0) + (pay.fee || 0);
         if (pay.method === 'UPI' && pay.amount > UPI_LIMIT) pay.method = 'UPI × ' + Math.ceil(pay.amount / UPI_LIMIT);
@@ -2283,7 +2297,7 @@
     },
     'cg-prompt'(el) { CG_ASKED[el.dataset.k] = el.checked; },
     'cg-notes'(el) { gateOf(S.events.find(e => e.id === el.dataset.ev)).notes = el.value; save(); },
-    'pl-loc'(el) { PL.locality = el.value; if (!PL.bm) syncPlanBudget(); },
+    'pl-loc'(el) { PL.locality = el.value; PL.bm = false; syncPlanBudget(); },
     'pl-guests'(el) { PL.gc = true; PL.guests = Math.max(1, +el.value || PL.guests); if (!PL.bm) syncPlanBudget(); },
     'pl-budget'(el) { PL.bm = true; PL.budget = Math.max(0, +el.value || 0); },
     'pl-query'(el) { PL.query = el.value; },

@@ -701,6 +701,12 @@ button.chip:hover { border-color: var(--lav-300); }
   .plan-rv .rv-ph { display: none; }
   .plan-rv .rv-svc { display: block; }
   .pm-demo { display: none; }
+  .sum-row { font-size: 13.5px; }
+  .pay-opts.pay-methods { display: flex; flex-direction: column; gap: 8px; }
+  .pay-methods .pm { padding: 8px 10px; }
+  .pm-logo { width: 44px; height: 28px; }
+  .pm-logo svg { width: 44px; height: 28px; }
+  .status-row { flex-wrap: wrap; gap: 8px; }
 }
 
 /* ---------- Phase 1.2: saffron theme, planner tabs, partner popup, hero steps, About Us ---------- */
