@@ -1340,3 +1340,52 @@ textarea[data-change="cg-notes"] { width: 100%; font: inherit; padding: 12px; bo
 .cg-prompts summary { cursor: pointer; font-weight: 700; color: var(--plum-900); }
 .cg-prompts label { display: flex; gap: 8px; align-items: flex-start; padding: 8px 0 0; font-size: 14px; }
 .cg-prompts input { margin-top: 3px; }
+
+/* ---------- Stage 3: Experience Your Wedding (Dual Mode & 3-Scene Showcase) ---------- */
+.sme-view-toggle { display: flex; gap: 8px; justify-content: center; margin: 12px 0 14px; flex-wrap: wrap; }
+.sme-toggle-pill { display: inline-flex; align-items: center; gap: 8px; padding: 8px 18px; border-radius: 999px; font-weight: 600; font-size: 13.5px; border: 1.5px solid var(--lav-300); background: #fff; color: var(--plum-900); transition: all .18s ease; cursor: pointer; }
+.sme-toggle-pill:hover { border-color: var(--primary); background: var(--lav-50); }
+.sme-toggle-pill.on { background: var(--plum-grad); color: #fff; border-color: transparent; box-shadow: 0 4px 14px rgba(59, 26, 146, .25); }
+.sme-disclaimer { display: flex; align-items: flex-start; gap: 10px; padding: 10px 14px; border-radius: 10px; background: var(--gold-50); border: 1px solid #f6dc9a; color: #7a4d06; font-size: 12.5px; line-height: 1.4; margin-bottom: 14px; }
+.sme-disclaimer svg { flex: none; width: 16px; height: 16px; margin-top: 2px; color: var(--gold-600); }
+
+.sme-photo-exp { display: flex; flex-direction: column; gap: 14px; }
+.sme-hero-photo { position: relative; width: 100%; aspect-ratio: 16 / 9; border-radius: 14px; background-size: cover; background-position: center; overflow: hidden; box-shadow: 0 6px 24px rgba(23, 11, 59, .12); }
+.sme-hero-overlay { position: absolute; inset: auto 0 0 0; padding: 36px 16px 14px; background: linear-gradient(180deg, transparent 0%, rgba(15, 7, 40, .85) 100%); color: #fff; }
+.sme-hero-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 6px; }
+.sme-hero-caption { margin: 0; font-size: 14px; color: #f4eefc; text-shadow: 0 1px 4px rgba(0,0,0,.6); font-weight: 500; }
+.sme-fs-btn { position: absolute; top: 12px; right: 12px; background: rgba(255,255,255,.9); backdrop-filter: blur(4px); border: 0; }
+.sme-fs-btn:hover { background: #fff; }
+
+.sme-sc-strip { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 2px; }
+.sme-sc-card { display: flex; flex-direction: column; gap: 6px; text-align: left; padding: 8px; border-radius: 12px; border: 2px solid var(--line); background: #fff; cursor: pointer; transition: all .18s ease; position: relative; }
+.sme-sc-card:hover { border-color: var(--lav-300); transform: translateY(-1px); }
+.sme-sc-card.active { border-color: var(--primary); background: var(--lav-50); box-shadow: 0 4px 16px rgba(59, 26, 146, .12); }
+.sme-sc-thumb { display: block; width: 100%; aspect-ratio: 16 / 10; border-radius: 8px; background-size: cover; background-position: center; background-color: #eee; }
+.sme-sc-info b { display: block; font-size: 13.5px; color: var(--plum-900); }
+.sme-sc-info small { display: block; font-size: 11.5px; color: var(--muted); margin-top: 2px; line-height: 1.25; }
+.sme-sc-badge { position: absolute; top: 12px; right: 12px; font-size: 11px; font-weight: 700; background: var(--primary); color: #fff; padding: 2px 7px; border-radius: 999px; display: inline-flex; align-items: center; gap: 3px; }
+.sme-sc-badge svg { width: 11px; height: 11px; }
+
+.sme-alloc-summary { margin-top: 14px; padding: 14px; border-radius: 12px; background: var(--lav-50); border: 1px solid var(--lav-200); }
+.sme-alloc-summary h4 { margin: 0 0 10px; font-size: 14px; color: var(--plum-900); display: flex; align-items: center; gap: 6px; }
+.sme-alloc-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.alloc-box { background: #fff; padding: 10px; border-radius: 8px; border: 1px solid var(--line); text-align: left; }
+.alloc-box span { display: block; font-size: 11px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .3px; }
+.alloc-box b { display: block; font-size: 15px; color: var(--plum-900); margin: 3px 0 1px; }
+.alloc-box small { display: block; font-size: 11px; color: var(--primary); }
+.sme-alloc-check { margin-top: 10px; display: flex; justify-content: flex-end; }
+
+.sme-fs-modal { display: flex; flex-direction: column; gap: 12px; }
+.sme-fs-photo { width: 100%; aspect-ratio: 16 / 9; border-radius: 10px; background-size: cover; background-position: center; position: relative; }
+.sme-fs-caption { font-size: 14px; color: var(--plum-900); margin: 0; line-height: 1.4; }
+.sme-fs-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+
+@media (max-width: 600px) {
+  .sme-sc-strip { grid-template-columns: 1fr; gap: 8px; }
+  .sme-sc-card { flex-direction: row; align-items: center; padding: 8px 10px; }
+  .sme-sc-thumb { width: 70px; height: 50px; flex: none; aspect-ratio: auto; }
+  .sme-alloc-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .sme-hero-photo { aspect-ratio: 4 / 3; }
+  .sme-toggle-pill { padding: 6px 12px; font-size: 12px; }
+}

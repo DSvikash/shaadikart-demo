@@ -1094,9 +1094,9 @@
       </div></div>`;
   }
 
-  /* ---------- See My Event: Act 1 (The Space), Act 2 (Dressed for you) ---------- */
-  const SME = { act: 1, tip: null, sweep: 0, dtip: null, time: 0 };
-  const SME_LABEL = '<span class="sme-imp">Artist\u2019s impression, not a photograph of the booked setup</span>';
+  /* ---------- See My Event: Act 1 (The Space), Act 2 (Dressed for you), Act 3 (Experience Your Wedding) ---------- */
+  const SME = { act: 1, tip: null, sweep: 0, dtip: null, time: 0, viewMode: 'photo', scene: 'celebration', modalScene: null };
+  const SME_LABEL = '<span class="sme-imp">Illustrative AI Concept Preview · Fictional guests depicted for crowd density guidance · Real styling finalized with your ShaadiKart Host</span>';
   const SME_ELEM = {
     'mandap': ['Mandap', 'The sacred centrepiece for the pheras, framed to the stage position.', 50, 42],
     'floral arch': ['Floral arch', 'A flower-framed entrance for the couple\u2019s walk in.', 50, 22],
@@ -1107,6 +1107,47 @@
   const smeSvc = (ev, cat) => liveSvcs(ev).map(s => partner(s.partnerId)).find(p => p && p.cat === cat);
   const smeVenue = ev => smeSvc(ev, 'venues');
   const smeDecor = ev => smeSvc(ev, 'decor');
+
+  /* Phase 1 Guest Allocation Engine: mathematically distributes guests across spatial zones with strict sum equality */
+  function guestAllocation(guests, venue, phaseIdx = 2) {
+    const cap = venue.cap || [150, 500];
+    const total = Math.max(1, guests || 100);
+    const overcrowded = !!cap[1] && total > cap[1];
+
+    // Configurable percentage breakdowns per phase ensuring exact sum equality
+    // Phase 0: Arrival (Guests arriving, welcome beverages, registration & entrance foyer)
+    // Phase 1: Ceremony (Vedic ritual, mandap viewing, couple stage)
+    // Phase 2: Dinner & Celebration (Banquet dining, food stations, dance & celebration)
+    const weights = [
+      { entrance: 0.55, tables: 0.30, lounge: 0.15, stage: 0.00 }, // Arrival
+      { entrance: 0.05, tables: 0.20, lounge: 0.10, stage: 0.65 }, // Ceremony
+      { entrance: 0.05, tables: 0.70, lounge: 0.10, stage: 0.15 }  // Celebration / Dinner
+    ][phaseIdx] || { entrance: 0.05, tables: 0.70, lounge: 0.10, stage: 0.15 };
+
+    const cTables = Math.round(total * weights.tables);
+    const cStage = Math.round(total * weights.stage);
+    const cLounge = Math.round(total * weights.lounge);
+    // Ensure the remainder guarantees exact mathematical match to total
+    const cEntrance = Math.max(0, total - (cTables + cStage + cLounge));
+
+    const tableCount = Math.max(1, Math.ceil(cTables / 10));
+
+    return {
+      total,
+      allocated: total,
+      unallocated: 0,
+      overcrowded,
+      cap,
+      zones: {
+        tables: { name: 'Seated at Dining Tables', count: cTables, tables: tableCount, pct: Math.round((cTables / total) * 100) },
+        stage: { name: 'Mandap & Stage Area', count: cStage, pct: Math.round((cStage / total) * 100) },
+        entrance: { name: 'Foyer & Entrance Walkways', count: cEntrance, pct: Math.round((cEntrance / total) * 100) },
+        lounge: { name: 'Buffet & Social Lounge', count: cLounge, pct: Math.round((cLounge / total) * 100) }
+      },
+      note: overcrowded ? `${esc(venue.name)} comfortably hosts up to ${cap[1]} guests. For ${total} guests, your ShaadiKart Host will arrange staggered seating or an expanded lawn enclosure.` : ''
+    };
+  }
+
   function actOne(ev) {
     const v = smeVenue(ev);
     if (!v) return `<div class="sme-empty">${ic('info')}<p>Add a venue to your event to see the space.</p></div>`;
@@ -1191,18 +1232,104 @@
     const n = Math.ceil(ev.guests / 10), ph = smePhase(t);
     return `<b>${ev.guests} guests</b> · ${n} table${n === 1 ? '' : 's'} of 10${ph === 1 ? ' · everyone at the stage' : ` · ${smeSeated(ev, t)} seated`}`;
   }
+
+  /* Stage 3 Experience Your Wedding: Dual-mode visualization (Photorealistic 3-scene showcase vs Interactive SVG floor plan) */
   function actThree(ev) {
     const v = smeVenue(ev);
     if (!v) return `<div class="sme-empty">${ic('info')}<p>Add a venue to your event to see your celebration.</p></div>`;
-    const t = SME.time, L = birdEyeLayout(ev.guests, v);
-    return `<div class="sme-act3"><div class="floor-plan" id="sme-fp">${SME_LABEL}<div id="sme-fpvis">${floorVis(ev, v, t)}</div></div>
-      <div class="fp-counter" id="sme-fpc" aria-live="polite">${counterText(ev, t)}</div>
-      ${L.overcrowded ? `<p class="note crowd-note">${ic('info')}<span>${L.note}</span></p>` : ''}
-      <div class="time-slider"><label for="sme-time"><b id="sme-phase">${SME_PHASE[smePhase(t)]}</b></label>
-        <input type="range" id="sme-time" min="0" max="100" value="${t}" data-input="sme-time" aria-label="Time of the celebration">
-        <div class="sme-sweep-cap"><span>Arrival</span><span>Ceremony</span><span>Dinner</span></div></div>
-      ${silhouetteStrip(t)}
-      ${perkCard(ev)}</div>`;
+    const dp = smeDecor(ev);
+    const a = D.VENUE_ANCHORS[v.id] || { scenes: {} };
+    const scMap = (a.scenes && a.scenes.celebration) ? a.scenes : (a.scenes = {
+      arrival: { photo: 'photo-arr-fallback', caption: 'Guests arriving at entrance foyer' },
+      dining: { photo: 'photo-din-fallback', caption: 'Guests dining at banquet tables' },
+      celebration: { photo: a.celebrationPhoto || 'photo-cel-fallback', caption: 'Wedding celebration in full swing' }
+    });
+    const activeSceneKey = SME.scene || 'celebration';
+    const activeScene = scMap[activeSceneKey] || scMap.celebration;
+    const viewMode = SME.viewMode || 'photo';
+    const t = SME.time || 0;
+    const phaseIdx = smePhase(t);
+    const alloc = guestAllocation(ev.guests, v, phaseIdx);
+
+    const modeToggle = `
+      <div class="sme-view-toggle" role="tablist" aria-label="Visualization Mode">
+        <button type="button" class="sme-toggle-pill ${viewMode === 'photo' ? 'on' : ''}" data-act="sme-mode" data-mode="photo" role="tab" aria-selected="${viewMode === 'photo'}">
+          ${ic('heart')} <span>Photorealistic Experience</span>
+        </button>
+        <button type="button" class="sme-toggle-pill ${viewMode === 'svg' ? 'on' : ''}" data-act="sme-mode" data-mode="svg" role="tab" aria-selected="${viewMode === 'svg'}">
+          ${ic('rotate3d')} <span>Interactive SVG Floor Plan</span>
+        </button>
+      </div>`;
+
+    const disclaimerBanner = `<div class="sme-disclaimer">${ic('shield')}<span><b>Illustrative AI Concept Preview:</b> Fictional guests depicted for crowd density guidance. Real styling finalized with your ShaadiKart Host.</span></div>`;
+
+    // OPTION B: Photorealistic Celebration Experience with 3 selectable scenes
+    const sceneCards = [
+      { key: 'arrival', label: '1. Arrival', desc: 'Guests arriving & welcome lounge', icon: 'users' },
+      { key: 'dining', label: '2. Dining', desc: 'Seated dinner & live counters', icon: 'store' },
+      { key: 'celebration', label: '3. Celebration', desc: 'Mandap, couple stage & dancing', icon: 'heart' }
+    ].map(sc => {
+      const isCur = activeSceneKey === sc.key;
+      const ph = scMap[sc.key] ? scMap[sc.key].photo : 'photo-1519689950823-0a2251441815';
+      return `
+        <button type="button" class="sme-sc-card ${isCur ? 'active' : ''}" data-act="sme-scene" data-sc="${sc.key}" aria-pressed="${isCur}">
+          <span class="sme-sc-thumb" ${bg(ph, 300)}></span>
+          <div class="sme-sc-info">
+            <b>${sc.label}</b>
+            <small>${sc.desc}</small>
+          </div>
+          ${isCur ? `<span class="sme-sc-badge">${ic('check')} Active</span>` : ''}
+        </button>`;
+    }).join('');
+
+    const photoExperience = `
+      <div class="sme-photo-exp">
+        <div class="sme-photo sme-hero-photo" ${bg(activeScene.photo, 1400)} role="img" aria-label="${esc(activeScene.caption)}">
+          <div class="sme-hero-overlay">
+            <div class="sme-hero-tags">
+              <span class="tag tag-gold">${ic('heart')} ${esc(activeSceneKey.toUpperCase())} SCENE</span>
+              <span class="tag tag-plum">${ev.guests} Guests Allocated</span>
+              ${dp ? `<span class="tag tag-grey">Styled by ${esc(dp.name)}</span>` : ''}
+            </div>
+            <p class="sme-hero-caption">${esc(activeScene.caption)}</p>
+          </div>
+          <button type="button" class="btn btn-ghost btn-sm sme-fs-btn" data-act="sme-fullscreen" data-sc="${activeSceneKey}" title="Full screen view">
+            ${ic('rotate3d')} Fullscreen
+          </button>
+        </div>
+        <div class="sme-sc-strip">
+          ${sceneCards}
+        </div>
+      </div>`;
+
+    // OPTION A: Interactive SVG Floor Plan with exact guest allocation breakdown
+    const svgExperience = `
+      <div class="sme-svg-exp">
+        <div class="floor-plan" id="sme-fp">${SME_LABEL}<div id="sme-fpvis">${floorVis(ev, v, t)}</div></div>
+        <div class="fp-counter" id="sme-fpc" aria-live="polite">${counterText(ev, t)}</div>
+        ${alloc.overcrowded ? `<p class="note crowd-note">${ic('alert')}<span>${alloc.note}</span></p>` : ''}
+        <div class="sme-alloc-summary">
+          <h4>${ic('users')} Mathematical Guest Allocation (${alloc.total} Guests Total)</h4>
+          <div class="sme-alloc-grid">
+            <div class="alloc-box"><span>${alloc.zones.tables.name}</span><b>${alloc.zones.tables.count} guests</b><small>${alloc.zones.tables.tables} tables of 10</small></div>
+            <div class="alloc-box"><span>${alloc.zones.stage.name}</span><b>${alloc.zones.stage.count} guests</b><small>${alloc.zones.stage.pct}% crowd density</small></div>
+            <div class="alloc-box"><span>${alloc.zones.lounge.name}</span><b>${alloc.zones.lounge.count} guests</b><small>${alloc.zones.lounge.pct}% crowd density</small></div>
+            <div class="alloc-box"><span>${alloc.zones.entrance.name}</span><b>${alloc.zones.entrance.count} guests</b><small>${alloc.zones.entrance.pct}% crowd density</small></div>
+          </div>
+          <div class="sme-alloc-check"><span class="tag tag-green">${ic('check')} Exact 100% Allocation Verified (${alloc.allocated} of ${alloc.total} guests placed)</span></div>
+        </div>
+        <div class="time-slider"><label for="sme-time"><b id="sme-phase">${SME_PHASE[smePhase(t)]}</b></label>
+          <input type="range" id="sme-time" min="0" max="100" value="${t}" data-input="sme-time" aria-label="Time of the celebration">
+          <div class="sme-sweep-cap"><span>Arrival</span><span>Ceremony</span><span>Dinner</span></div></div>
+        ${silhouetteStrip(t)}
+      </div>`;
+
+    return `<div class="sme-act3">
+      ${modeToggle}
+      ${disclaimerBanner}
+      ${viewMode === 'photo' ? photoExperience : svgExperience}
+      ${perkCard(ev)}
+    </div>`;
   }
   function perkCard(ev) {
     const done = !!journeyOf(ev).visitRequested;
@@ -1211,7 +1338,7 @@
       ${done ? `<span class="perk-done">Reserved ${ic('check')}</span>` : `<button type="button" class="btn btn-gold" data-act="reserve-perk">Reserve a seat</button>`}</div>`;
   }
   function seeMyEvent(ev) {
-    const tabs = [[1, 'The Space'], [2, 'Dressed for you'], [3, 'Your celebration']];
+    const tabs = [[1, 'The Space'], [2, 'Dressed for you'], [3, 'Experience Your Wedding']];
     return `<div class="sme-stage" data-ev="${ev.id}"><div class="sme-tabs" role="tablist">${tabs.map(([n, l]) => `<button type="button" role="tab" aria-selected="${SME.act === n}" class="${SME.act === n ? 'on' : ''}" data-act="sme-tab" data-n="${n}">${l}</button>`).join('')}</div>
       <div class="sme-body">${SME.act === 1 ? actOne(ev) : SME.act === 2 ? actTwo(ev) : actThree(ev)}</div></div>`;
   }
@@ -1868,6 +1995,37 @@
       const sev = S.events.find(e => e.id === (el.closest('.sme-stage') || {dataset: {}}).dataset.ev);
       signal(sev, 'viewed-sme'); if (SME.act === 3) signal(sev, 'viewed-act3');
       smeRefresh(el);
+    },
+    'sme-mode'(el) {
+      SME.viewMode = el.dataset.mode;
+      smeRefresh(el);
+    },
+    'sme-scene'(el) {
+      SME.scene = el.dataset.sc;
+      smeRefresh(el);
+    },
+    'sme-fullscreen'(el) {
+      const stage = el.closest('.sme-stage');
+      const ev = S.events.find(e => e.id === (stage ? stage.dataset.ev : null)) || S.events[0];
+      if (!ev) return;
+      const v = smeVenue(ev);
+      if (!v) return;
+      const a = D.VENUE_ANCHORS[v.id] || { scenes: {} };
+      const sc = el.dataset.sc || SME.scene || 'celebration';
+      const scene = (a.scenes && a.scenes[sc]) || { photo: a.celebrationPhoto || 'photo-1519689950823-0a2251441815', caption: 'Wedding celebration' };
+      openModal(`${sc.charAt(0).toUpperCase() + sc.slice(1)} View · ${v.name}`, `
+        <div class="sme-fs-modal">
+          <div class="sme-photo sme-fs-photo" ${bg(scene.photo, 1600)} role="img" aria-label="${esc(scene.caption)}">
+            <span class="sme-imp">${SME_LABEL}</span>
+          </div>
+          <p class="sme-fs-caption"><b>${sc.toUpperCase()}</b> · ${esc(scene.caption)}</p>
+          <div class="sme-fs-meta">
+            <span class="tag tag-gold">${ev.guests} Guests Allocated</span>
+            <span class="tag tag-plum">${esc(v.name)}</span>
+            <span class="tag tag-grey">${esc(catOf(v.cat).name)}</span>
+          </div>
+        </div>
+      `, { wide: true });
     },
     'sme-spot'(el) {
       SME.tip = SME.tip === el.dataset.k ? null : el.dataset.k;

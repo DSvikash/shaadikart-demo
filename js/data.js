@@ -354,12 +354,69 @@
   ];
 
   // See My Event, Act 1: where things sit in each venue photo (percent of photo width and height).
+  // celebrationPhoto: Photorealistic Stage 3 visual showing the venue decorated with guests celebrating, dining and socializing.
+  // scenes: Photorealistic 3-scene triplets (Arrival, Dining, Celebration) anchored to the actual venue architecture and guest density.
   const VENUE_ANCHORS = {
-    'royal-banquet': { id: 'royal-banquet', kind: 'Banquet hall', stageX: 50, stageY: 38, tableZone: { x: 12, y: 58, w: 76, h: 30 }, rooms: [{ name: 'Bridal room', x: 12, y: 30 }, { name: 'Groom room', x: 88, y: 30 }], photo: 'photo-1768851142332-75f3d1b47452' },
-    'grand-lawns': { id: 'grand-lawns', kind: 'Open lawn', stageX: 50, stageY: 42, tableZone: { x: 8, y: 62, w: 84, h: 28 }, rooms: [{ name: 'Bridal suite', x: 14, y: 36 }, { name: 'Family rooms', x: 86, y: 36 }], photo: 'photo-1783314867628-220ab03cac99' },
-    'shubh-vivah': { id: 'shubh-vivah', kind: 'Farmhouse lawn', stageX: 52, stageY: 40, tableZone: { x: 10, y: 60, w: 80, h: 30 }, rooms: [{ name: 'Bridal room', x: 15, y: 32 }, { name: 'Guest rooms', x: 85, y: 34 }], photo: 'photo-1675247488725-22d1b78e75db' },
-    'neelkamal': { id: 'neelkamal', kind: 'Convention hall', stageX: 50, stageY: 36, tableZone: { x: 14, y: 56, w: 72, h: 32 }, rooms: [{ name: 'Green room', x: 14, y: 28 }, { name: 'Bridal room', x: 86, y: 28 }], photo: 'photo-1542665952-14513db15293' },
-    'aangan-rooftop': { id: 'aangan-rooftop', kind: 'Rooftop terrace', stageX: 48, stageY: 40, tableZone: { x: 16, y: 60, w: 68, h: 28 }, rooms: [{ name: 'Lounge', x: 84, y: 34 }], photo: 'photo-1779301674216-506de8607c87' }
+    'royal-banquet': {
+      id: 'royal-banquet', kind: 'Banquet hall', stageX: 50, stageY: 38,
+      tableZone: { x: 12, y: 58, w: 76, h: 30 },
+      rooms: [{ name: 'Bridal room', x: 12, y: 30 }, { name: 'Groom room', x: 88, y: 30 }],
+      photo: 'photo-1768851142332-75f3d1b47452',
+      celebrationPhoto: 'photo-1519689950823-0a2251441815',
+      scenes: {
+        arrival: { photo: 'photo-1519741497674-611481863552', caption: 'Guests arriving at Royal Banquet reception lobby with welcome drinks and floral entrance' },
+        dining: { photo: 'photo-1555244162-803834f70033', caption: 'Guests dining at dressed round banquet tables with royal silver service catering' },
+        celebration: { photo: 'photo-1519689950823-0a2251441815', caption: 'Wedding celebration in full swing under chandelier lighting with couple on mandap stage' }
+      }
+    },
+    'grand-lawns': {
+      id: 'grand-lawns', kind: 'Open lawn', stageX: 50, stageY: 42,
+      tableZone: { x: 8, y: 62, w: 84, h: 28 },
+      rooms: [{ name: 'Bridal suite', x: 14, y: 36 }, { name: 'Family rooms', x: 86, y: 36 }],
+      photo: 'photo-1783314867628-220ab03cac99',
+      celebrationPhoto: 'photo-1469371670807-013ccf25f16a',
+      scenes: {
+        arrival: { photo: 'photo-1532712938310-34cb3982ef74', caption: 'Illuminated walkway and floral archway welcoming guests onto The Grand Lawns' },
+        dining: { photo: 'photo-1544078751-58fee2d8a03b', caption: 'Open-air lawn dining setup with live barbecue buffet and seated family tables' },
+        celebration: { photo: 'photo-1469371670807-013ccf25f16a', caption: 'Grand outdoor celebration under fairy-light canopy with fireworks and music' }
+      }
+    },
+    'shubh-vivah': {
+      id: 'shubh-vivah', kind: 'Farmhouse lawn', stageX: 52, stageY: 40,
+      tableZone: { x: 10, y: 60, w: 80, h: 30 },
+      rooms: [{ name: 'Bridal room', x: 15, y: 32 }, { name: 'Guest rooms', x: 85, y: 34 }],
+      photo: 'photo-1675247488725-22d1b78e75db',
+      celebrationPhoto: 'photo-1511795409834-ef04bbd61622',
+      scenes: {
+        arrival: { photo: 'photo-1520854221256-17451cc331bf', caption: 'Traditional dhol welcome and rose petal shower at Shubh Vivah Farmhouse gate' },
+        dining: { photo: 'photo-1530103862676-de8c9debad1d', caption: 'Farmhouse lawn buffet counter with chaat stalls and village-theme dining tables' },
+        celebration: { photo: 'photo-1511795409834-ef04bbd61622', caption: 'Vibrant farmhouse celebration with joyous dancing around the illuminated mandap' }
+      }
+    },
+    'neelkamal': {
+      id: 'neelkamal', kind: 'Convention hall', stageX: 50, stageY: 36,
+      tableZone: { x: 14, y: 56, w: 72, h: 32 },
+      rooms: [{ name: 'Green room', x: 14, y: 28 }, { name: 'Bridal room', x: 86, y: 28 }],
+      photo: 'photo-1542665952-14513db15293',
+      celebrationPhoto: 'photo-1527529482837-4698179dc6ce',
+      scenes: {
+        arrival: { photo: 'photo-1511578314322-379afb476865', caption: 'Grand foyer entrance at Neelkamal Convention with digital escort displays and host desk' },
+        dining: { photo: 'photo-1517248135467-4c7edcad34c4', caption: 'High-capacity banquet dining hall with twin central buffet islands and seating' },
+        celebration: { photo: 'photo-1527529482837-4698179dc6ce', caption: 'Convention stage celebration with LED video walls, floral backdrop, and guests gathering' }
+      }
+    },
+    'aangan-rooftop': {
+      id: 'aangan-rooftop', kind: 'Rooftop terrace', stageX: 48, stageY: 40,
+      tableZone: { x: 16, y: 60, w: 68, h: 28 },
+      rooms: [{ name: 'Lounge', x: 84, y: 34 }],
+      photo: 'photo-1779301674216-506de8607c87',
+      celebrationPhoto: 'photo-1768508950719-4d76978fdf44',
+      scenes: {
+        arrival: { photo: 'photo-1507676184212-d03ab07a01bf', caption: 'Elevator foyer reception stepping out onto panoramic Saket skyline terrace' },
+        dining: { photo: 'photo-1525610553991-2bede1a236e2', caption: 'Boutique terrace dining with cocktail tables, ambient string lights, and skyline views' },
+        celebration: { photo: 'photo-1768508950719-4d76978fdf44', caption: 'Intimate sunset celebration with fairy lights, acoustic music, and golden hour vibes' }
+      }
+    }
   };
   // See My Event, Act 2: how each decor partner dresses a space. overlayPhoto is the partner's own work.
   const DECOR_PROFILES = {
