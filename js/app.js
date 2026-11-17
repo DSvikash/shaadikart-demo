@@ -957,10 +957,90 @@
     </div>${cmpBar()}`;
   }
 
-  const setsHtml = v => !v.sets ? '' : `<div class="psets" data-sets>
-    <div class="ps-tabs" role="tablist">${v.sets.map((x, i) => `<button type="button" role="tab" class="${i ? '' : 'on'}" data-act="pset" data-i="${i}">${esc(x.label)}</button>`).join('')}</div>
-    ${v.sets.map((x, i) => `<div class="ps-panel" data-p="${i}" ${i ? 'hidden' : ''}><p class="ps-note"><b>${esc(x.title)}.</b> ${esc(x.note)}</p><div class="ps-grid">${x.photos.map(p => `<figure ${bg(p, 600)} role="img" aria-label="${esc(v.name + ', ' + x.title)}"><span class="ps-badge">${ic('shield')}ShaadiKart Verified</span></figure>`).join('')}</div></div>`).join('')}
-    <p class="note">${ic('info')}<span>Photos supplied by the partner and verified by ShaadiKart (${esc(v.setsVerified)}). Stock images stand in for them in this concept demo.</span></p></div>`;
+  const setsHtml = v => {
+    if (!v.sets) return '';
+    const guests = (S.cart && S.cart.event && S.cart.event.guests) ? S.cart.event.guests : 250;
+    const decor = (typeof smeDecor === 'function' && S.cart && S.cart.event) ? smeDecor(S.cart.event) : null;
+    const alloc = (typeof guestAllocation === 'function') ? guestAllocation(guests, v, 2) : {
+      total: guests,
+      zones: {
+        stage: { count: Math.round(guests * 0.15), pct: 15 },
+        tables: { count: Math.round(guests * 0.70), pct: 70 },
+        lounge: { count: Math.round(guests * 0.10), pct: 10 },
+        entrance: { count: Math.max(0, guests - (Math.round(guests * 0.15) + Math.round(guests * 0.70) + Math.round(guests * 0.10))), pct: 5 }
+      },
+      note: ''
+    };
+
+    return `<div class="psets" data-sets>
+      <div class="ps-tabs" role="tablist">
+        ${v.sets.map((x, i) => `<button type="button" role="tab" class="${i ? '' : 'on'}" data-act="pset" data-i="${i}">${x.key === 'raw' ? ic('camera') : x.key === 'decor' ? ic('sparkles') : ic('users')}<span>${esc(x.label)}</span></button>`).join('')}
+      </div>
+      ${v.sets.map((x, i) => {
+        let bannerHtml = '';
+        if (x.key === 'raw') {
+          bannerHtml = `<div class="ps-banner ps-raw-banner">
+            <span class="ps-banner-icon">${ic('shield')}</span>
+            <div class="ps-banner-content">
+              <b>Authentic Venue Architecture (Undecorated)</b>
+              <p>Inspected on-site by ShaadiKart specialists. These genuine architectural photographs document the actual property dimensions, finishes, ceiling heights, and structural layout before any wedding styling is applied.</p>
+            </div>
+          </div>`;
+        } else if (x.key === 'decor') {
+          bannerHtml = `<div class="ps-banner ps-decor-banner">
+            <span class="ps-banner-icon">${ic('sparkles')}</span>
+            <div class="ps-banner-content">
+              <b>Wedding Transformation Preview ${decor ? `· Styled by ${esc(decor.name)}` : '· ShaadiKart Signature Decor'}</b>
+              <p>See how the exact same spaces shown in Raw are elevated with mandap floral pillars, ambient warm uplighting, ceremonial backdrop draping, and formal banquet seating.</p>
+            </div>
+          </div>`;
+        } else if (x.key === 'people') {
+          bannerHtml = `<div class="ps-banner ps-people-banner">
+            <span class="ps-banner-icon">${ic('users')}</span>
+            <div class="ps-banner-content">
+              <div class="ps-alloc-head">
+                <b>Realistic Celebration Distribution · ${alloc.total} Expected Guests</b>
+                <span class="tag tag-plum">${capFits(v, alloc.total) ? 'Comfortable capacity' : 'Exceeds standard cap'}</span>
+              </div>
+              <p>Guests distributed proportionally across functional wedding zones based on your event plan:</p>
+              <div class="ps-zones">
+                <span class="ps-zone-pill">${ic('heart')} Mandap &amp; Stage: <b>${alloc.zones.stage.count}</b> (${alloc.zones.stage.pct}%)</span>
+                <span class="ps-zone-pill">${ic('utensils')} Banquet Dining: <b>${alloc.zones.tables.count}</b> (${alloc.zones.tables.pct}%)</span>
+                <span class="ps-zone-pill">${ic('music')} Social Lounge: <b>${alloc.zones.lounge.count}</b> (${alloc.zones.lounge.pct}%)</span>
+                <span class="ps-zone-pill">${ic('home')} Welcome Foyer: <b>${alloc.zones.entrance.count}</b> (${alloc.zones.entrance.pct}%)</span>
+              </div>
+              ${alloc.note ? `<p class="ps-alloc-note">${ic('alert')}<span>${esc(alloc.note)}</span></p>` : ''}
+            </div>
+          </div>`;
+        }
+
+        const cardsHtml = x.photos.map((p, idx) => {
+          const cap = (x.captions && x.captions[idx]) || (x.title + ' ' + (idx + 1));
+          const det = (x.details && x.details[idx]) || '';
+          const badgeText = x.key === 'raw' ? 'Original Property Photo' : x.key === 'decor' ? 'Decorated Setup' : 'Realistic Guest Simulation';
+          const badgeClass = x.key === 'raw' ? 'tag-purple' : x.key === 'decor' ? 'tag-gold' : 'tag-green';
+          return `<div class="ps-card">
+            <figure ${bg(p, 700)} role="img" aria-label="${esc(v.name + ', ' + cap)}">
+              <span class="ps-badge ${badgeClass}">${badgeText}</span>
+              ${x.key === 'raw' ? `<span class="ps-watermark">${ic('shield')}ShaadiKart Verified</span>` : ''}
+            </figure>
+            <div class="ps-card-body">
+              <h4 class="ps-card-title">${esc(cap)}</h4>
+              ${det ? `<p class="ps-card-desc">${esc(det)}</p>` : ''}
+            </div>
+          </div>`;
+        }).join('');
+
+        return `<div class="ps-panel" data-p="${i}" ${i ? 'hidden' : ''}>
+          ${bannerHtml}
+          <div class="ps-grid">${cardsHtml}</div>
+        </div>`;
+      }).join('')}
+      <div class="ps-footer-disclaimer">
+        <p class="note">${ic('info')}<span><b>Illustrative AI Concept Preview:</b> Photographs represent the authentic property verified on-site by ShaadiKart (${esc(v.setsVerified)}). Decoration styling and populated crowd simulations are illustrative previews designed to help visualize guest density and ambiance prior to your host consultation.</span></p>
+      </div>
+    </div>`;
+  };
   function pagePartner(id) {
     const v = partner(id);
     if (!v) return notFound();

@@ -89,3 +89,4 @@ D.MANDIRS.forEach(m => {
 console.log('PASS 5: Mandir listings verified.');
 
 console.log('ALL E2E ENGINE INTEGRITY CHECKS PASSED!');
+process.exit(0);

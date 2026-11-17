@@ -78,3 +78,4 @@ Object.keys(D.VENUE_ANCHORS).forEach(k => {
 console.log('PASS Scenario 6-10: All 5 Delhi NCR venue archetypes populated with valid photo triplet sets.');
 
 console.log('ALL 10 STAGE 3 GUEST SIMULATION SCENARIO TESTS PASSED!');
+process.exit(0);
