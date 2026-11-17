@@ -436,15 +436,15 @@
       const va = VENUE_ANCHORS[p.id];
       if (va && va.rawGallery) {
         p.sets = [
-          { key: 'raw', label: 'Raw', title: 'Raw space', note: 'The actual venue spaces before any wedding decoration.', photos: va.rawGallery.map(x => x.photo), captions: va.rawGallery.map(x => x.caption), details: va.rawGallery.map(x => x.note) },
-          { key: 'decor', label: 'After decoration', title: 'After decoration', note: 'The exact same venue transformed with wedding styling & floral setup.', photos: va.decorGallery.map(x => x.photo), captions: va.decorGallery.map(x => x.caption), details: va.decorGallery.map(x => x.note) },
-          { key: 'people', label: 'With guests', title: 'With guests', note: 'The venue in full celebration with realistic crowd distribution across zones.', photos: [va.scenes.arrival.photo, va.scenes.dining.photo, va.scenes.celebration.photo], captions: ['Arrival & Welcome Foyer', 'Banquet Dining & Buffet Area', 'Mandap Ceremony & Celebration Stage'], details: [va.scenes.arrival.caption, va.scenes.dining.caption, va.scenes.celebration.caption] }
+          { key: 'raw', label: '1. Raw (Original Space)', title: 'Original Property Condition', note: 'Authentic architectural photographs of the venue spaces before any wedding decoration.', photos: va.rawGallery.map(x => x.photo), captions: va.rawGallery.map(x => x.caption), details: va.rawGallery.map(x => x.note) },
+          { key: 'decor', label: '2. After Decoration (Dressed For You)', title: 'Wedding Transformation Preview', note: 'The exact same venue spaces transformed with mandap, ambient lighting and banquet dining setup.', photos: va.decorGallery.map(x => x.photo), captions: va.decorGallery.map(x => x.caption), details: va.decorGallery.map(x => x.note) },
+          { key: 'people', label: '3. With Guests (Realistic Celebration)', title: 'Realistic Wedding Celebration', note: 'The decorated property populated with natural Indian wedding guest distribution across zones.', photos: [va.scenes.arrival.photo, va.scenes.dining.photo, va.scenes.celebration.photo], captions: ['Arrival & Welcome Foyer', 'Banquet Dining & Buffet Area', 'Mandap Ceremony & Celebration Stage'], details: [va.scenes.arrival.caption, va.scenes.dining.caption, va.scenes.celebration.caption] }
         ];
       } else {
         p.sets = [
-          { key: 'raw', label: 'Raw', title: 'Raw space', note: 'The space as it is before any decoration.', photos: pick(SET_RAW, 0) },
-          { key: 'decor', label: 'After decoration', title: 'After decoration', note: 'The same kind of setup once decor is complete.', photos: pick(p.cat === 'haldi' ? [LIB.haldi[2], LIB.haldi[3], LIB.haldi[0]] : p.cat === 'kitty' ? [LIB.balloons[0], LIB.cake[0], LIB.balloons[1]] : SET_DECOR, 1) },
-          { key: 'people', label: 'With guests', title: 'After decoration, with guests', note: 'The setup during a real event with guests gathered.', photos: pick(p.cat === 'haldi' ? [LIB.haldi[1], LIB.haldi[0], LIB.haldi[2]] : p.cat === 'kitty' ? LIB.party : SET_PEOPLE, 2) }
+          { key: 'raw', label: '1. Raw (Original Space)', title: 'Original Property Condition', note: 'The space as it is before any decoration.', photos: pick(SET_RAW, 0) },
+          { key: 'decor', label: '2. After Decoration (Dressed For You)', title: 'Wedding Transformation Preview', note: 'The same kind of setup once decor is complete.', photos: pick(p.cat === 'haldi' ? [LIB.haldi[2], LIB.haldi[3], LIB.haldi[0]] : p.cat === 'kitty' ? [LIB.balloons[0], LIB.cake[0], LIB.balloons[1]] : SET_DECOR, 1) },
+          { key: 'people', label: '3. With Guests (Realistic Celebration)', title: 'Realistic Wedding Celebration', note: 'The setup during a real event with guests gathered.', photos: pick(p.cat === 'haldi' ? [LIB.haldi[1], LIB.haldi[0], LIB.haldi[2]] : p.cat === 'kitty' ? LIB.party : SET_PEOPLE, 2) }
         ];
       }
       p.setsVerified = MONTHS[(h + 5) % MONTHS.length] + ' 2026';

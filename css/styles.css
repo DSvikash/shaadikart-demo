@@ -1329,14 +1329,28 @@ textarea[data-change="cg-notes"] { width: 100%; font: inherit; padding: 12px; bo
 .fp-stage { fill: var(--plum-800); opacity: .85; }
 .fp-stage.on { fill: var(--gold-600); }
 .fp-lbl { fill: #fff; font-size: 3.2px; font-weight: 700; }
+.fp-sublbl { fill: #3c3358; font-size: 1.8px; font-weight: 600; }
 .fp-food { fill: #b7791f; opacity: .45; }
 .fp-food.on { opacity: 1; animation: fp-pulse 1.6s ease-in-out infinite; }
+.fp-lounge-zone { fill: rgba(220, 252, 231, .45); stroke: #16a34a; stroke-width: .3; stroke-dasharray: 1 0.8; }
+.fp-foyer-zone { fill: rgba(243, 232, 255, .55); stroke: #9333ea; stroke-width: .3; stroke-dasharray: 1 0.8; }
+.fp-counter-group text { fill: #78350f; font-size: 1.7px; font-weight: 600; }
 .fp-table circle:first-child { fill: #fff; stroke: var(--plum-900); stroke-width: .25; transition: fill .2s; }
 .fp-table:hover circle:first-child { fill: var(--gold-50); }
 .fp-table.crowded circle:first-child { fill: var(--red-50); stroke: var(--red); }
 .fp-guest { fill: none; stroke: var(--plum-800); stroke-width: .2; }
 .fp-guest.on { fill: var(--primary); stroke: none; transform-box: fill-box; transform-origin: center; animation: fp-sway 2.4s ease-in-out infinite; }
-.fp-counter { text-align: center; font-size: 15px; padding: 8px 12px; border-radius: 10px; background: var(--lav-50); }
+.fp-guest.fp-g-stage { fill: #e65100 !important; }
+.fp-guest.fp-g-dining { fill: #0284c7 !important; }
+.fp-guest.fp-g-lounge { fill: #16a34a !important; }
+.fp-guest.fp-g-foyer { fill: #9333ea !important; }
+.fp-counter { text-align: center; font-size: 14.5px; padding: 10px 14px; border-radius: 10px; background: var(--lav-50); border: 1px solid var(--line); }
+.fp-c-stage { color: #c2410c; font-weight: 700; }
+.fp-c-dining { color: #0284c7; font-weight: 700; }
+.fp-c-lounge { color: #15803d; font-weight: 700; }
+.fp-c-foyer { color: #7e22ce; font-weight: 700; }
+.sme-alloc-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin-top: 8px; }
+@media (max-width: 600px) { .sme-alloc-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .crowd-note { margin: 0; }
 .time-slider { padding: 4px 2px; }
 .time-slider label { display: block; margin-bottom: 4px; font-size: 14px; }

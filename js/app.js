@@ -1188,29 +1188,31 @@
   const smeVenue = ev => smeSvc(ev, 'venues');
   const smeDecor = ev => smeSvc(ev, 'decor');
 
-  /* Phase 1 Guest Allocation Engine: mathematically distributes guests across spatial zones with strict sum equality */
+  /* Simultaneous 4-Zone Guest Allocation Engine: mathematically distributes guests across Indian wedding zones with strict sum equality */
   function guestAllocation(guests, venue, phaseIdx = 2) {
-    const cap = venue.cap || [150, 500];
+    const cap = (venue && venue.cap) ? venue.cap : [150, 500];
     const total = Math.max(1, guests || 100);
     const overcrowded = !!cap[1] && total > cap[1];
 
-    // Configurable percentage breakdowns per phase ensuring exact sum equality
-    // Phase 0: Arrival (Guests arriving, welcome beverages, registration & entrance foyer)
-    // Phase 1: Ceremony (Vedic ritual, mandap viewing, couple stage)
-    // Phase 2: Dinner & Celebration (Banquet dining, food stations, dance & celebration)
+    // Multi-zone concurrent Indian wedding distribution:
+    // Even during the main celebration/dinner, guests naturally divide into:
+    // 1. Mandap & Ceremony Seating: 30% (75 of 250)
+    // 2. Dining Hall & Buffet Area: 40% (100 of 250)
+    // 3. Open Gathering & Social Lounge: 22% (55 of 250)
+    // 4. Welcome Foyer & Reception: 8% (20 of 250)
     const weights = [
-      { entrance: 0.55, tables: 0.30, lounge: 0.15, stage: 0.00 }, // Arrival
-      { entrance: 0.05, tables: 0.20, lounge: 0.10, stage: 0.65 }, // Ceremony
-      { entrance: 0.05, tables: 0.70, lounge: 0.10, stage: 0.15 }  // Celebration / Dinner
-    ][phaseIdx] || { entrance: 0.05, tables: 0.70, lounge: 0.10, stage: 0.15 };
+      { stage: 0.15, dining: 0.25, lounge: 0.25, entrance: 0.35 }, // Arrival
+      { stage: 0.45, dining: 0.25, lounge: 0.20, entrance: 0.10 }, // Ceremony
+      { stage: 0.30, dining: 0.40, lounge: 0.22, entrance: 0.08 }  // Celebration & Dinner
+    ][phaseIdx] || { stage: 0.30, dining: 0.40, lounge: 0.22, entrance: 0.08 };
 
-    const cTables = Math.round(total * weights.tables);
     const cStage = Math.round(total * weights.stage);
+    const cDining = Math.round(total * weights.dining);
     const cLounge = Math.round(total * weights.lounge);
     // Ensure the remainder guarantees exact mathematical match to total
-    const cEntrance = Math.max(0, total - (cTables + cStage + cLounge));
+    const cEntrance = Math.max(0, total - (cStage + cDining + cLounge));
 
-    const tableCount = Math.max(1, Math.ceil(cTables / 10));
+    const tableCount = Math.max(1, Math.ceil(cDining / 10));
 
     return {
       total,
@@ -1219,12 +1221,13 @@
       overcrowded,
       cap,
       zones: {
-        tables: { name: 'Seated at Dining Tables', count: cTables, tables: tableCount, pct: Math.round((cTables / total) * 100) },
-        stage: { name: 'Mandap & Stage Area', count: cStage, pct: Math.round((cStage / total) * 100) },
-        entrance: { name: 'Foyer & Entrance Walkways', count: cEntrance, pct: Math.round((cEntrance / total) * 100) },
-        lounge: { name: 'Buffet & Social Lounge', count: cLounge, pct: Math.round((cLounge / total) * 100) }
+        stage: { name: 'Mandap & Ceremony Seating', count: cStage, pct: Math.round((cStage / total) * 100) },
+        dining: { name: 'Dining Hall & Buffet Area', count: cDining, tables: tableCount, pct: Math.round((cDining / total) * 100) },
+        tables: { name: 'Seated at Dining Tables', count: cDining, tables: tableCount, pct: Math.round((cDining / total) * 100) },
+        lounge: { name: 'Open Gathering & Social Lounge', count: cLounge, pct: Math.round((cLounge / total) * 100) },
+        entrance: { name: 'Entrance & Welcome Foyer', count: cEntrance, pct: Math.round((cEntrance / total) * 100) }
       },
-      note: overcrowded ? `${esc(venue.name)} comfortably hosts up to ${cap[1]} guests. For ${total} guests, your ShaadiKart Host will arrange staggered seating or an expanded lawn enclosure.` : ''
+      note: overcrowded ? `${esc(venue ? venue.name : 'Venue')} comfortably hosts up to ${cap[1]} guests. For ${total} guests, your ShaadiKart Host will arrange staggered seating or an expanded lawn enclosure.` : ''
     };
   }
 
@@ -1251,18 +1254,20 @@
     if (!dp) return `<div class="sme-empty">${ic('flower')}<p>Add a decor partner to see your venue dressed.</p><a class="btn btn-ghost btn-sm" href="#/category/decor">Browse decor</a></div>`;
     const a = D.VENUE_ANCHORS[v.id], pr = D.DECOR_PROFILES[dp.id], pal = pr.palette;
     const w = SME.sweep, tip = SME_ELEM[SME.dtip];
+    const decorImg = (a.decorGallery && a.decorGallery[1] && a.decorGallery[1].photo) || pr.overlayPhoto;
     return `<div class="sme-act2" style="--pa:${pal[0]};--pb:${pal[1]};--pc:${pal[2]}"><div class="sme-photo" ${bg(a.photo, 1200)} role="img" aria-label="${esc(v.name)} dressed by ${esc(dp.name)}">${SME_LABEL}
-      <div class="decor-layer" id="sme-layer" style="background-image:url('${D.img(pr.overlayPhoto, 1200)}');clip-path:inset(0 ${100 - w}% 0 0)"></div>
+      <div class="decor-layer" id="sme-layer" style="background-image:url('${D.img(decorImg, 1200)}');clip-path:inset(0 ${100 - w}% 0 0)"></div>
       <span class="sweep-line" id="sme-line" style="left:${w}%"></span>
       <div class="decor-hs" id="sme-hs"${w < 55 ? ' hidden' : ''}>${pr.elements.map(k => `<button type="button" class="hotspot${k === SME.dtip ? ' on' : ''}" style="left:${SME_ELEM[k][2]}%;top:${SME_ELEM[k][3]}%" data-act="sme-elem" data-k="${k}" aria-label="${esc(SME_ELEM[k][0])}"><i></i></button>`).join('')}</div>
       <input type="range" class="sweep-slider" min="0" max="100" value="${w}" data-input="sme-sweep" aria-label="Reveal decoration"></div>
-      <div class="sme-sweep-cap"><span>Your venue</span><span>With ${esc(dp.name)}</span></div>
+      <div class="sme-sweep-cap"><span>Original Venue Space (Raw)</span><span>Transformed with ${esc(dp.name)}</span></div>
       <div class="sme-tip" id="sme-dtip" aria-live="polite">${tip ? `<b>${tip[0]} by ${esc(dp.name)}</b><span>${tip[1]}</span>` : `<span>Drag the line to dress the space, then tap a dot for details.</span>`}</div>
       <div class="sme-pal">${pal.map(c => `<i style="background:${c}" title="${c}"></i>`).join('')}<span>${esc(dp.name)} palette</span></div></div>`;
   }
   /* Act 3: bird's-eye floor plan. Coordinates are in a 100 x 75 viewBox (4:3); tableZone is in photo percent. */
   function birdEyeLayout(guests, venue) {
-    const a = D.VENUE_ANCHORS[venue.id], tz = a.tableZone, cap = venue.cap || [0, 0];
+    const a = D.VENUE_ANCHORS[venue.id] || { stageX: 50, stageY: 38, tableZone: { x: 12, y: 58, w: 76, h: 30 } };
+    const tz = a.tableZone, cap = venue.cap || [0, 0];
     const n = Math.max(1, Math.ceil(guests / 10));
     const zx = tz.x, zy = tz.y * 0.75, zw = tz.w, zh = tz.h * 0.75;
     const cols = Math.max(1, Math.ceil(Math.sqrt(n * zw / zh))), rows = Math.ceil(n / cols);
@@ -1293,24 +1298,79 @@
   }
   function floorVis(ev, v, t) {
     const L = birdEyeLayout(ev.guests, v), ph = smePhase(t);
-    let left = smeSeated(ev, t);
+    const alloc = guestAllocation(ev.guests, v, ph);
+    const { stage, dining, lounge, entrance } = alloc.zones;
+
+    // Helper to generate distributed guest dots in a given zone bounding box
+    const zoneDots = (n, x, y, w, h, cls, delayBase = 0) => {
+      if (n <= 0) return '';
+      const cols = Math.max(1, Math.ceil(Math.sqrt(n * (w / h))));
+      const rows = Math.ceil(n / cols);
+      const cw = w / Math.max(1, cols);
+      const ch = h / Math.max(1, rows);
+      let res = '';
+      for (let i = 0; i < n; i++) {
+        const c = i % cols;
+        const r = Math.floor(i / cols);
+        const px = (x + cw * (c + 0.5) + ((i * 7) % 3 - 1) * 0.35).toFixed(1);
+        const py = (y + ch * (r + 0.5) + ((i * 5) % 3 - 1) * 0.35).toFixed(1);
+        const delay = (((i * 13 + delayBase) % 10) * 0.15).toFixed(2);
+        res += `<circle class="fp-guest on ${cls}" cx="${px}" cy="${py}" r="0.8" style="animation-delay:${delay}s"/>`;
+      }
+      return res;
+    };
+
+    // 1. Mandap & Ceremony Seating Zone (Top center, in front of stage)
+    const mandapDots = zoneDots(stage.count, 33, 21, 34, 13, 'fp-g-stage', 1);
+
+    // 2. Dining Hall & Buffet Tables (Center and bottom dining zone)
+    let left = dining.count;
     const tbl = L.tables.map(tb => {
       const fill = Math.min(tb.seats, left); left -= fill;
-      const dots = Array.from({ length: tb.seats }, (_, k) => { const an = k / tb.seats * Math.PI * 2 - Math.PI / 2, d = tb.r + Math.max(0.55, tb.r * 0.28);
-        return `<circle class="fp-guest${k < fill ? ' on' : ''}" cx="${(tb.cx + Math.cos(an) * d).toFixed(2)}" cy="${(tb.cy + Math.sin(an) * d).toFixed(2)}" r="${Math.max(0.45, tb.r * 0.22).toFixed(2)}" style="animation-delay:${((k * 7 + Math.round(tb.cx)) % 10) * 0.2}s"/>`; }).join('');
+      const dots = Array.from({ length: tb.seats }, (_, k) => {
+        const an = k / tb.seats * Math.PI * 2 - Math.PI / 2, d = tb.r + Math.max(0.55, tb.r * 0.28);
+        return `<circle class="fp-guest${k < fill ? ' on fp-g-dining' : ''}" cx="${(tb.cx + Math.cos(an) * d).toFixed(2)}" cy="${(tb.cy + Math.sin(an) * d).toFixed(2)}" r="${Math.max(0.45, tb.r * 0.22).toFixed(2)}" style="animation-delay:${((k * 7 + Math.round(tb.cx)) % 10) * 0.2}s"/>`;
+      }).join('');
       return `<g class="fp-table${L.overcrowded ? ' crowded' : ''}"><circle cx="${tb.cx.toFixed(2)}" cy="${tb.cy.toFixed(2)}" r="${tb.r.toFixed(2)}"/>${dots}</g>`;
     }).join('');
-    let crowd = '';
-    if (ph === 1) { const n = Math.min(ev.guests, 80), cols = 16; crowd = Array.from({ length: n }, (_, i) => `<circle class="fp-guest on" cx="${(L.stage.x - 24 + (i % cols) * 3.2).toFixed(1)}" cy="${(L.stage.y + 9 + Math.floor(i / cols) * 3).toFixed(1)}" r="0.9" style="animation-delay:${(i % 8) * 0.25}s"/>`).join(''); }
-    const ctr = [8, 92].map(x => `<rect class="fp-food${ph === 2 ? ' on' : ''}" x="${x - 5}" y="${(L.zone.y + L.zone.h / 2 - 3).toFixed(1)}" width="10" height="6" rx="1.2"/>`).join('');
-    return `<svg class="fp-svg" viewBox="0 0 100 75" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Bird's-eye floor plan, ${L.tables.length} tables"><rect class="fp-floor" x="1" y="1" width="98" height="73" rx="3" style="fill:${skyAt(t)[1]}"/>
+    // Remaining dining guests placed along the buffet lines
+    const buffetGuestDots = left > 0 ? zoneDots(left, 5, 41, 14, 18, 'fp-g-dining', 4) : '';
+
+    // 3. Social & Mingling Lounge (Right side lounge zone)
+    const loungeDots = zoneDots(lounge.count, 73, 16, 22, 28, 'fp-g-lounge', 6);
+
+    // 4. Welcome Foyer & Entrance Area (Bottom center entry path)
+    const foyerDots = zoneDots(entrance.count, 42, 60, 16, 12, 'fp-g-foyer', 8);
+
+    // Architectural zone markers & labels
+    const buffetCounters = [
+      `<g class="fp-counter-group"><rect class="fp-food on" x="4" y="40" width="16" height="5" rx="1.2"/><text class="fp-sublbl" x="12" y="43.5" text-anchor="middle">Live Chaat &amp; Starters</text></g>`,
+      `<g class="fp-counter-group"><rect class="fp-food on" x="4" y="49" width="16" height="5" rx="1.2"/><text class="fp-sublbl" x="12" y="52.5" text-anchor="middle">Main Course Buffet</text></g>`
+    ].join('');
+
+    const loungeZone = `<rect class="fp-lounge-zone" x="72" y="15" width="24" height="30" rx="2"/><text class="fp-sublbl" x="84" y="18" text-anchor="middle">Cocktail &amp; Social Lounge</text>`;
+    const foyerZone = `<rect class="fp-foyer-zone" x="41" y="59" width="18" height="13" rx="1.5"/><text class="fp-sublbl" x="50" y="70" text-anchor="middle">Entryway Foyer</text>`;
+
+    return `<svg class="fp-svg" viewBox="0 0 100 75" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Bird's-eye floor plan with simultaneous 4-zone crowd distribution">
+      <rect class="fp-floor" x="1" y="1" width="98" height="73" rx="3" style="fill:${skyAt(t)[1]}"/>
       <rect class="fp-zone" x="${L.zone.x}" y="${L.zone.y}" width="${L.zone.w}" height="${L.zone.h}" rx="2"/>
-      <rect class="fp-stage${ph === 1 ? ' on' : ''}" x="${L.stage.x - 14}" y="${L.stage.y - 7}" width="28" height="12" rx="2"/><text class="fp-lbl" x="${L.stage.x}" y="${L.stage.y - 0.5}" text-anchor="middle">Stage</text>
-      ${ctr}${tbl}${crowd}</svg>`;
+      <rect class="fp-stage on" x="${L.stage.x - 14}" y="${L.stage.y - 7}" width="28" height="12" rx="2"/>
+      <text class="fp-lbl" x="${L.stage.x}" y="${L.stage.y - 0.5}" text-anchor="middle">Ceremony Stage &amp; Mandap</text>
+      ${buffetCounters}
+      ${loungeZone}
+      ${foyerZone}
+      ${tbl}
+      ${buffetGuestDots}
+      ${mandapDots}
+      ${loungeDots}
+      ${foyerDots}
+    </svg>`;
   }
   function counterText(ev, t) {
-    const n = Math.ceil(ev.guests / 10), ph = smePhase(t);
-    return `<b>${ev.guests} guests</b> · ${n} table${n === 1 ? '' : 's'} of 10${ph === 1 ? ' · everyone at the stage' : ` · ${smeSeated(ev, t)} seated`}`;
+    const v = smeVenue(ev);
+    const ph = smePhase(t);
+    const alloc = guestAllocation(ev.guests, v, ph);
+    return `<b>${alloc.total} Guests Concurrent Distribution</b>: <span class="fp-c-stage">★ ${alloc.zones.stage.count} at Mandap</span> · <span class="fp-c-dining">🍽 ${alloc.zones.dining.count} in Dining</span> · <span class="fp-c-lounge">🍸 ${alloc.zones.lounge.count} Mingling</span> · <span class="fp-c-foyer">🚪 ${alloc.zones.entrance.count} at Foyer</span>`;
   }
 
   /* Stage 3 Experience Your Wedding: Dual-mode visualization (Photorealistic 3-scene showcase vs Interactive SVG floor plan) */
@@ -1345,9 +1405,9 @@
 
     // OPTION B: Photorealistic Celebration Experience with 3 selectable scenes
     const sceneCards = [
-      { key: 'arrival', label: '1. Arrival', desc: 'Guests arriving & welcome lounge', icon: 'users' },
-      { key: 'dining', label: '2. Dining', desc: 'Seated dinner & live counters', icon: 'store' },
-      { key: 'celebration', label: '3. Celebration', desc: 'Mandap, couple stage & dancing', icon: 'heart' }
+      { key: 'arrival', label: '1. Arrival & Foyer', desc: 'Welcome drinks & foyer gathering', icon: 'users' },
+      { key: 'dining', label: '2. Banquet Dining', desc: 'Seated dinner & live counters', icon: 'store' },
+      { key: 'celebration', label: '3. Mandap Celebration', desc: 'Mandap, couple stage & pheras', icon: 'heart' }
     ].map(sc => {
       const isCur = activeSceneKey === sc.key;
       const ph = scMap[sc.key] ? scMap[sc.key].photo : 'photo-1519689950823-0a2251441815';
@@ -1391,8 +1451,8 @@
         <div class="sme-alloc-summary">
           <h4>${ic('users')} Mathematical Guest Allocation (${alloc.total} Guests Total)</h4>
           <div class="sme-alloc-grid">
-            <div class="alloc-box"><span>${alloc.zones.tables.name}</span><b>${alloc.zones.tables.count} guests</b><small>${alloc.zones.tables.tables} tables of 10</small></div>
             <div class="alloc-box"><span>${alloc.zones.stage.name}</span><b>${alloc.zones.stage.count} guests</b><small>${alloc.zones.stage.pct}% crowd density</small></div>
+            <div class="alloc-box"><span>${alloc.zones.dining.name}</span><b>${alloc.zones.dining.count} guests</b><small>${alloc.zones.dining.tables} tables of 10</small></div>
             <div class="alloc-box"><span>${alloc.zones.lounge.name}</span><b>${alloc.zones.lounge.count} guests</b><small>${alloc.zones.lounge.pct}% crowd density</small></div>
             <div class="alloc-box"><span>${alloc.zones.entrance.name}</span><b>${alloc.zones.entrance.count} guests</b><small>${alloc.zones.entrance.pct}% crowd density</small></div>
           </div>
@@ -1418,7 +1478,11 @@
       ${done ? `<span class="perk-done">Reserved ${ic('check')}</span>` : `<button type="button" class="btn btn-gold" data-act="reserve-perk">Reserve a seat</button>`}</div>`;
   }
   function seeMyEvent(ev) {
-    const tabs = [[1, 'The Space'], [2, 'Dressed for you'], [3, 'Experience Your Wedding']];
+    const tabs = [
+      [1, '1. Raw (Original Space)'],
+      [2, '2. After Decoration (Dressed For You)'],
+      [3, '3. With Guests (Realistic Celebration)']
+    ];
     return `<div class="sme-stage" data-ev="${ev.id}"><div class="sme-tabs" role="tablist">${tabs.map(([n, l]) => `<button type="button" role="tab" aria-selected="${SME.act === n}" class="${SME.act === n ? 'on' : ''}" data-act="sme-tab" data-n="${n}">${l}</button>`).join('')}</div>
       <div class="sme-body">${SME.act === 1 ? actOne(ev) : SME.act === 2 ? actTwo(ev) : actThree(ev)}</div></div>`;
   }
