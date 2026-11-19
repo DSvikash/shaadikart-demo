@@ -487,5 +487,71 @@
     'rangoli-theme': { id: 'rangoli-theme', partnerId: 'rangoli-theme', palette: ['#4a22b0', '#f7c548', '#f4eefc'], elements: ['mandap', 'floral arch', 'aisle florals', 'drapes', 'lighting glow'], overlayPhoto: 'photo-1530103862676-de8c9debad1d' }
   };
 
-  window.SK_DATA = { img, BRAND, PHOTOS, CATEGORIES, LOCALITIES, EVENT_TYPES, PARTNERS, POLICY, MANDIRS, MANDIR_COST, MANDIR_CHECKED, VENUE_ANCHORS, DECOR_PROFILES };
+  // Business Portal: Temporary background image until reference photograph is uploaded.
+  const BUSINESS_LOGIN_BG = 'photo-1519741497674-611481863552';
+
+  // Business Photo Management: Seed 50 photos for Royal Banquet (30 Published, 10 Draft, 10 Archived)
+  const SEED_ROYAL_PHOTOS = [
+    // 16 RAW Photos: 10 Published, 3 Draft, 3 Archived
+    { id: 'rb-raw-1', url: 'photo-1768851142332-75f3d1b47452', category: 'raw', status: 'published', title: 'Grand Marriage Hall Interior', caption: 'Polished granite flooring, high ceiling, central chandelier.', uploadedAt: '02 Nov 2026', size: '3.4 MB' },
+    { id: 'rb-raw-2', url: 'photo-1526568929-7cdd510e77fd', category: 'raw', status: 'published', title: 'Ceremonial Stage Platform', caption: 'Bare raised stage platform ready for custom mandap fabrication.', uploadedAt: '02 Nov 2026', size: '2.8 MB' },
+    { id: 'rb-raw-3', url: 'photo-1542665952-14513db15293', category: 'raw', status: 'published', title: 'Dedicated Banquet Dining Wing', caption: 'Spacious food service area ready for twin buffet islands.', uploadedAt: '03 Nov 2026', size: '3.1 MB' },
+    { id: 'rb-raw-4', url: 'photo-1524824267900-2fa9cbf7a506', category: 'raw', status: 'published', title: 'North Corridor & Walkway', caption: 'Covered guest arrival corridor with glass frontage.', uploadedAt: '03 Nov 2026', size: '2.4 MB' },
+    { id: 'rb-raw-5', url: 'photo-1779301674216-506de8607c87', category: 'raw', status: 'published', title: 'Main Foyer & Reception Lobby', caption: 'High ceiling marble foyer with guest registration desk.', uploadedAt: '04 Nov 2026', size: '2.9 MB' },
+    { id: 'rb-raw-6', url: 'photo-1768209373252-1819f7cc699a', category: 'raw', status: 'published', title: 'Outdoor Spillover Lawn Entry', caption: 'Paved courtyard connecting main hall to lawn section.', uploadedAt: '04 Nov 2026', size: '3.5 MB' },
+    { id: 'rb-raw-7', url: 'photo-1727931301188-55b23fa9672e', category: 'raw', status: 'published', title: 'VIP Lounge Pre-function Area', caption: 'Private air-conditioned lounge for intimate family gatherings.', uploadedAt: '05 Nov 2026', size: '2.7 MB' },
+    { id: 'rb-raw-8', url: 'photo-1783314867628-220ab03cac99', category: 'raw', status: 'published', title: 'East Wing Dining Space', caption: 'Secondary seating hall for dessert counters and tea lounge.', uploadedAt: '05 Nov 2026', size: '3.2 MB' },
+    { id: 'rb-raw-9', url: 'photo-1675247488725-22d1b78e75db', category: 'raw', status: 'published', title: 'Central Courtyard Pillars', caption: 'Architectural arches and carved sandstone pillars.', uploadedAt: '06 Nov 2026', size: '2.6 MB' },
+    { id: 'rb-raw-10', url: 'photo-1653821355736-0c2598d0a63e', category: 'raw', status: 'published', title: 'Backstage Dressing Room Access', caption: 'Secure green room corridor with dedicated air conditioning.', uploadedAt: '06 Nov 2026', size: '2.1 MB' },
+    { id: 'rb-raw-11', url: 'photo-1523438885200-e635ba2c371e', category: 'raw', status: 'draft', title: 'Service Entry & Kitchen Dock', caption: 'Dedicated service freight entrance for live catering crew.', uploadedAt: '07 Nov 2026', size: '2.9 MB' },
+    { id: 'rb-raw-12', url: 'photo-1574482211311-45a2169db57c', category: 'raw', status: 'draft', title: 'Perimeter Wall Lighting Conduit', caption: 'Architectural electrical points for ambient uplighting.', uploadedAt: '07 Nov 2026', size: '2.3 MB' },
+    { id: 'rb-raw-13', url: 'photo-1512719994953-eabf50895df7', category: 'raw', status: 'draft', title: 'Valet Parking Drop Zone', caption: 'Covered porch and 200-car valet staging area.', uploadedAt: '08 Nov 2026', size: '3.8 MB' },
+    { id: 'rb-raw-14', url: 'photo-1782567531550-22e74704f7e3', category: 'raw', status: 'archived', title: 'Generator Backup Compound', caption: 'Acoustic silent generator bay (250 kVA redundancy).', uploadedAt: '01 Oct 2026', size: '2.2 MB' },
+    { id: 'rb-raw-15', url: 'photo-1675693303492-9a5bc898bf94', category: 'raw', status: 'archived', title: 'Basement Storage Facility', caption: 'Vendor loading dock and decor staging basement.', uploadedAt: '01 Oct 2026', size: '3.0 MB' },
+    { id: 'rb-raw-16', url: 'photo-1774600551165-547a9cc22264', category: 'raw', status: 'archived', title: 'Rear Garden Service Path', caption: 'Exterior pathway for waste management and sanitation.', uploadedAt: '01 Oct 2026', size: '2.5 MB' },
+
+    // 18 DECOR Photos: 11 Published, 4 Draft, 3 Archived
+    { id: 'rb-dec-1', url: 'photo-1519741497674-611481863552', category: 'decor', status: 'published', title: 'Floral Arch Entrance Foyer', caption: 'Grand entryway with white orchid and peach drape styling.', uploadedAt: '02 Nov 2026', size: '4.2 MB' },
+    { id: 'rb-dec-2', url: 'photo-1587271636175-90d58cdad458', category: 'decor', status: 'published', title: 'Royal Mandap Stage Setup', caption: 'Carved brass pillars with fresh tuberose and marigold canopy.', uploadedAt: '02 Nov 2026', size: '4.8 MB' },
+    { id: 'rb-dec-3', url: 'photo-1511795409834-ef04bbd61622', category: 'decor', status: 'published', title: 'Dressed Banquet Dining Tables', caption: 'Gold chiavari chairs, satin runners, and brass candelabras.', uploadedAt: '03 Nov 2026', size: '3.9 MB' },
+    { id: 'rb-dec-4', url: 'photo-1469371670807-013ccf25f16a', category: 'decor', status: 'published', title: 'Canopy Stage with Fairy Lights', caption: 'Thousands of micro-LED fairy lights illuminating the aisle.', uploadedAt: '03 Nov 2026', size: '4.5 MB' },
+    { id: 'rb-dec-5', url: 'photo-1523438885200-e635ba2c371e', category: 'decor', status: 'published', title: 'Central Mandap Havan Kund', caption: 'Traditional havan square with silk gaddi and flower borders.', uploadedAt: '04 Nov 2026', size: '3.6 MB' },
+    { id: 'rb-dec-6', url: 'photo-1529636798458-92182e662485', category: 'decor', status: 'published', title: 'Welcome Lobby Floral Urns', caption: 'Brass urlis with floating lotus flowers and scented candles.', uploadedAt: '04 Nov 2026', size: '3.1 MB' },
+    { id: 'rb-dec-7', url: 'photo-1757589227072-0dd17af42433', category: 'decor', status: 'published', title: 'Marigold Aisle Floral Walkway', caption: 'Yellow and saffron marigold borders lining the central bride walk.', uploadedAt: '05 Nov 2026', size: '3.7 MB' },
+    { id: 'rb-dec-8', url: 'photo-1544078751-58fee2d8a03b', category: 'decor', status: 'published', title: 'Lawn Buffet Umbrella Tables', caption: 'Cocktail tables with festive parasols and garden florals.', uploadedAt: '05 Nov 2026', size: '3.3 MB' },
+    { id: 'rb-dec-9', url: 'photo-1532712938310-34cb3982ef74', category: 'decor', status: 'published', title: 'Illuminated Tunnel Gate', caption: 'Full tunnel arch with crystal drops and warm tungsten glow.', uploadedAt: '06 Nov 2026', size: '4.6 MB' },
+    { id: 'rb-dec-10', url: 'photo-1769812343353-ae6ca1250bc2', category: 'decor', status: 'published', title: 'Pastel Draped Mandap Backdrop', caption: 'Blush pink and ivory velvet drape cascade behind couple stage.', uploadedAt: '06 Nov 2026', size: '3.5 MB' },
+    { id: 'rb-dec-11', url: 'photo-1759124650320-d629a3d73d9f', category: 'decor', status: 'published', title: 'Sweet Counter Floral Framing', caption: 'Live jalebi and mithai station framed with fresh jasmine.', uploadedAt: '07 Nov 2026', size: '3.0 MB' },
+    { id: 'rb-dec-12', url: 'photo-1530103862676-de8c9debad1d', category: 'decor', status: 'draft', title: 'Village Theme Earthen Pot Decor', caption: 'Terracotta lamps and hand-painted matkis for rustic wedding.', uploadedAt: '08 Nov 2026', size: '2.8 MB' },
+    { id: 'rb-dec-13', url: 'photo-1520854221256-17451cc331bf', category: 'decor', status: 'draft', title: 'Rose Petal Welcome Carpet', caption: 'Deep red velvet runner layered with fresh red rose petals.', uploadedAt: '08 Nov 2026', size: '3.4 MB' },
+    { id: 'rb-dec-14', url: 'photo-1511578314322-379afb476865', category: 'decor', status: 'draft', title: 'Modern Geometric Arch', caption: 'Contemporary metallic polygon arch for engagement ceremonies.', uploadedAt: '09 Nov 2026', size: '3.2 MB' },
+    { id: 'rb-dec-15', url: 'photo-1527529482837-4698179dc6ce', category: 'decor', status: 'draft', title: 'LED Wall Visual Stage Backdrop', caption: 'Dynamic visual graphics screen for sangeet and reception.', uploadedAt: '09 Nov 2026', size: '4.1 MB' },
+    { id: 'rb-dec-16', url: 'photo-1517248135467-4c7edcad34c4', category: 'decor', status: 'archived', title: 'Monochrome Silver Table Dressing', caption: 'Silver sequin tablecloths from previous winter festival.', uploadedAt: '15 Sep 2026', size: '2.9 MB' },
+    { id: 'rb-dec-17', url: 'photo-1507676184212-d03ab07a01bf', category: 'decor', status: 'archived', title: 'Past Season Burgundy Drapes', caption: 'Deep maroon fabric backdrop used in 2025 autumn weddings.', uploadedAt: '15 Sep 2026', size: '3.3 MB' },
+    { id: 'rb-dec-18', url: 'photo-1525610553991-2bede1a236e2', category: 'decor', status: 'archived', title: 'Outdoor Bistro Lamp String', caption: 'Edison filament bulbs for vintage lawn dinners.', uploadedAt: '15 Sep 2026', size: '2.7 MB' },
+
+    // 16 PEOPLE Photos: 9 Published, 3 Draft, 4 Archived
+    { id: 'rb-peop-1', url: 'photo-1519741497674-611481863552', category: 'people', status: 'published', title: 'Guests Arriving at Foyer', caption: 'Traditional dhol welcome and guests receiving welcome drinks.', uploadedAt: '02 Nov 2026', size: '4.4 MB' },
+    { id: 'rb-peop-2', url: 'photo-1555244162-803834f70033', category: 'people', status: 'published', title: 'Banquet Hall Dining Crowd', caption: 'Family and friends enjoying silver thali service at dining tables.', uploadedAt: '02 Nov 2026', size: '4.6 MB' },
+    { id: 'rb-peop-3', url: 'photo-1519689950823-0a2251441815', category: 'people', status: 'published', title: 'Ceremonial Mandap Celebration', caption: 'Bride, groom and elders gathered for sacred pheras.', uploadedAt: '03 Nov 2026', size: '5.1 MB' },
+    { id: 'rb-peop-4', url: 'photo-1527529482837-4698179dc6ce', category: 'people', status: 'published', title: 'Reception Stage Toast', caption: 'Couples and wedding guests gathering on stage for portraits.', uploadedAt: '03 Nov 2026', size: '4.2 MB' },
+    { id: 'rb-peop-5', url: 'photo-1768508950719-4d76978fdf44', category: 'people', status: 'published', title: 'Social Lounge Mingling', caption: 'Cocktail tables with guests socializing before dinner.', uploadedAt: '04 Nov 2026', size: '3.9 MB' },
+    { id: 'rb-peop-6', url: 'photo-1768508950790-3bbdfe3973c1', category: 'people', status: 'published', title: 'Sangeet Dance Floor Crowd', caption: 'Younger guests and family performing choreographies.', uploadedAt: '04 Nov 2026', size: '4.7 MB' },
+    { id: 'rb-peop-7', url: 'photo-1744804298431-57953e4eaba0', category: 'people', status: 'published', title: 'Family Blessings at Mandap', caption: 'Grandparents and parents gifting shagun to the newly-weds.', uploadedAt: '05 Nov 2026', size: '3.8 MB' },
+    { id: 'rb-peop-8', url: 'photo-1758810409996-583f3bad7d51', category: 'people', status: 'published', title: 'Baraat Procession Entry', caption: 'Festive baraat dance at main driveway entrance.', uploadedAt: '05 Nov 2026', size: '4.5 MB' },
+    { id: 'rb-peop-9', url: 'photo-1587271636175-90d58cdad458', category: 'people', status: 'published', title: 'Vedic Pheras Ritual', caption: 'Solemn fire ceremony surrounded by close family members.', uploadedAt: '06 Nov 2026', size: '4.0 MB' },
+    { id: 'rb-peop-10', url: 'photo-1511795409834-ef04bbd61622', category: 'people', status: 'draft', title: 'Buffet Line Queue', caption: 'Guests sampling starters at live chaat stall.', uploadedAt: '07 Nov 2026', size: '3.6 MB' },
+    { id: 'rb-peop-11', url: 'photo-1520854221256-17451cc331bf', category: 'people', status: 'draft', title: 'Var Mala Stage Moment', caption: 'Garland exchange with rose petals shower.', uploadedAt: '07 Nov 2026', size: '4.3 MB' },
+    { id: 'rb-peop-12', url: 'photo-1530103862676-de8c9debad1d', category: 'people', status: 'draft', title: 'Haldi Morning Celebration', caption: 'Informal haldi application by bridesmaids.', uploadedAt: '08 Nov 2026', size: '3.7 MB' },
+    { id: 'rb-peop-13', url: 'photo-1591969851586-adbbd4accf81', category: 'people', status: 'archived', title: 'Pre-wedding Couple Stroll', caption: 'Couple portrait session in empty hall courtyard.', uploadedAt: '20 Sep 2026', size: '3.2 MB' },
+    { id: 'rb-peop-14', url: 'photo-1630526720753-aa4e71acf67d', category: 'people', status: 'archived', title: 'Bridal Entry with Chhatri', caption: 'Brothers walking bride under floral canopy.', uploadedAt: '20 Sep 2026', size: '4.1 MB' },
+    { id: 'rb-peop-15', url: 'photo-1757647630063-dd5cd82271f3', category: 'people', status: 'archived', title: 'Groom Entry on Vintage Car', caption: 'Groom arrival sequence at main entrance gate.', uploadedAt: '20 Sep 2026', size: '3.9 MB' },
+    { id: 'rb-peop-16', url: 'photo-1629756048377-09540f52caa1', category: 'people', status: 'archived', title: 'Evening Cocktail Cheers', caption: 'Toast moment with bride and groom friends.', uploadedAt: '20 Sep 2026', size: '3.5 MB' }
+  ];
+
+  window.SK_DATA = {
+    img, BRAND, PHOTOS, CATEGORIES, LOCALITIES, EVENT_TYPES, PARTNERS, POLICY,
+    MANDIRS, MANDIR_COST, MANDIR_CHECKED, VENUE_ANCHORS, DECOR_PROFILES,
+    BUSINESS_LOGIN_BG, SEED_ROYAL_PHOTOS
+  };
 })();

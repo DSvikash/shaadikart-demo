@@ -78,7 +78,18 @@
     medical: '<path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><path d="M3.22 12H9.5l.5-1 2 4.5 2-7 1.5 3.5h5.27"/>',
     temple: '<path d="M12 2v3"/><path d="M8 8h8l-4-3z"/><path d="M5 11h14l-3-3H8z"/><path d="M6 11v10"/><path d="M18 11v10"/><path d="M10 21v-5a2 2 0 0 1 4 0v5"/><path d="M3 21h18"/>',
     users2: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
-    external: '<path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>'
+    external: '<path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>',
+    chart: '<line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>',
+    trending: '<polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/>',
+    rupee: '<path d="M6 3h12M6 8h12M6 13l8.5 8M6 13h3a4.5 4.5 0 0 0 0-9"/>',
+    bell: '<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>',
+    image: '<rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/>',
+    settings: '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>',
+    logOut: '<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>',
+    edit: '<path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>',
+    sliders: '<line x1="4" x2="4" y1="21" y2="14"/><line x1="4" x2="4" y1="10" y2="3"/><line x1="12" x2="12" y1="21" y2="12"/><line x1="12" x2="12" y1="8" y2="3"/><line x1="20" x2="20" y1="21" y2="16"/><line x1="20" x2="20" y1="12" y2="3"/><line x1="1" x2="7" y1="14" y2="14"/><line x1="9" x2="15" y1="8" y2="8"/><line x1="17" x2="23" y1="16" y2="16"/>',
+    sun: '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>',
+    moon: '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>'
   };
   const ic = n => `<svg class="i" viewBox="0 0 24 24" aria-hidden="true">${ICONS[n] || ''}</svg>`;
   // Logo comes only from D.BRAND (js/data.js) + img/brand/. Swap files there to rebrand everywhere.
@@ -118,12 +129,83 @@
     return {
       v: 1, user: null, locality: 'Delhi',
       cart: { event: { type: 'Wedding', name: '', date: isoPlus(120), guests: 300, locality: 'Delhi', budget: 500000 }, items: [], saved: [] },
-      compare: [], events: [ev]
+      compare: [], events: [ev],
+      business: {
+        auth: { id: 'royal-banquet', name: 'Royal Banquet & Lawns', email: 'partner@royalbanquet.com', phone: '98100' + '11221' },
+        photos: {
+          'royal-banquet': JSON.parse(JSON.stringify(D.SEED_ROYAL_PHOTOS || []))
+        }
+      },
+      crm: {
+        staff: null,
+        leads: JSON.parse(JSON.stringify(D.CRM_SAMPLE_LEADS || [])),
+        staffUsers: JSON.parse(JSON.stringify(D.CRM_STAFF_ACCOUNTS || [])),
+        journey: {
+          'lead-101': {
+            leadId: 'lead-101',
+            customerName: 'Priya & Kabir Sharma',
+            currentStage: 4,
+            stages: (D.CUSTOMER_SMILE_STAGES || []).map(st => ({
+              ...st,
+              status: st.id < 4 ? 'completed' : st.id === 4 ? 'in-progress' : 'pending',
+              completedAt: st.id < 4 ? '2026-11-15' : null,
+              assignedStaff: 'Priya Iyer',
+              notes: st.id === 4 ? 'Walkthrough requested for Saturday 11 AM.' : ''
+            }))
+          }
+        },
+        coordination: [
+          { id: 'coord-1', venueId: 'royal-banquet', venueName: 'Royal Banquet & Lawns', contactPerson: 'Vikram Sethi (General Manager)', phone: 'Verified on File', email: 'gm@royalbanquet.com', activeTours: 1, notes: 'Direct owner contact. Always confirm 24h prior.' },
+          { id: 'coord-2', venueId: 'grand-lawns', venueName: 'The Grand Lawns', contactPerson: 'Harsh Vardhan (Proprietor)', phone: 'Verified on File', email: 'harsh@grandlawns.com', activeTours: 0, notes: 'Lawn visits permitted Tue-Sun 11am-6pm.' }
+        ]
+      }
     };
   }
   function svcTotal(s) { return Math.round(s.price * (1 + GST)); }
   let S;
   try { const raw = JSON.parse(localStorage.getItem(KEY)); S = raw && raw.v === 1 ? raw : seed(); } catch (e) { S = seed(); }
+
+  // Ensure business and crm modules exist in active session
+  if (!S.business) {
+    S.business = {
+      auth: { id: 'royal-banquet', name: 'Royal Banquet & Lawns', email: 'partner@royalbanquet.com', phone: '98100' + '11221' },
+      photos: { 'royal-banquet': JSON.parse(JSON.stringify(D.SEED_ROYAL_PHOTOS || [])) }
+    };
+  }
+  if (!S.business.photos || !S.business.photos['royal-banquet']) {
+    if (!S.business.photos) S.business.photos = {};
+    S.business.photos['royal-banquet'] = JSON.parse(JSON.stringify(D.SEED_ROYAL_PHOTOS || []));
+  }
+  if (!S.crm) {
+    S.crm = {
+      staff: null,
+      leads: JSON.parse(JSON.stringify(D.CRM_SAMPLE_LEADS || [])),
+      staffUsers: JSON.parse(JSON.stringify(D.CRM_STAFF_ACCOUNTS || [])),
+      journey: {},
+      coordination: []
+    };
+  }
+  if (!S.crm.journey || !S.crm.journey['lead-101']) {
+    if (!S.crm.journey) S.crm.journey = {};
+    S.crm.journey['lead-101'] = {
+      leadId: 'lead-101',
+      customerName: 'Priya & Kabir Sharma',
+      currentStage: 4,
+      stages: (D.CUSTOMER_SMILE_STAGES || []).map(st => ({
+        ...st,
+        status: st.id < 4 ? 'completed' : st.id === 4 ? 'in-progress' : 'pending',
+        completedAt: st.id < 4 ? '2026-11-15' : null,
+        assignedStaff: 'Priya Iyer',
+        notes: st.id === 4 ? 'Walkthrough requested for Saturday 11 AM.' : ''
+      }))
+    };
+  }
+  if (!S.crm.coordination || !S.crm.coordination.length) {
+    S.crm.coordination = [
+      { id: 'coord-1', venueId: 'royal-banquet', venueName: 'Royal Banquet & Lawns', contactPerson: 'Vikram Sethi (General Manager)', phone: 'Verified on File', email: 'gm@royalbanquet.com', activeTours: 1, notes: 'Direct owner contact. Always confirm 24h prior.' },
+      { id: 'coord-2', venueId: 'grand-lawns', venueName: 'The Grand Lawns', contactPerson: 'Harsh Vardhan (Proprietor)', phone: 'Verified on File', email: 'harsh@grandlawns.com', activeTours: 0, notes: 'Lawn visits permitted Tue-Sun 11am-6pm.' }
+    ];
+  }
   const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { /* storage unavailable: demo still works in memory */ } };
 
   /* ---------- derived status ---------- */
@@ -653,8 +735,24 @@
   /* ---------- header / footer / tabbar ---------- */
   function header() {
     const r = route(); const p0 = r.parts[0] || '';
+    const isBiz = p0 === 'business' || p0 === 'business-dashboard' || p0 === 'partner-dashboard';
+    const hdrEl = $('#site-header'), ftrEl = $('#site-footer'), tabEl = $('#tabbar'), dockEl = $('#dock-root'), fabEl = $('#chat-fab');
+    if (isBiz) {
+      if (hdrEl && hdrEl.style) hdrEl.style.display = 'none';
+      if (ftrEl && ftrEl.style) ftrEl.style.display = 'none';
+      if (tabEl && tabEl.style) tabEl.style.display = 'none';
+      if (dockEl && dockEl.style) dockEl.style.display = 'none';
+      if (fabEl && fabEl.style) fabEl.style.display = 'none';
+      return;
+    } else {
+      if (hdrEl && hdrEl.style) hdrEl.style.display = '';
+      if (ftrEl && ftrEl.style) ftrEl.style.display = '';
+      if (tabEl && tabEl.style) tabEl.style.display = '';
+      if (dockEl && dockEl.style) dockEl.style.display = '';
+      if (fabEl && fabEl.style) fabEl.style.display = '';
+    }
     const wish = S.cart.saved.length;
-    const who = S.user ? esc(S.user.name.split(' ')[0]) : S.partner ? esc(partner(S.partner.id).name) : S.staff ? 'Concierge' : 'Login / Sign Up';
+    const who = S.user ? esc(S.user.name.split(' ')[0]) : (S.business && S.business.auth) ? esc(S.business.auth.name.split(' ')[0]) : S.partner ? esc(partner(S.partner.id).name.split(' ')[0]) : 'Login / Sign Up';
     const navA = (h, l, on) => `<a href="${h}" class="${on ? 'on' : ''}">${l}</a>`;
     $('#site-header').className = p0 === '' ? 'over' : '';
     $('#site-header').innerHTML = `<div class="wrap hdr">
@@ -687,7 +785,7 @@
         <button class="login-btn" data-act="account"><span class="av">${ic('user')}</span><span class="lbl">${who}</span></button>
         <button class="hic burger" data-act="menu" aria-label="Menu">${ic('menu')}</button>
       </div></div>`;
-    $('#tabbar').innerHTML = [['#/', 'home', 'Home', p0 === ''], ['#/cart', 'cart', 'Cart', p0 === 'cart'], ['#/bookings', 'calendarCheck', 'Bookings', p0 === 'bookings' || p0 === 'checkout'], ['', 'user', S.user || S.partner ? 'Profile' : 'Login', false]]
+    $('#tabbar').innerHTML = [['#/', 'home', 'Home', p0 === ''], ['#/cart', 'cart', 'Cart', p0 === 'cart'], ['#/bookings', 'calendarCheck', 'Bookings', p0 === 'bookings' || p0 === 'checkout'], ['', 'user', S.user || S.partner || (S.business && S.business.auth) ? 'Profile' : 'Login', false]]
       .map(([h, i, l, on]) => h ? `<a href="${h}" class="${on ? 'on' : ''}">${ic(i)}${l}${i === 'cart' && cartCount() ? `<span class="badge-count">${cartCount()}</span>` : ''}</a>` : `<a href="#" data-act="account">${ic(i)}${l}</a>`).join('');
   }
   function footer() {
@@ -695,7 +793,7 @@
       <div>${logo(true)}<p style="margin:10px 0 0;font-size:13.5px">${esc(B.tagline)}</p><div class="script">One Platform. Every Event. One Cart.</div></div>
       <div><h4>Explore</h4>${D.CATEGORIES.slice(0, 5).map(c => `<a href="#/category/${c.id}">${esc(c.name)}</a>`).join('')}<a href="#/categories">All categories</a></div>
       <div><h4>Your event</h4><a href="#/cart">My Cart</a><a href="#/wishlist">Wishlist</a><a href="#/bookings">My Bookings</a><a href="#/bookings/_/refunds">Refund tracker</a><a href="#/bookings/_/support">Help &amp; support</a></div>
-      <div><h4>ShaadiKart</h4><a href="#/about">About Us</a><a href="#/partners">Our Partners</a><a href="#/offers">Offers</a><button data-act="partner-login">Partner login</button><button data-act="staff-login">Staff login</button><button data-act="reset">Reset demo data</button></div>
+      <div><h4>ShaadiKart</h4><a href="#/about">About Us</a><a href="#/partners">Our Partners</a><a href="#/offers">Offers</a><button data-act="business-login">Business Login</button><button data-act="reset">Reset demo data</button></div>
     </div><div class="foot-bottom">© 2026 ShaadiKart (working name) · Concept demo with illustrative partners, prices and payments · Photos from Unsplash</div>`;
   }
 
@@ -896,29 +994,929 @@
       ${list.length ? `<div class="partner-grid" style="margin-bottom:40px">${list.map(vcard).join('')}</div>` : `<div class="empty">${ic('heart')}<p>Your wishlist is empty.</p><a class="btn btn-primary" href="#/partners">Browse partners</a></div>`}</div>`;
   }
 
-  function pagePartnerDashboard() {
-    if (!S.partner) return `<div class="wrap"><div class="empty" style="padding:70px 20px">${ic('store')}<h2 style="color:var(--plum-900);margin:0 0 6px">Partner login</h2><p>Log in as a partner to see booking requests for your business.</p><button class="btn btn-primary" data-act="partner-login">Partner login</button></div></div>`;
-    const v = partner(S.partner.id), c = catOf(v.cat);
+  /* ==========================================================================
+     BUSINESS PORTAL CONTROLLER & VIEWS (LUXURY SAAS EXPERIENCE)
+     ========================================================================== */
+  const BIZ = {
+    photoTab: 'all', // 'all', 'live', 'archived'
+    photoCat: 'all', // 'all', 'raw', 'decor', 'people'
+    selectedPhotos: new Set(),
+    smeStage: 'decor', // 'raw', 'decor', 'people'
+    smeSweep: 50,
+    smeGuests: 250,
+    smeLighting: 'dusk' // 'day', 'dusk', 'night'
+  };
+
+  // Parallax subtle motion for the background layer on mousemove
+  if (typeof window !== 'undefined') {
+    window.addEventListener('mousemove', e => {
+      const bg = document.querySelector('.biz-bg-layer');
+      if (!bg) return;
+      const x = ((e.clientX / window.innerWidth) - 0.5) * 14;
+      const y = ((e.clientY / window.innerHeight) - 0.5) * 14;
+      bg.style.transform = `translate3d(${-x}px, ${-y}px, 0) scale(1.03)`;
+    });
+  }
+
+  function getBizVenue() {
+    const bizId = (S.business && S.business.auth && S.business.auth.id) || (S.partner && S.partner.id) || 'royal-banquet';
+    return partner(bizId) || partner('royal-banquet');
+  }
+
+  function pageBusinessPortal(subpage = 'dashboard', q = new URLSearchParams()) {
+    const v = getBizVenue();
+    if (!S.business) S.business = { auth: null, photos: {} };
+    if (!S.business.photos) S.business.photos = {};
+    if (!S.business.photos[v.id]) {
+      S.business.photos[v.id] = JSON.parse(JSON.stringify(D.SEED_ROYAL_PHOTOS || []));
+    }
+
+    let mainContent = '';
+    if (subpage === 'media' || subpage === 'portfolio') mainContent = renderBizMedia(v, q);
+    else if (subpage === 'event-preview' || subpage === 'see-my-event') mainContent = renderBizEventPreview(v);
+    else if (subpage === 'listings') mainContent = renderBizListings(v);
+    else if (subpage === 'bookings') mainContent = renderBizBookings(v);
+    else if (subpage === 'calendar') mainContent = renderBizCalendar(v);
+    else if (subpage === 'earnings') mainContent = renderBizEarnings(v);
+    else if (subpage === 'reviews') mainContent = renderBizReviews(v);
+    else if (subpage === 'promotions') mainContent = renderBizPromotions(v);
+    else if (subpage === 'analytics') mainContent = renderBizAnalytics(v);
+    else if (subpage === 'support') mainContent = renderBizSupport(v);
+    else if (subpage === 'settings') mainContent = renderBizSettings(v);
+    else mainContent = renderBizDashboard(v);
+
+    return `
+    <div class="biz-app">
+      <div class="biz-bg-layer"></div>
+      <div class="biz-glass-overlay"></div>
+      ${renderBizSidebar(v, subpage)}
+      <main class="biz-main">
+        ${renderBizTopbar(v)}
+        <div class="biz-content">
+          ${mainContent}
+        </div>
+      </main>
+    </div>`;
+  }
+
+  function renderBizSidebar(v, activeSubpage) {
+    const bPhotos = (S.business && S.business.photos && S.business.photos[v.id]) || [];
+    const liveCount = bPhotos.filter(p => p.status === 'published' || p.status === 'live').length;
+    const navItems = [
+      { key: 'dashboard', href: '#/business-dashboard', label: 'Dashboard', icon: 'home' },
+      { key: 'media', href: '#/business/media', label: 'Portfolio & Media', icon: 'image', pill: `${liveCount} Live` },
+      { key: 'event-preview', href: '#/business/event-preview', label: 'Event Preview (See My Event)', icon: 'sparkles' },
+      { key: 'listings', href: '#/business/listings', label: 'My Listings', icon: 'store' },
+      { key: 'bookings', href: '#/business/bookings', label: 'Bookings', icon: 'calendarCheck' },
+      { key: 'calendar', href: '#/business/calendar', label: 'Calendar', icon: 'calendar' },
+      { key: 'earnings', href: '#/business/earnings', label: 'Earnings', icon: 'rupee' },
+      { key: 'reviews', href: '#/business/reviews', label: 'Reviews', icon: 'star' },
+      { key: 'promotions', href: '#/business/promotions', label: 'Promotions', icon: 'gift' },
+      { key: 'analytics', href: '#/business/analytics', label: 'Analytics', icon: 'chart' },
+      { key: 'support', href: '#/business/support', label: 'Support', icon: 'headset' },
+      { key: 'settings', href: '#/business/settings', label: 'Settings', icon: 'settings' }
+    ];
+
+    return `
+    <aside class="biz-sidebar" id="biz-sidebar">
+      <div class="biz-sidebar-brand">
+        <a href="#/business-dashboard" class="biz-brand-link">
+          <div class="biz-brand-row">
+            ${logo(true)}
+          </div>
+          <div class="biz-tagline">Plan Everything. Book Everything.</div>
+        </a>
+      </div>
+
+      <div class="biz-profile-card">
+        <div class="biz-profile-avatar" style="background-image:url('${D.img(v.img || 'photo-1768851142332-75f3d1b47452', 200)}')"></div>
+        <div class="biz-profile-info">
+          <div class="biz-profile-name" title="${esc(v.name)}">${esc(v.name)} <span class="biz-verified-tick" title="Verified Business">${ic('check')}</span></div>
+          <div class="biz-profile-badge">Verified Business</div>
+          <div class="biz-profile-rating">★ ${v.rating || 4.8} <span>(1.2k reviews)</span></div>
+        </div>
+      </div>
+
+      <nav class="biz-nav">
+        ${navItems.map(item => `
+          <a href="${item.href}" class="biz-nav-item ${activeSubpage === item.key ? 'active' : ''}">
+            <span class="biz-nav-icon">${ic(item.icon)}</span>
+            <span>${esc(item.label)}</span>
+            ${item.pill ? `<span class="biz-nav-pill">${item.pill}</span>` : ''}
+          </a>
+        `).join('')}
+      </nav>
+
+      <div class="biz-premium-card">
+        <div class="biz-premium-crown">${ic('crown')}</div>
+        <h4>Go Premium</h4>
+        <p>Get more visibility &amp; more bookings</p>
+        <button class="biz-gold-btn" data-act="biz-premium">Upgrade Now →</button>
+      </div>
+
+      <div class="biz-sidebar-foot">
+        <button class="biz-nav-item biz-logout-btn" data-act="business-logout">
+          <span class="biz-nav-icon">${ic('logOut')}</span>
+          <span>Logout</span>
+        </button>
+      </div>
+    </aside>`;
+  }
+
+  function renderBizTopbar(v) {
+    return `
+    <header class="biz-topbar">
+      <div class="biz-topbar-left">
+        <button class="biz-menu-toggle" data-act="biz-menu-toggle" aria-label="Toggle menu">${ic('menu')}</button>
+        <div class="biz-search-bar">
+          ${ic('search')}
+          <input type="text" placeholder="Search bookings, customers..." aria-label="Search">
+        </div>
+      </div>
+      <div class="biz-topbar-right">
+        <a href="#/partner/${v.id}" class="biz-view-live-btn" target="_blank" title="View customer-facing page">${ic('external')} View Public Profile</a>
+        <button class="biz-notif-btn" data-act="biz-notif" aria-label="Notifications">
+          ${ic('bell')}
+          <span class="biz-notif-badge">3</span>
+        </button>
+        <div class="biz-user-dropdown" data-act="account">
+          <img src="${D.img('photo-1507309270028-9121e9937409', 100)}" alt="Aman" class="biz-user-avatar">
+          <span class="biz-user-name">Hi, Aman</span>
+          ${ic('chevronDown')}
+        </div>
+      </div>
+    </header>`;
+  }
+
+  function renderBizDashboard(v) {
     const rows = [];
     S.events.forEach(ev => ev.services.filter(s => s.partnerId === v.id && !s.removed).forEach(s => rows.push({ ev, s, st: svcStatus(s) })));
     const booked = rows.filter(r => ['booked', 'paid', 'confirmed'].includes(r.st));
     const earned = rows.reduce((a, r) => a + r.s.paid, 0);
-    return `<div class="wrap">
-      <div class="page-h"><h1>${ic('store')} Partner dashboard</h1><p>${esc(v.name)} · ${esc(c.name)} · ${esc(v.area)}, ${esc(v.locality)} <span class="tag tag-amber">Demo</span></p></div>
-      <div class="ev-stats pd-stats">
-        <div><small>Enquiries this month</small><b>${48 + rows.length}</b></div>
-        <div><small>Confirmed bookings</small><b>${12 + booked.length}</b></div>
-        <div><small>Received via ShaadiKart</small><b>${inr(380000 + earned)}</b></div>
-        <div><small>Profile rating</small><b>★ ${v.rating}</b></div>
+
+    return `
+    <!-- Row 1: Hero Banner (2/3) & Performance Card (1/3) -->
+    <div class="biz-row-top">
+      <div class="biz-hero-banner">
+        <div class="biz-hero-content">
+          <h1 class="biz-hero-headline">Grow Your Business with <span class="biz-gold-text">ShaadiKart</span></h1>
+          <p class="biz-hero-subtitle">Get more bookings, showcase your services and be the first choice for every celebration!</p>
+          <button class="biz-gold-pill" data-act="biz-premium">Explore Premium Benefits →</button>
+        </div>
+        <div class="biz-carousel-dots">
+          <span class="biz-carousel-dot active"></span>
+          <span class="biz-carousel-dot"></span>
+          <span class="biz-carousel-dot"></span>
+          <span class="biz-carousel-dot"></span>
+        </div>
       </div>
-      <div class="box" style="margin-top:18px"><h2>Booking requests from ShaadiKart customers</h2>
-        ${rows.length ? `<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Event</th><th>Date</th><th>Package</th><th class="r">Amount</th><th class="r">Paid</th><th>Status</th></tr></thead><tbody>
-          ${rows.map(({ ev, s, st }) => `<tr><td><b>${esc(ev.name)}</b><br><small>${ev.guests} guests · ${esc(ev.locality)}</small></td><td>${fmtDate(svcDate(ev, s))}</td><td>${pkgOf(v, s.pkg).name}</td><td class="r">${inr(svcTotal(s))}</td><td class="r">${inr(s.paid)}</td><td>${statusTag(st)}</td></tr>`).join('')}
-        </tbody></table></div>` : `<div class="empty" style="padding:26px">${ic('calendarCheck')}<p>No requests yet. Book ${esc(v.name)} as a customer to see one arrive here.</p></div>`}
+
+      <div class="biz-card biz-perf-card">
+        <div class="biz-card-head">
+          <h3 class="biz-card-title">${ic('trending')} Your Performance</h3>
+          <select class="biz-select-sm" aria-label="Select period">
+            <option>This Month</option>
+            <option>Last Month</option>
+            <option>Last 3 Months</option>
+          </select>
+        </div>
+        <div class="biz-perf-stats">
+          <div class="biz-perf-item">
+            <span class="biz-perf-num">${48 + rows.length}</span>
+            <span class="biz-perf-label">Total Enquiries</span>
+            <span class="biz-kpi-badge-green">${ic('trending')} 12%</span>
+          </div>
+          <div class="biz-perf-item">
+            <span class="biz-perf-num">${12 + booked.length}</span>
+            <span class="biz-perf-label">Confirmed Bookings</span>
+            <span class="biz-kpi-badge-green">${ic('trending')} 20%</span>
+          </div>
+          <div class="biz-perf-item">
+            <span class="biz-perf-num">₹3.8L</span>
+            <span class="biz-perf-label">Total Revenue</span>
+            <span class="biz-kpi-badge-green">${ic('trending')} 18%</span>
+          </div>
+        </div>
+        <div class="biz-chart-wrap">
+          <svg viewBox="0 0 300 80" class="biz-chart-svg" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="bizGradPerf" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#7C3AED" stop-opacity="0.45"/>
+                <stop offset="100%" stop-color="#7C3AED" stop-opacity="0.0"/>
+              </linearGradient>
+            </defs>
+            <path d="M 0 65 Q 40 68 80 50 T 160 40 T 240 25 T 300 12 L 300 80 L 0 80 Z" fill="url(#bizGradPerf)"/>
+            <path d="M 0 65 Q 40 68 80 50 T 160 40 T 240 25 T 300 12" fill="none" stroke="#6D28D9" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="80" cy="50" r="3.5" fill="#6D28D9" stroke="#fff" stroke-width="1.5"/>
+            <circle cx="160" cy="40" r="3.5" fill="#6D28D9" stroke="#fff" stroke-width="1.5"/>
+            <circle cx="240" cy="25" r="3.5" fill="#6D28D9" stroke="#fff" stroke-width="1.5"/>
+            <circle cx="300" cy="12" r="4.5" fill="#7C3AED" stroke="#fff" stroke-width="2"/>
+          </svg>
+        </div>
       </div>
-      <div class="box"><h2>Partner tools</h2><div class="filters" style="margin:0">${['Calendar & availability', 'Quotations', 'Payouts', 'Promotions', 'KYC documents', 'Reviews'].map(t => `<span class="chip">${esc(t)} <span class="tag tag-gold">Phase 2</span></span>`).join('')}</div></div>
-      <div style="margin:0 0 40px"><a class="btn btn-ghost" href="#/partner/${v.id}">View my public profile</a></div>
+    </div>
+
+    <!-- Row 2: 4 Pastel KPI Cards -->
+    <div class="biz-kpis-grid">
+      <div class="biz-kpi-card biz-kpi-lavender">
+        <div class="biz-kpi-top">
+          <div class="biz-kpi-icon-box">${ic('calendar')}</div>
+          <div class="biz-kpi-data">
+            <span class="biz-kpi-val">${12 + booked.length}</span>
+            <span class="biz-kpi-sub">Active Bookings</span>
+          </div>
+        </div>
+        <a href="#/business/bookings" class="biz-kpi-link">View Details →</a>
+      </div>
+
+      <div class="biz-kpi-card biz-kpi-mint">
+        <div class="biz-kpi-top">
+          <div class="biz-kpi-icon-box">${ic('rupee')}</div>
+          <div class="biz-kpi-data">
+            <span class="biz-kpi-val">${inr(380000 + earned)}</span>
+            <span class="biz-kpi-sub">Earnings (This Month)</span>
+          </div>
+        </div>
+        <a href="#/business/earnings" class="biz-kpi-link">View Payouts →</a>
+      </div>
+
+      <div class="biz-kpi-card biz-kpi-amber">
+        <div class="biz-kpi-top">
+          <div class="biz-kpi-icon-box">${ic('star')}</div>
+          <div class="biz-kpi-data">
+            <span class="biz-kpi-val">${v.rating || 4.8}</span>
+            <span class="biz-kpi-sub">Your Rating</span>
+          </div>
+        </div>
+        <a href="#/business/reviews" class="biz-kpi-link">View Reviews →</a>
+      </div>
+
+      <div class="biz-kpi-card biz-kpi-blue">
+        <div class="biz-kpi-top">
+          <div class="biz-kpi-icon-box">${ic('trending')}</div>
+          <div class="biz-kpi-data">
+            <span class="biz-kpi-val">85%</span>
+            <span class="biz-kpi-sub">Booking Success Rate</span>
+          </div>
+        </div>
+        <a href="#/business/analytics" class="biz-kpi-link">View Analytics →</a>
+      </div>
+    </div>
+
+    <!-- Row 3: Recent Bookings Table (2/3) & Right Column Cards (1/3) -->
+    <div class="biz-row-mid">
+      <div class="biz-card">
+        <div class="biz-card-head">
+          <h3 class="biz-card-title">${ic('calendarCheck')} Recent Bookings</h3>
+          <a href="#/business/bookings" class="biz-card-link">View All →</a>
+        </div>
+        <div class="biz-tbl-scroll">
+          <table class="biz-table">
+            <thead>
+              <tr>
+                <th>Booking ID</th>
+                <th>Event Type</th>
+                <th>Date</th>
+                <th>Total Value</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <div class="biz-booking-id-cell">
+                    <div class="biz-booking-thumb" style="background-image:url('${D.img('photo-1519741497674-611481863552', 100)}')"></div>
+                    <span class="biz-booking-code">SKB#10248</span>
+                  </div>
+                </td>
+                <td><b>Wedding</b></td>
+                <td>15 Dec 2025</td>
+                <td><b>₹2,50,000</b></td>
+                <td><span class="biz-status-pill biz-pill-confirmed">Confirmed</span></td>
+                <td><button class="biz-tbl-action" data-act="biz-view-booking" data-id="10248">View →</button></td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="biz-booking-id-cell">
+                    <div class="biz-booking-thumb" style="background-image:url('${D.img('photo-1511795409834-ef04bbd61622', 100)}')"></div>
+                    <span class="biz-booking-code">SKB#10247</span>
+                  </div>
+                </td>
+                <td><b>Engagement</b></td>
+                <td>10 Dec 2025</td>
+                <td><b>₹1,20,000</b></td>
+                <td><span class="biz-status-pill biz-pill-pending">Pending</span></td>
+                <td><button class="biz-tbl-action" data-act="biz-view-booking" data-id="10247">View →</button></td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="biz-booking-id-cell">
+                    <div class="biz-booking-thumb" style="background-image:url('${D.img('photo-1469371670807-013ccf25f16a', 100)}')"></div>
+                    <span class="biz-booking-code">SKB#10246</span>
+                  </div>
+                </td>
+                <td><b>Birthday Party</b></td>
+                <td>28 Nov 2025</td>
+                <td><b>₹75,000</b></td>
+                <td><span class="biz-status-pill biz-pill-confirmed">Confirmed</span></td>
+                <td><button class="biz-tbl-action" data-act="biz-view-booking" data-id="10246">View →</button></td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="biz-booking-id-cell">
+                    <div class="biz-booking-thumb" style="background-image:url('${D.img('photo-1540575467063-178a50c2df87', 100)}')"></div>
+                    <span class="biz-booking-code">SKB#10245</span>
+                  </div>
+                </td>
+                <td><b>Corporate Event</b></td>
+                <td>20 Nov 2025</td>
+                <td><b>₹1,80,000</b></td>
+                <td><span class="biz-status-pill biz-pill-completed">Completed</span></td>
+                <td><button class="biz-tbl-action" data-act="biz-view-booking" data-id="10245">View →</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="biz-col-right">
+        <!-- Earnings Overview Card -->
+        <div class="biz-card">
+          <div class="biz-card-head">
+            <h3 class="biz-card-title">${ic('chart')} Earnings Overview</h3>
+            <select class="biz-select-sm" aria-label="Select duration">
+              <option>Last 3 Months</option>
+              <option>Last 6 Months</option>
+            </select>
+          </div>
+          <div class="biz-earnings-stat">
+            <span class="biz-earnings-big">₹1,20,000</span>
+            <span class="biz-kpi-badge-green">${ic('trending')} 18%</span>
+          </div>
+          <div class="biz-earnings-sub">Total Earnings</div>
+          <div style="position:relative;width:100%;height:110px;">
+            <svg viewBox="0 0 300 90" class="biz-chart-svg" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="bizGradEarn" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#9333EA" stop-opacity="0.35"/>
+                  <stop offset="100%" stop-color="#9333EA" stop-opacity="0.0"/>
+                </linearGradient>
+              </defs>
+              <path d="M 10 75 Q 80 70 150 48 T 290 20 L 290 90 L 10 90 Z" fill="url(#bizGradEarn)"/>
+              <path d="M 10 75 Q 80 70 150 48 T 290 20" fill="none" stroke="#7C3AED" stroke-width="2.5" stroke-linecap="round"/>
+              <circle cx="10" cy="75" r="4" fill="#7C3AED" stroke="#fff" stroke-width="1.5"/>
+              <circle cx="150" cy="48" r="4" fill="#7C3AED" stroke="#fff" stroke-width="1.5"/>
+              <circle cx="290" cy="20" r="5" fill="#9333EA" stroke="#fff" stroke-width="2"/>
+            </svg>
+            <div style="position:absolute;top:6px;right:0;background:#3A1C6E;color:#fff;font-size:11px;font-weight:700;padding:2px 8px;border-radius:4px;box-shadow:0 2px 6px rgba(0,0,0,0.2)">₹1.20L</div>
+            <div style="display:flex;justify-content:space-between;font-size:11px;color:#7A6F91;margin-top:4px">
+              <span>Aug</span><span>Sep</span><span>Oct</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Upcoming Events Card -->
+        <div class="biz-card">
+          <div class="biz-card-head">
+            <h3 class="biz-card-title">${ic('calendar')} Upcoming Events</h3>
+            <a href="#/business/calendar" class="biz-card-link">View Calendar →</a>
+          </div>
+          <div class="biz-event-card">
+            <div class="biz-event-thumb" style="background-image:url('${D.img('photo-1519741497674-611481863552', 200)}')"></div>
+            <div class="biz-event-info">
+              <span class="biz-event-date">15 Dec 2025 • 7:00 PM</span>
+              <span class="biz-event-title">Riya &amp; Arjun's Wedding</span>
+              <span class="biz-event-venue">📍 ${esc(v.name)}, Delhi</span>
+              <button class="biz-purple-btn-sm" data-act="biz-view-booking" data-id="10248">View Details</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 4: Quick Actions, Boost Promo & Help -->
+    <div class="biz-row-bot">
+      <div class="biz-card">
+        <h3 class="biz-card-title" style="margin-bottom:14px">${ic('flame')} Quick Actions</h3>
+        <div class="biz-quick-grid">
+          <a href="#/business/settings" class="biz-quick-tile">
+            <div class="biz-quick-icon">${ic('edit')}</div>
+            <span>Update Profile</span>
+          </a>
+          <a href="#/business/media" class="biz-quick-tile">
+            <div class="biz-quick-icon">${ic('plus')}</div>
+            <span>Upload Photos</span>
+          </a>
+          <a href="#/business/calendar" class="biz-quick-tile">
+            <div class="biz-quick-icon">${ic('calendar')}</div>
+            <span>Manage Calendar</span>
+          </a>
+          <a href="#/business/earnings" class="biz-quick-tile">
+            <div class="biz-quick-icon">${ic('chart')}</div>
+            <span>Track Earnings</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="biz-boost-banner">
+        <div>
+          <h3 class="biz-boost-title">Increase Your Bookings</h3>
+          <p class="biz-boost-sub">Get Featured on ShaadiKart</p>
+        </div>
+        <div>
+          <button class="biz-gold-pill" data-act="biz-boost">Boost Listing →</button>
+        </div>
+      </div>
+
+      <div class="biz-card biz-help-card">
+        <div class="biz-help-left">
+          <h3 class="biz-card-title" style="margin-bottom:6px">${ic('headset')} Need Help?</h3>
+          <p style="font-size:12.5px;color:#64567C;margin:0 0 14px;line-height:1.4">Our business support team is here to help you.</p>
+          <button class="biz-gold-btn" data-act="biz-contact-support">Contact Support →</button>
+        </div>
+        <div class="biz-help-avatar-wrap" style="background-image:url('${D.img('photo-1573496359142-b8d87734a5a2', 200)}')"></div>
+      </div>
     </div>`;
+  }
+
+  /* ---------- Feature 2: Portfolio & Media Manager ---------- */
+  function renderBizMedia(v, q) {
+    const photos = (S.business && S.business.photos && S.business.photos[v.id]) || [];
+    const totalCount = photos.length;
+    const liveCount = photos.filter(p => p.status === 'published' || p.status === 'live').length;
+    const archivedCount = photos.filter(p => p.status === 'archived').length;
+    const draftCount = photos.filter(p => p.status === 'draft').length;
+
+    const rawCount = photos.filter(p => p.category === 'raw').length;
+    const decorCount = photos.filter(p => p.category === 'decor').length;
+    const peopleCount = photos.filter(p => p.category === 'people').length;
+
+    // Filter by tab
+    let list = photos;
+    if (BIZ.photoTab === 'live') list = list.filter(p => p.status === 'published' || p.status === 'live');
+    else if (BIZ.photoTab === 'archived') list = list.filter(p => p.status === 'archived');
+
+    // Filter by category
+    if (BIZ.photoCat !== 'all') list = list.filter(p => p.category === BIZ.photoCat);
+
+    const isAllSelected = list.length > 0 && list.every(p => BIZ.selectedPhotos.has(p.id));
+
+    return `
+    <div class="biz-card" style="margin-bottom:16px">
+      <div class="biz-media-header">
+        <div>
+          <h2 style="margin:0 0 4px;font-size:22px;color:#1f1435;font-weight:800">Portfolio &amp; Media Management</h2>
+          <p style="margin:0;font-size:13px;color:#64567C">Curate authentic property photographs. Choose which photos go live on your public customer listing.</p>
+        </div>
+        <div class="biz-media-counter-badge">
+          ${ic('check')} Showing <b>${liveCount}</b> of <b>${totalCount}</b> photos on Customer Page
+        </div>
+      </div>
+
+      <!-- Filter Tabs & Category Pills -->
+      <div class="biz-media-filters">
+        <div class="biz-media-tabs">
+          <button class="biz-media-tab-btn ${BIZ.photoTab === 'all' ? 'active' : ''}" data-act="biz-media-tab" data-tab="all">All Photos (${totalCount})</button>
+          <button class="biz-media-tab-btn ${BIZ.photoTab === 'live' ? 'active' : ''}" data-act="biz-media-tab" data-tab="live">Live on Customer Page (${liveCount})</button>
+          <button class="biz-media-tab-btn ${BIZ.photoTab === 'archived' ? 'active' : ''}" data-act="biz-media-tab" data-tab="archived">Archived (${archivedCount})</button>
+        </div>
+
+        <div class="biz-media-cat-pills">
+          <button class="biz-cat-pill ${BIZ.photoCat === 'all' ? 'active' : ''}" data-act="biz-media-cat" data-cat="all">All Types</button>
+          <button class="biz-cat-pill ${BIZ.photoCat === 'raw' ? 'active' : ''}" data-act="biz-media-cat" data-cat="raw">Raw Space (${rawCount})</button>
+          <button class="biz-cat-pill ${BIZ.photoCat === 'decor' ? 'active' : ''}" data-act="biz-media-cat" data-cat="decor">After Decoration (${decorCount})</button>
+          <button class="biz-cat-pill ${BIZ.photoCat === 'people' ? 'active' : ''}" data-act="biz-media-cat" data-cat="people">With Guests (${peopleCount})</button>
+        </div>
+      </div>
+
+      <!-- Batch Actions Toolbar -->
+      <div class="biz-media-toolbar">
+        <div class="biz-batch-left">
+          <label style="display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;cursor:pointer">
+            <input type="checkbox" data-act="biz-select-all-photos" ${isAllSelected ? 'checked' : ''} style="width:18px;height:18px;accent-color:#3A1C6E">
+            <span>Select All (${list.length})</span>
+          </label>
+          ${BIZ.selectedPhotos.size ? `<span style="font-size:12px;color:#7C3AED;font-weight:700">${BIZ.selectedPhotos.size} selected</span>` : ''}
+        </div>
+        <div class="biz-batch-actions">
+          <button class="btn btn-sm btn-ghost" data-act="biz-batch-live" ${!BIZ.selectedPhotos.size ? 'disabled style="opacity:0.5"' : ''}>${ic('check')} Make Live</button>
+          <button class="btn btn-sm btn-ghost" data-act="biz-batch-archive" ${!BIZ.selectedPhotos.size ? 'disabled style="opacity:0.5"' : ''}>${ic('undo')} Move to Archive</button>
+          <button class="btn btn-sm btn-ghost text-danger" data-act="biz-batch-delete" ${!BIZ.selectedPhotos.size ? 'disabled style="opacity:0.5"' : ''}>${ic('trash')} Remove</button>
+          <button class="biz-gold-btn" data-act="biz-upload-modal">${ic('plus')} Upload Photos</button>
+        </div>
+      </div>
+
+      <!-- Photo Grid -->
+      ${list.length ? `
+      <div class="biz-photo-grid">
+        ${list.map(p => {
+          const isLive = p.status === 'published' || p.status === 'live';
+          const isArchived = p.status === 'archived';
+          const isSelected = BIZ.selectedPhotos.has(p.id);
+          const catLabel = p.category === 'raw' ? 'Raw Space' : p.category === 'decor' ? 'After Decoration' : 'With Guests';
+
+          return `
+          <div class="biz-photo-card ${isSelected ? 'selected' : ''}">
+            <div class="biz-photo-thumb-wrap" style="background-image:url('${D.img(p.url, 400)}')">
+              <input type="checkbox" class="biz-photo-checkbox" data-act="biz-check-photo" data-id="${p.id}" ${isSelected ? 'checked' : ''}>
+              <span class="biz-photo-badge ${isLive ? 'biz-badge-live' : isArchived ? 'biz-badge-archived' : 'biz-badge-draft'}">
+                ${isLive ? `${ic('check')} Live` : isArchived ? 'Archived' : 'Draft'}
+              </span>
+            </div>
+            <div class="biz-photo-body">
+              <span class="biz-photo-cat-tag">${catLabel}</span>
+              <h4 class="biz-photo-title" title="${esc(p.title)}">${esc(p.title)}</h4>
+              <div class="biz-photo-meta">${p.size || '2.8 MB'} · ${p.uploadedAt || 'Nov 2026'}</div>
+              <div class="biz-photo-actions">
+                <button class="biz-photo-btn ${isLive ? 'biz-photo-btn-live' : ''}" data-act="biz-toggle-live" data-id="${p.id}" title="${isLive ? 'Hide from customer page' : 'Show to customers'}">
+                  ${isLive ? 'Live on Site' : 'Make Live'}
+                </button>
+                <button class="biz-photo-btn" data-act="biz-toggle-archive" data-id="${p.id}">
+                  ${isArchived ? 'Unarchive' : 'Archive'}
+                </button>
+                <button class="biz-photo-btn biz-photo-btn-danger" data-act="biz-delete-photo" data-id="${p.id}" title="Delete permanently">
+                  ${ic('trash')}
+                </button>
+              </div>
+            </div>
+          </div>`;
+        }).join('')}
+      </div>` : `
+      <div class="empty" style="padding:48px 20px">
+        ${ic('image')}
+        <p>No photos matched this filter.</p>
+        <button class="biz-gold-btn" data-act="biz-upload-modal">${ic('plus')} Upload Photos</button>
+      </div>`}
+    </div>`;
+  }
+
+  /* ---------- Feature 1: Event Preview (See My Event) ---------- */
+  function renderBizEventPreview(v) {
+    const stage = BIZ.smeStage || 'decor';
+    const guests = BIZ.smeGuests || 250;
+    const lighting = BIZ.smeLighting || 'dusk';
+
+    const rawPhoto = 'photo-1768851142332-75f3d1b47452';
+    const decorPhoto = 'photo-1519741497674-611481863552';
+    const peoplePhoto = 'photo-1511795409834-ef04bbd61622';
+
+    return `
+    <div class="biz-card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:14px;margin-bottom:16px">
+        <div>
+          <h2 style="margin:0 0 4px;font-size:22px;color:#1f1435;font-weight:800">Event Preview (See My Event)</h2>
+          <p style="margin:0;font-size:13px;color:#64567C">Experience how prospective customers visualize ${esc(v.name)} across Raw, Dressed, and Celebration stages.</p>
+        </div>
+        <div class="biz-preview-tabs">
+          <button class="biz-prev-tab ${stage === 'raw' ? 'active' : ''}" data-act="biz-sme-stage" data-stage="raw">
+            ${ic('camera')} 1. Raw Space
+          </button>
+          <button class="biz-prev-tab ${stage === 'decor' ? 'active' : ''}" data-act="biz-sme-stage" data-stage="decor">
+            ${ic('sparkles')} 2. With Decoration
+          </button>
+          <button class="biz-prev-tab ${stage === 'people' ? 'active' : ''}" data-act="biz-sme-stage" data-stage="people">
+            ${ic('users')} 3. With Guests
+          </button>
+        </div>
+      </div>
+
+      ${stage === 'raw' ? `
+      <!-- STAGE 1: RAW PROPERTY WITH HOTSPOTS -->
+      <div class="biz-hotspots-canvas" style="background-image:url('${D.img(rawPhoto, 1200)}')">
+        <div class="biz-hotspot" style="top:42%;left:48%">
+          <div class="biz-hotspot-pin">${ic('shield')}</div>
+          <div class="biz-hotspot-tooltip">Grand Stage Platform · 40ft x 25ft clear span</div>
+        </div>
+        <div class="biz-hotspot" style="top:65%;left:25%">
+          <div class="biz-hotspot-pin">${ic('utensils')}</div>
+          <div class="biz-hotspot-tooltip">Dedicated Dining Hall · 3,500 sq.ft, dual buffet setup</div>
+        </div>
+        <div class="biz-hotspot" style="top:22%;left:75%">
+          <div class="biz-hotspot-pin">${ic('sparkles')}</div>
+          <div class="biz-hotspot-tooltip">Central Crystal Chandelier · 18ft clearance ceiling</div>
+        </div>
+        <div class="biz-hotspot" style="top:70%;left:82%">
+          <div class="biz-hotspot-pin">${ic('pin')}</div>
+          <div class="biz-hotspot-tooltip">Guest Arrival Foyer · Covered valet drop-off</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:16px">
+        <div style="background:#f4eefc;padding:12px 14px;border-radius:10px;border:1px solid rgba(58,28,110,0.1)">
+          <small style="color:#7A6F91;display:block;font-size:11px;font-weight:700">TOTAL CARPET AREA</small>
+          <b style="font-size:15px;color:#281448">12,500 sq. ft.</b>
+        </div>
+        <div style="background:#f4eefc;padding:12px 14px;border-radius:10px;border:1px solid rgba(58,28,110,0.1)">
+          <small style="color:#7A6F91;display:block;font-size:11px;font-weight:700">POWER BACKUP</small>
+          <b style="font-size:15px;color:#281448">125 kVA Silent Genset</b>
+        </div>
+        <div style="background:#f4eefc;padding:12px 14px;border-radius:10px;border:1px solid rgba(58,28,110,0.1)">
+          <small style="color:#7A6F91;display:block;font-size:11px;font-weight:700">VALET PARKING</small>
+          <b style="font-size:15px;color:#281448">120 Car Capacity</b>
+        </div>
+        <div style="background:#f4eefc;padding:12px 14px;border-radius:10px;border:1px solid rgba(58,28,110,0.1)">
+          <small style="color:#7A6F91;display:block;font-size:11px;font-weight:700">BRIDAL ROOMS</small>
+          <b style="font-size:15px;color:#281448">2 Dedicated AC Suites</b>
+        </div>
+      </div>
+      ` : stage === 'decor' ? `
+      <!-- STAGE 2: SWEEP COMPARISON SLIDER -->
+      <div style="margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+        <span style="font-size:13px;color:#281448;font-weight:700">Drag slider left/right to reveal before &amp; after wedding decoration:</span>
+        <div style="display:flex;gap:6px">
+          <span class="chip" style="background:#F3E8FF;color:#6D28D9;font-weight:600">Crimson Royal</span>
+          <span class="chip" style="background:#FFFBEB;color:#B45309;font-weight:600">Marigold Amber</span>
+          <span class="chip" style="background:#ECFDF5;color:#047857;font-weight:600">Ivory Floral Mandap</span>
+        </div>
+      </div>
+      <div class="biz-sweep-wrap" id="biz-sweep-container">
+        <div class="biz-sweep-layer biz-sweep-before" style="background-image:url('${D.img(decorPhoto, 1200)}')"></div>
+        <div class="biz-sweep-layer biz-sweep-after" id="biz-sweep-reveal" style="width:${BIZ.smeSweep}%;background-image:url('${D.img(rawPhoto, 1200)}')"></div>
+        <div class="biz-sweep-divider" id="biz-sweep-bar" style="left:${BIZ.smeSweep}%">
+          <div class="biz-sweep-handle">↔</div>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:14px;background:#f9f7fd;padding:12px 16px;border-radius:10px;border:1px solid rgba(226,218,242,0.8)">
+        <div>
+          <b style="font-size:14px;color:#281448">ShaadiKart Signature Transformation</b>
+          <p style="margin:2px 0 0;font-size:12px;color:#7A6F91">Includes Mandap pillars, entrance floral arch, stage ambient uplighting and 30 banquet tables.</p>
+        </div>
+        <span class="tag tag-gold" style="font-size:13px;padding:6px 12px">Package Value: ₹1,50,000</span>
+      </div>
+      ` : `
+      <!-- STAGE 3: WITH PEOPLE / CELEBRATION FLOOR PLAN -->
+      <div class="biz-stage3-controls">
+        <div class="biz-slider-control">
+          <span style="font-size:13px;font-weight:700;color:#281448">Expected Guests:</span>
+          <input type="range" min="100" max="800" step="25" value="${guests}" data-input="biz-guests-slider" oninput="window.updateBizGuests(this.value)">
+          <b style="font-size:15px;color:#7C3AED;min-width:70px" id="biz-guest-label">${guests} Guests</b>
+        </div>
+        <div class="biz-lighting-toggle">
+          <button class="biz-light-btn ${lighting === 'day' ? 'active' : ''}" data-act="biz-sme-lighting" data-lighting="day">${ic('sun')} Day</button>
+          <button class="biz-light-btn ${lighting === 'dusk' ? 'active' : ''}" data-act="biz-sme-lighting" data-lighting="dusk">${ic('sparkles')} Dusk</button>
+          <button class="biz-light-btn ${lighting === 'night' ? 'active' : ''}" data-act="biz-sme-lighting" data-lighting="night">${ic('moon')} Night</button>
+        </div>
+      </div>
+
+      <div class="biz-floorplan-box" style="background:${lighting === 'night' ? '#180e2b' : lighting === 'dusk' ? '#24143d' : '#fcfaff'};color:${lighting === 'day' ? '#281448' : '#ffffff'};transition:background 0.3s ease">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+          <div>
+            <h4 style="margin:0 0 2px;font-size:15px">Interactive Venue Guest Flow · ${guests} Guests</h4>
+            <small style="color:${lighting === 'day' ? '#7A6F91' : '#c3b6dd'}">Dynamic seating layout &amp; zone occupancy distribution</small>
+          </div>
+          <span class="tag tag-green">Capacity: Comfortable (Max 800)</span>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px">
+          <div style="background:${lighting === 'day' ? '#ffffff' : 'rgba(255,255,255,0.08)'};padding:10px;border-radius:8px;border:1px solid rgba(226,218,242,0.4)">
+            <small style="font-size:10.5px;text-transform:uppercase;font-weight:700">Mandap &amp; Stage</small>
+            <b style="display:block;font-size:16px;margin:2px 0">${Math.round(guests * 0.30)}</b>
+            <span style="font-size:11px;color:#10B981">30% occupancy</span>
+          </div>
+          <div style="background:${lighting === 'day' ? '#ffffff' : 'rgba(255,255,255,0.08)'};padding:10px;border-radius:8px;border:1px solid rgba(226,218,242,0.4)">
+            <small style="font-size:10.5px;text-transform:uppercase;font-weight:700">Banquet Dining</small>
+            <b style="display:block;font-size:16px;margin:2px 0">${Math.round(guests * 0.40)}</b>
+            <span style="font-size:11px;color:#10B981">${Math.ceil(guests * 0.04)} Tables (40%)</span>
+          </div>
+          <div style="background:${lighting === 'day' ? '#ffffff' : 'rgba(255,255,255,0.08)'};padding:10px;border-radius:8px;border:1px solid rgba(226,218,242,0.4)">
+            <small style="font-size:10.5px;text-transform:uppercase;font-weight:700">Social Lounge</small>
+            <b style="display:block;font-size:16px;margin:2px 0">${Math.round(guests * 0.22)}</b>
+            <span style="font-size:11px;color:#10B981">22% occupancy</span>
+          </div>
+          <div style="background:${lighting === 'day' ? '#ffffff' : 'rgba(255,255,255,0.08)'};padding:10px;border-radius:8px;border:1px solid rgba(226,218,242,0.4)">
+            <small style="font-size:10.5px;text-transform:uppercase;font-weight:700">Welcome Foyer</small>
+            <b style="display:block;font-size:16px;margin:2px 0">${Math.round(guests * 0.08)}</b>
+            <span style="font-size:11px;color:#10B981">8% arrival flow</span>
+          </div>
+        </div>
+
+        <!-- SVG Bird's-Eye Floor Plan -->
+        <div style="width:100%;height:220px;border-radius:10px;background:${lighting === 'day' ? '#f4eefc' : 'rgba(0,0,0,0.25)'};display:flex;align-items:center;justify-content:center;overflow:hidden">
+          <svg viewBox="0 0 700 220" style="width:100%;height:100%">
+            <!-- Mandap Area -->
+            <rect x="30" y="30" width="180" height="160" rx="8" fill="${lighting === 'day' ? '#E9D5FF' : '#4C1D95'}" stroke="#A855F7" stroke-width="2"/>
+            <text x="120" y="55" text-anchor="middle" fill="${lighting === 'day' ? '#581C87' : '#E9D5FF'}" font-size="12" font-weight="700">MANDAP &amp; STAGE</text>
+            <circle cx="120" cy="115" r="30" fill="none" stroke="#F59E0B" stroke-width="2" stroke-dasharray="4"/>
+            <text x="120" y="120" text-anchor="middle" fill="#F59E0B" font-size="11" font-weight="700">Holy Fire / Havan</text>
+
+            <!-- Dining Tables -->
+            <rect x="250" y="30" width="280" height="160" rx="8" fill="${lighting === 'day' ? '#D1FAE5' : '#064E3B'}" stroke="#10B981" stroke-width="2"/>
+            <text x="390" y="55" text-anchor="middle" fill="${lighting === 'day' ? '#065F46' : '#A7F3D0'}" font-size="12" font-weight="700">BANQUET DINING WING</text>
+            <!-- 6 Round Tables -->
+            <circle cx="300" cy="95" r="16" fill="${lighting === 'day' ? '#A7F3D0' : '#047857'}"/>
+            <circle cx="360" cy="95" r="16" fill="${lighting === 'day' ? '#A7F3D0' : '#047857'}"/>
+            <circle cx="420" cy="95" r="16" fill="${lighting === 'day' ? '#A7F3D0' : '#047857'}"/>
+            <circle cx="480" cy="95" r="16" fill="${lighting === 'day' ? '#A7F3D0' : '#047857'}"/>
+            <circle cx="330" cy="145" r="16" fill="${lighting === 'day' ? '#A7F3D0' : '#047857'}"/>
+            <circle cx="450" cy="145" r="16" fill="${lighting === 'day' ? '#A7F3D0' : '#047857'}"/>
+
+            <!-- Foyer & Lounge -->
+            <rect x="560" y="30" width="110" height="160" rx="8" fill="${lighting === 'day' ? '#FEF3C7' : '#78350F'}" stroke="#F59E0B" stroke-width="2"/>
+            <text x="615" y="55" text-anchor="middle" fill="${lighting === 'day' ? '#92400E' : '#FDE68A'}" font-size="11" font-weight="700">FOYER</text>
+            <text x="615" y="115" text-anchor="middle" fill="${lighting === 'day' ? '#B45309' : '#FDE68A'}" font-size="10">Valet &amp; Welcome</text>
+          </svg>
+        </div>
+      </div>
+      `}
+    </div>`;
+  }
+
+  // Supporting Subpage Views for Full Functionality
+  function renderBizListings(v) {
+    return `
+    <div class="biz-card">
+      <div class="biz-card-head">
+        <h2 style="margin:0;font-size:20px;font-weight:800;color:#1f1435">My Business Listings</h2>
+        <a href="#/partner/${v.id}" class="biz-gold-btn" target="_blank">${ic('external')} View Public Page</a>
+      </div>
+      <div style="display:flex;gap:18px;margin-top:16px;background:#f9f7fd;padding:16px;border-radius:12px;border:1px solid rgba(226,218,242,0.8)">
+        <div style="width:140px;height:100px;border-radius:10px;background:url('${D.img(v.img || 'photo-1768851142332-75f3d1b47452', 400)}') center / cover no-repeat;flex:none"></div>
+        <div style="flex:1">
+          <h3 style="margin:0 0 4px;font-size:16px;color:#281448">${esc(v.name)}</h3>
+          <p style="margin:0 0 8px;font-size:12.5px;color:#64567C">📍 ${esc(v.area)}, ${esc(v.locality)} · Starting from <b>${inr(v.base)}</b></p>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <span class="tag tag-green">Verified Business</span>
+            <span class="tag tag-plum">${v.packages.length} Active Packages</span>
+            <span class="tag tag-gold">★ ${v.rating} (1.2k reviews)</span>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:20px">
+        <h4 style="margin:0 0 10px;font-size:15px;color:#281448">Active Packages</h4>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px">
+          ${v.packages.map(p => `
+            <div style="background:#fff;padding:14px;border-radius:10px;border:1px solid rgba(226,218,242,0.8)">
+              <b style="display:block;font-size:14px;color:#281448">${esc(p.name)}</b>
+              <span style="font-size:16px;font-weight:800;color:#7C3AED;display:block;margin:4px 0">${inr(p.price)}</span>
+              <p style="margin:0;font-size:12px;color:#7A6F91">${esc(p.desc || 'Complete celebration setup with premium amenities.')}</p>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    </div>`;
+  }
+
+  function renderBizBookings(v) {
+    return renderBizDashboard(v);
+  }
+
+  function renderBizCalendar(v) {
+    return `
+    <div class="biz-card">
+      <div class="biz-card-head">
+        <h2 style="margin:0;font-size:20px;font-weight:800;color:#1f1435">Calendar &amp; Availability</h2>
+        <span class="tag tag-green">Auto-Sync Enabled</span>
+      </div>
+      <p style="font-size:13px;color:#64567C;margin:0 0 16px">Manage wedding dates, blocked days and confirmed customer events.</p>
+      <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:8px;text-align:center">
+        ${['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map(d => `<div style="font-size:11px;font-weight:700;color:#7A6F91;padding:6px">${d}</div>`).join('')}
+        ${Array.from({length:31}, (_, i) => {
+          const day = i + 1;
+          const isBooked = [10, 15, 20, 28].includes(day);
+          return `<div style="padding:14px 4px;border-radius:8px;background:${isBooked ? '#FEE2E2' : '#ffffff'};border:1px solid ${isBooked ? '#FCA5A5' : 'rgba(226,218,242,0.6)'};color:${isBooked ? '#991B1B' : '#281448'};font-weight:700">
+            ${day}
+            ${isBooked ? '<small style="display:block;font-size:9.5px;color:#B91C1C">Booked</small>' : '<small style="display:block;font-size:9.5px;color:#10B981">Available</small>'}
+          </div>`;
+        }).join('')}
+      </div>
+    </div>`;
+  }
+
+  function renderBizEarnings(v) {
+    return `
+    <div class="biz-card">
+      <div class="biz-card-head">
+        <h2 style="margin:0;font-size:20px;font-weight:800;color:#1f1435">Earnings &amp; Payouts</h2>
+        <button class="biz-gold-btn" data-act="biz-payout-modal">Download Statement</button>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:14px">
+        <div class="biz-kpi-card biz-kpi-mint">
+          <small style="font-size:11px;color:#065F46;font-weight:700">TOTAL EARNINGS (THIS MONTH)</small>
+          <span style="font-size:24px;font-weight:800;color:#065F46;display:block;margin:4px 0">₹3,80,000</span>
+          <span style="font-size:12px;color:#047857">↑ 18% vs last month</span>
+        </div>
+        <div class="biz-kpi-card biz-kpi-lavender">
+          <small style="font-size:11px;color:#6D28D9;font-weight:700">NEXT PAYOUT</small>
+          <span style="font-size:24px;font-weight:800;color:#6D28D9;display:block;margin:4px 0">₹1,20,000</span>
+          <span style="font-size:12px;color:#7C3AED">Scheduled for 01 Dec 2026</span>
+        </div>
+        <div class="biz-kpi-card biz-kpi-amber">
+          <small style="font-size:11px;color:#B45309;font-weight:700">PLATFORM COMMISSION</small>
+          <span style="font-size:24px;font-weight:800;color:#B45309;display:block;margin:4px 0">0% for Verified Pilot</span>
+          <span style="font-size:12px;color:#D97706">Pilot promotional waiver</span>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  function renderBizReviews(v) {
+    return `
+    <div class="biz-card">
+      <div class="biz-card-head">
+        <h2 style="margin:0;font-size:20px;font-weight:800;color:#1f1435">Customer Reviews</h2>
+        <span class="tag tag-gold" style="font-size:14px">★ 4.8 / 5.0 (1,240 Verified Reviews)</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;margin-top:14px">
+        <div style="background:#fff;padding:16px;border-radius:12px;border:1px solid rgba(226,218,242,0.8)">
+          <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+            <b style="font-size:14px;color:#281448">Pooja &amp; Kunal Malhotra</b>
+            <span style="color:#D97706;font-weight:700">★★★★★</span>
+          </div>
+          <p style="margin:0 0 6px;font-size:13px;color:#4B3E65">"Royal Banquet Hall looked even better in real life than on See My Event! The mandap setup was immaculate."</p>
+          <small style="color:#7A6F91">Wedding Event · Nov 2026</small>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  function renderBizPromotions(v) {
+    return `
+    <div class="biz-card">
+      <h2 style="margin:0 0 8px;font-size:20px;font-weight:800;color:#1f1435">Promotions &amp; Boost Campaigns</h2>
+      <p style="font-size:13px;color:#64567C;margin:0 0 16px">Reach high-intent couples in Delhi NCR looking for wedding venues.</p>
+      <div class="biz-boost-banner">
+        <div>
+          <h3 class="biz-boost-title">ShaadiKart Prime Placement</h3>
+          <p class="biz-boost-sub">Featured in top 3 search results across Delhi NCR with Verified Gold badge.</p>
+        </div>
+        <div>
+          <button class="biz-gold-pill" data-act="biz-boost">Activate Boost Now →</button>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  function renderBizAnalytics(v) {
+    return `
+    <div class="biz-card">
+      <h2 style="margin:0 0 8px;font-size:20px;font-weight:800;color:#1f1435">Business Analytics &amp; Conversion</h2>
+      <p style="font-size:13px;color:#64567C;margin:0 0 16px">Track enquiry-to-booking velocity and guest engagement across your listing.</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px">
+        <div class="biz-kpi-card biz-kpi-blue">
+          <small style="font-weight:700;color:#4338CA">LISTING VIEWS</small>
+          <span style="font-size:22px;font-weight:800;color:#4338CA;display:block;margin:4px 0">4,280</span>
+          <span style="font-size:11.5px;color:#059669">↑ 24% this week</span>
+        </div>
+        <div class="biz-kpi-card biz-kpi-mint">
+          <small style="font-weight:700;color:#065F46">SEE MY EVENT CLICKS</small>
+          <span style="font-size:22px;font-weight:800;color:#065F46;display:block;margin:4px 0">1,420</span>
+          <span style="font-size:11.5px;color:#059669">↑ 33% high intent</span>
+        </div>
+        <div class="biz-kpi-card biz-kpi-lavender">
+          <small style="font-weight:700;color:#6D28D9">CONVERSION RATE</small>
+          <span style="font-size:22px;font-weight:800;color:#6D28D9;display:block;margin:4px 0">28.4%</span>
+          <span style="font-size:11.5px;color:#6D28D9">Industry average 12%</span>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  function renderBizSupport(v) {
+    return `
+    <div class="biz-card">
+      <h2 style="margin:0 0 8px;font-size:20px;font-weight:800;color:#1f1435">Business Support Team</h2>
+      <p style="font-size:13px;color:#64567C;margin:0 0 16px">Our business support team is dedicated to helping you maximize bookings and manage events smoothly.</p>
+      <div style="display:flex;gap:18px;align-items:center;background:#f9f7fd;padding:20px;border-radius:12px;border:1px solid rgba(226,218,242,0.8)">
+        <div class="biz-help-avatar-wrap" style="background-image:url('${D.img('photo-1573496359142-b8d87734a5a2', 200)}')"></div>
+        <div>
+          <h3 style="margin:0 0 4px;font-size:16px;color:#281448">Dedicated Business Relationship Manager</h3>
+          <p style="margin:0 0 8px;font-size:13px;color:#64567C">Available 7 days a week, 9:00 AM – 8:00 PM IST</p>
+          <button class="biz-gold-btn" data-act="biz-contact-support">Call Helpline: ${CALL_NO}</button>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  function renderBizSettings(v) {
+    return `
+    <div class="biz-card">
+      <h2 style="margin:0 0 8px;font-size:20px;font-weight:800;color:#1f1435">Business Settings &amp; Profile</h2>
+      <p style="font-size:13px;color:#64567C;margin:0 0 16px">Manage contact information, GST registration, and notifications.</p>
+      <div style="max-width:600px;display:flex;flex-direction:column;gap:12px">
+        <label class="field">Business Name<input value="${esc(v.name)}" readonly></label>
+        <label class="field">Registered Category<input value="Venues &amp; Banquet Halls" readonly></label>
+        <label class="field">Operational City<input value="${esc(v.locality)}, Delhi NCR" readonly></label>
+        <label class="field">Account Holder<input value="Aman Saxena (General Manager)" readonly></label>
+        <button class="biz-gold-btn" style="align-self:flex-start" data-act="biz-save-settings">Save Changes</button>
+      </div>
+    </div>`;
+  }
+
+  // Interactive handler for sweep slider on See My Event stage 2
+  if (typeof window !== 'undefined') {
+    window.updateBizSweep = function(val) {
+      BIZ.smeSweep = val;
+      const rev = document.getElementById('biz-sweep-reveal');
+      const bar = document.getElementById('biz-sweep-bar');
+      if (rev) rev.style.width = val + '%';
+      if (bar) bar.style.left = val + '%';
+    };
+    window.updateBizGuests = function(val) {
+      BIZ.smeGuests = parseInt(val, 10);
+      const lbl = document.getElementById('biz-guest-label');
+      if (lbl) lbl.textContent = val + ' Guests';
+      render();
+    };
   }
 
   function pageCategory(id, q) {
@@ -964,19 +1962,60 @@
     const alloc = (typeof guestAllocation === 'function') ? guestAllocation(guests, v, 2) : {
       total: guests,
       zones: {
-        stage: { count: Math.round(guests * 0.15), pct: 15 },
-        tables: { count: Math.round(guests * 0.70), pct: 70 },
-        lounge: { count: Math.round(guests * 0.10), pct: 10 },
-        entrance: { count: Math.max(0, guests - (Math.round(guests * 0.15) + Math.round(guests * 0.70) + Math.round(guests * 0.10))), pct: 5 }
+        stage: { name: 'Mandap & Ceremony Seating', count: Math.round(guests * 0.30), pct: 30 },
+        dining: { name: 'Dining Hall & Buffet Area', count: Math.round(guests * 0.40), tables: Math.ceil(guests * 0.04), pct: 40 },
+        lounge: { name: 'Open Gathering & Social Lounge', count: Math.round(guests * 0.22), pct: 22 },
+        entrance: { name: 'Entrance & Welcome Foyer', count: Math.max(0, guests - (Math.round(guests * 0.30) + Math.round(guests * 0.40) + Math.round(guests * 0.22))), pct: 8 }
       },
       note: ''
     };
 
+    // Synchronize with Business Portal published photos if present
+    let activeSets = v.sets;
+    if (S.business && S.business.photos && S.business.photos[v.id]) {
+      const bPhotos = S.business.photos[v.id];
+      const pubRaw = bPhotos.filter(p => p.category === 'raw' && (p.status === 'published' || p.status === 'live'));
+      const pubDecor = bPhotos.filter(p => p.category === 'decor' && (p.status === 'published' || p.status === 'live'));
+      const pubPeople = bPhotos.filter(p => p.category === 'people' && (p.status === 'published' || p.status === 'live'));
+
+      if (pubRaw.length || pubDecor.length || pubPeople.length) {
+        activeSets = [
+          {
+            key: 'raw',
+            label: '1. Raw (Original Space)',
+            title: 'Original Property Condition',
+            note: 'Authentic architectural photographs of the venue spaces before any wedding decoration.',
+            photos: pubRaw.length ? pubRaw.map(p => p.url) : v.sets[0].photos,
+            captions: pubRaw.length ? pubRaw.map(p => p.title) : v.sets[0].captions,
+            details: pubRaw.length ? pubRaw.map(p => p.caption) : v.sets[0].details
+          },
+          {
+            key: 'decor',
+            label: '2. After Decoration (Dressed For You)',
+            title: 'Wedding Transformation Preview',
+            note: 'The exact same venue spaces transformed with mandap, ambient lighting and banquet dining setup.',
+            photos: pubDecor.length ? pubDecor.map(p => p.url) : v.sets[1].photos,
+            captions: pubDecor.length ? pubDecor.map(p => p.title) : v.sets[1].captions,
+            details: pubDecor.length ? pubDecor.map(p => p.caption) : v.sets[1].details
+          },
+          {
+            key: 'people',
+            label: '3. With Guests (Realistic Celebration)',
+            title: 'Realistic Wedding Celebration',
+            note: 'The decorated property populated with natural Indian wedding guest distribution across zones.',
+            photos: pubPeople.length ? pubPeople.map(p => p.url) : v.sets[2].photos,
+            captions: pubPeople.length ? pubPeople.map(p => p.title) : v.sets[2].captions,
+            details: pubPeople.length ? pubPeople.map(p => p.caption) : v.sets[2].details
+          }
+        ];
+      }
+    }
+
     return `<div class="psets" data-sets>
       <div class="ps-tabs" role="tablist">
-        ${v.sets.map((x, i) => `<button type="button" role="tab" class="${i ? '' : 'on'}" data-act="pset" data-i="${i}">${x.key === 'raw' ? ic('camera') : x.key === 'decor' ? ic('sparkles') : ic('users')}<span>${esc(x.label)}</span></button>`).join('')}
+        ${activeSets.map((x, i) => `<button type="button" role="tab" class="${i ? '' : 'on'}" data-act="pset" data-i="${i}">${x.key === 'raw' ? ic('camera') : x.key === 'decor' ? ic('sparkles') : ic('users')}<span>${esc(x.label)}</span></button>`).join('')}
       </div>
-      ${v.sets.map((x, i) => {
+      ${activeSets.map((x, i) => {
         let bannerHtml = '';
         if (x.key === 'raw') {
           bannerHtml = `<div class="ps-banner ps-raw-banner">
@@ -1961,7 +3000,7 @@
     else if (p0 === 'partners') html = pagePartners(r.q);
     else if (p0 === 'offers') html = pageOffers();
     else if (p0 === 'wishlist') html = pageWishlist();
-    else if (p0 === 'partner-dashboard') html = pagePartnerDashboard();
+    else if (p0 === 'business' || p0 === 'business-dashboard' || p0 === 'partner-dashboard') html = pageBusinessPortal(p0 === 'business' ? (p1 || 'dashboard') : 'dashboard', r.q);
     else if (p0 === 'concierge') html = pageConcierge(p1);
     else html = notFound();
     header();
@@ -2090,19 +3129,14 @@
   let afterLogin = null;
   function loginModal(then, tab = 'customer') {
     if (then !== undefined) afterLogin = then || null;
-    const seg = `<div class="seg seg3" role="tablist"><button role="tab" aria-selected="${tab === 'customer'}" class="${tab === 'customer' ? 'on' : ''}" data-act="login-tab" data-tab="customer">${ic('user')}Customer</button><button role="tab" aria-selected="${tab === 'partner'}" class="${tab === 'partner' ? 'on' : ''}" data-act="login-tab" data-tab="partner">${ic('store')}Partner</button><button role="tab" aria-selected="${tab === 'staff'}" class="${tab === 'staff' ? 'on' : ''}" data-act="login-tab" data-tab="staff">${ic('headset')}Staff</button></div>`;
-    if (tab === 'staff') return openModal('Login / Sign Up', `${seg}<form data-form="staff-login" class="modal-b" style="padding:0">
-      <p style="margin:0;color:var(--muted)">ShaadiKart staff only. Opens the Concierge console for meetings, calls and payment unlocks.</p>
-      <label class="field">Executive<select name="who">${EXECS.map(x => `<option>${x}</option>`).join('')}</select></label>
-      <label class="field">Access code<input name="code" required inputmode="numeric" maxlength="4" autocomplete="off" placeholder="Demo code: 1234"></label>
-      <button class="btn btn-primary" type="submit">Open Concierge</button>
-      <p class="note">${ic('info')}<span>Demo only. Real staff log in with their own credentials in the live product.</span></p></form>`);
-    if (tab === 'partner') return openModal('Login / Sign Up', `${seg}<form data-form="partner-login" class="modal-b" style="padding:0">
-      <p style="margin:0;color:var(--muted)">For venues, decorators, photographers and other ShaadiKart partners.</p>
-      <label class="field">Your business<select name="pid">${D.CATEGORIES.map(c => `<optgroup label="${esc(c.name)}">${D.PARTNERS.filter(v => v.cat === c.id).map(v => `<option value="${v.id}">${esc(v.name)}</option>`).join('')}</optgroup>`).join('')}</select></label>
-      <label class="field">Registered mobile<input name="phone" required inputmode="numeric" pattern="[0-9]{10}" maxlength="10" placeholder="10-digit number" autocomplete="off"></label>
+    const isBiz = tab === 'business' || tab === 'partner';
+    const seg = `<div class="seg seg2" role="tablist"><button role="tab" aria-selected="${!isBiz}" class="${!isBiz ? 'on' : ''}" data-act="login-tab" data-tab="customer">${ic('user')}Customer</button><button role="tab" aria-selected="${isBiz}" class="${isBiz ? 'on' : ''}" data-act="login-tab" data-tab="business">${ic('store')}Business</button></div>`;
+    if (isBiz) return openModal('Login / Sign Up', `${seg}<form data-form="business-login" class="modal-b" style="padding:0">
+      <p style="margin:0;color:var(--muted)">For venues, decorators, photographers and other ShaadiKart businesses.</p>
+      <label class="field">Your business<select name="pid">${D.CATEGORIES.map(c => `<optgroup label="${esc(c.name)}">${D.PARTNERS.filter(v => v.cat === c.id).map(v => `<option value="${v.id}" ${v.id === 'royal-banquet' ? 'selected' : ''}>${esc(v.name)}</option>`).join('')}</optgroup>`).join('')}</select></label>
+      <label class="field">Registered mobile<input name="phone" required inputmode="numeric" pattern="[0-9]{10}" maxlength="10" placeholder="10-digit number" autocomplete="off" value="${'98100' + '11221'}"></label>
       <button class="btn btn-primary" type="submit">Send OTP</button>
-      <p class="note">${ic('info')}<span>New partner? Partner sign-up and KYC open in Phase 2. Demo only: nothing leaves this browser.</span></p></form>`);
+      <p class="note">${ic('info')}<span>Demo OTP: <b>1234</b>. Verified Business access.</span></p></form>`);
     openModal('Login / Sign Up', `${seg}<form data-form="login-phone" class="modal-b" style="padding:0">
       <p style="margin:0;color:var(--muted)">Mobile number, OTP, name and city. Demo only: nothing leaves this browser.</p>
       <label class="field">Your name<input name="name" required placeholder="e.g. Priya Sharma" autocomplete="off"></label>
@@ -2258,9 +3292,213 @@
       s.removed = true; save(); render(); toast('Removed. Your other services are unaffected.');
     },
     login() { loginModal(() => render()); },
-    'partner-login'() { loginModal(null, 'partner'); },
-    'staff-login'() { loginModal(null, 'staff'); },
-    'staff-logout'() { S.staff = null; save(); closeModal(); go('#/'); toast('Staff logged out', 'headset'); },
+    'business-login'() { loginModal(null, 'business'); },
+    'partner-login'() { loginModal(null, 'business'); },
+    'biz-menu-toggle'() {
+      const sb = $('#biz-sidebar');
+      if (sb) sb.classList.toggle('open');
+    },
+    'biz-media-tab'(el) {
+      BIZ.photoTab = el.dataset.tab;
+      render();
+    },
+    'biz-media-cat'(el) {
+      BIZ.photoCat = el.dataset.cat;
+      render();
+    },
+    'biz-toggle-live'(el) {
+      const v = getBizVenue();
+      const photos = (S.business && S.business.photos && S.business.photos[v.id]) || [];
+      const p = photos.find(x => x.id === el.dataset.id);
+      if (!p) return;
+      const isLive = p.status === 'published' || p.status === 'live';
+      p.status = isLive ? 'archived' : 'live';
+      save(); render();
+      toast(isLive ? 'Photo moved to Archive (Hidden from customer view)' : 'Photo is now LIVE on customer page!', isLive ? 'undo' : 'check');
+    },
+    'biz-toggle-archive'(el) {
+      const v = getBizVenue();
+      const photos = (S.business && S.business.photos && S.business.photos[v.id]) || [];
+      const p = photos.find(x => x.id === el.dataset.id);
+      if (!p) return;
+      p.status = p.status === 'archived' ? 'live' : 'archived';
+      save(); render();
+      toast(p.status === 'archived' ? 'Photo moved to Archive' : 'Photo unarchived & LIVE on site', 'check');
+    },
+    'biz-delete-photo'(el) {
+      const v = getBizVenue();
+      const photos = (S.business && S.business.photos && S.business.photos[v.id]) || [];
+      const p = photos.find(x => x.id === el.dataset.id);
+      openModal('Remove Photo', `<div class="modal-b" style="padding:0">
+        <p style="margin:0 0 12px">Are you sure you want to permanently remove <b>${esc(p ? p.title : 'this photo')}</b> from your library?</p>
+        <p class="note" style="margin:0 0 16px">${ic('alert')}<span>This action cannot be undone. It will be removed from both business media and the customer page.</span></p>
+        <div class="modal-f" style="justify-content:flex-end;gap:10px">
+          <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+          <button class="btn btn-primary" style="background:#DC2626;border-color:#DC2626" data-act="biz-confirm-delete" data-id="${el.dataset.id}">Delete Permanently</button>
+        </div>
+      </div>`);
+    },
+    'biz-confirm-delete'(el) {
+      const v = getBizVenue();
+      if (S.business && S.business.photos && S.business.photos[v.id]) {
+        S.business.photos[v.id] = S.business.photos[v.id].filter(x => x.id !== el.dataset.id);
+      }
+      BIZ.selectedPhotos.delete(el.dataset.id);
+      save(); closeModal(); render();
+      toast('Photo permanently deleted', 'trash');
+    },
+    'biz-check-photo'(el) {
+      const id = el.dataset.id;
+      if (el.checked) BIZ.selectedPhotos.add(id); else BIZ.selectedPhotos.delete(id);
+      render();
+    },
+    'biz-select-all-photos'(el) {
+      const v = getBizVenue();
+      const photos = (S.business && S.business.photos && S.business.photos[v.id]) || [];
+      let list = photos;
+      if (BIZ.photoTab === 'live') list = list.filter(p => p.status === 'published' || p.status === 'live');
+      else if (BIZ.photoTab === 'archived') list = list.filter(p => p.status === 'archived');
+      if (BIZ.photoCat !== 'all') list = list.filter(p => p.category === BIZ.photoCat);
+
+      if (el.checked) list.forEach(p => BIZ.selectedPhotos.add(p.id));
+      else BIZ.selectedPhotos.clear();
+      render();
+    },
+    'biz-batch-live'() {
+      if (!BIZ.selectedPhotos.size) return toast('Select photos first', 'alert');
+      const v = getBizVenue();
+      const photos = (S.business && S.business.photos && S.business.photos[v.id]) || [];
+      photos.forEach(p => { if (BIZ.selectedPhotos.has(p.id)) p.status = 'live'; });
+      BIZ.selectedPhotos.clear(); save(); render();
+      toast('Selected photos marked Live on customer page', 'check');
+    },
+    'biz-batch-archive'() {
+      if (!BIZ.selectedPhotos.size) return toast('Select photos first', 'alert');
+      const v = getBizVenue();
+      const photos = (S.business && S.business.photos && S.business.photos[v.id]) || [];
+      photos.forEach(p => { if (BIZ.selectedPhotos.has(p.id)) p.status = 'archived'; });
+      BIZ.selectedPhotos.clear(); save(); render();
+      toast('Selected photos moved to Archive', 'check');
+    },
+    'biz-batch-delete'() {
+      if (!BIZ.selectedPhotos.size) return toast('Select photos first', 'alert');
+      openModal('Remove Selected Photos', `<div class="modal-b" style="padding:0">
+        <p style="margin:0 0 14px">Permanently remove <b>${BIZ.selectedPhotos.size}</b> selected photos from your business library?</p>
+        <div class="modal-f" style="justify-content:flex-end;gap:10px">
+          <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+          <button class="btn btn-primary" style="background:#DC2626;border-color:#DC2626" data-act="biz-confirm-batch-delete">Delete Permanently</button>
+        </div>
+      </div>`);
+    },
+    'biz-confirm-batch-delete'() {
+      const v = getBizVenue();
+      if (S.business && S.business.photos && S.business.photos[v.id]) {
+        S.business.photos[v.id] = S.business.photos[v.id].filter(x => !BIZ.selectedPhotos.has(x.id));
+      }
+      BIZ.selectedPhotos.clear();
+      save(); closeModal(); render();
+      toast('Selected photos removed', 'trash');
+    },
+    'biz-upload-modal'() {
+      openModal('Upload Property Photos', `<form data-form="biz-upload-photo" class="modal-b" style="padding:0">
+        <div class="biz-dropzone" onclick="document.getElementById('biz-file-inp').click()">
+          <div class="biz-dropzone-icon">${ic('plus')}</div>
+          <b style="color:#281448;display:block;margin-bottom:4px">Drag &amp; drop photos here or click to browse</b>
+          <span style="font-size:12px;color:#7A6F91">Supports high-res JPG, PNG up to 15 MB each</span>
+          <input type="file" id="biz-file-inp" style="display:none" accept="image/*" multiple onchange="toast('Photo staged for upload (demo)', 'check')">
+        </div>
+        <div style="margin-top:14px;display:flex;flex-direction:column;gap:10px">
+          <label class="field">Photo Title<input name="title" required placeholder="e.g. Mandap Floral Architecture" autocomplete="off" value="Signature Wedding Mandap Setup"></label>
+          <label class="field">Category<select name="category">
+            <option value="raw">1. Raw Property (Undecorated)</option>
+            <option value="decor" selected>2. After Decoration (Dressed Transformation)</option>
+            <option value="people">3. With Guests (Realistic Celebration)</option>
+          </select></label>
+          <label class="field">Caption &amp; Details<input name="caption" placeholder="e.g. Dressed with fresh crimson roses and crystal chandeliers" value="Handcrafted royal mandap styling with ambient uplighting"></label>
+        </div>
+        <div class="modal-f" style="justify-content:flex-end;margin-top:16px;gap:10px">
+          <button type="button" class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+          <button type="submit" class="biz-gold-btn">Upload &amp; Set Live on Site</button>
+        </div>
+      </form>`);
+    },
+    'biz-sme-stage'(el) {
+      BIZ.smeStage = el.dataset.stage;
+      render();
+    },
+    'biz-sme-lighting'(el) {
+      BIZ.smeLighting = el.dataset.lighting;
+      render();
+    },
+    'biz-view-booking'(el) {
+      const id = el.dataset.id || '10248';
+      openModal('Booking Details — SKB#' + id, `<div class="modal-b" style="padding:0">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
+          <div style="width:50px;height:50px;border-radius:10px;background:url('${D.img('photo-1519741497674-611481863552', 200)}') center / cover no-repeat"></div>
+          <div>
+            <h3 style="margin:0;font-size:16px;color:#281448">SKB#${id} · Wedding Celebration</h3>
+            <span style="font-size:12px;color:#10B981;font-weight:700">✔ Confirmed on ShaadiKart</span>
+          </div>
+        </div>
+        <dl class="kv">
+          <dt>Event Date</dt><dd>15 Dec 2025 (Evening Banquet)</dd>
+          <dt>Expected Guests</dt><dd>250 Guests</dd>
+          <dt>Booked Package</dt><dd>Royal Banquet Hall · Grand Package</dd>
+          <dt>Total Value</dt><dd><b>₹2,50,000</b></dd>
+          <dt>Customer</dt><dd>Aarav &amp; Riya Malhotra</dd>
+          <dt>Verified By</dt><dd>ShaadiKart Executive</dd>
+        </dl>
+        <div class="modal-f" style="justify-content:flex-end;margin-top:16px">
+          <button class="btn btn-primary" onclick="closeModal()">Close</button>
+        </div>
+      </div>`);
+    },
+    'biz-premium'() {
+      openModal('ShaadiKart Verified Business Premium', `<div class="modal-b" style="padding:0;text-align:center">
+        <div style="width:54px;height:54px;margin:0 auto 12px;border-radius:50%;background:#FFFBEB;color:#D97706;display:flex;align-items:center;justify-content:center">
+          ${ic('crown')}
+        </div>
+        <h3 style="margin:0 0 6px;font-size:18px;color:#281448">Grow Your Wedding Bookings</h3>
+        <p style="font-size:13px;color:#64567C;margin:0 0 18px;line-height:1.4">Upgrade to Premium to get priority listing placement across Delhi NCR, 3D venue walkthrough badge, and dedicated relationship manager support.</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;text-align:left;margin-bottom:18px">
+          <div style="background:#f4eefc;padding:12px;border-radius:10px;font-size:12.5px;color:#281448"><b>✔ Top 3 Search Placement</b><br><small style="color:#7A6F91">3x higher profile visits</small></div>
+          <div style="background:#f4eefc;padding:12px;border-radius:10px;font-size:12.5px;color:#281448"><b>✔ Instant WhatsApp Leads</b><br><small style="color:#7A6F91">Pre-screened wedding clients</small></div>
+        </div>
+        <button class="biz-gold-btn" style="width:100%;padding:10px" onclick="closeModal();toast('Upgrade requested. Your business manager will contact you.', 'check')">Upgrade for ₹4,999 / mo</button>
+      </div>`);
+    },
+    'biz-boost'() {
+      ACT['biz-premium']();
+    },
+    'biz-contact-support'() {
+      openModal('Business Support Helpline', `<div class="modal-b" style="padding:0">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
+          <div class="biz-help-avatar-wrap" style="width:50px;height:50px;background-image:url('${D.img('photo-1573496359142-b8d87734a5a2', 150)}')"></div>
+          <div>
+            <h4 style="margin:0;font-size:15px;color:#281448">Our Business Support Team</h4>
+            <span style="font-size:12px;color:#7A6F91">Dedicated support for verified businesses</span>
+          </div>
+        </div>
+        <p style="font-size:13px;color:#4B3E65;margin:0 0 14px">Direct helpline: <b>${CALL_NO}</b> (Mon–Sun, 9 AM – 8 PM)</p>
+        <label class="field">Message for Support Team<textarea rows="3" placeholder="How can we assist your business today?"></textarea></label>
+        <div class="modal-f" style="justify-content:flex-end;gap:10px;margin-top:14px">
+          <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+          <button class="biz-gold-btn" onclick="closeModal();toast('Support request submitted. We will call you within 30 minutes.', 'check')">Send Message</button>
+        </div>
+      </div>`);
+    },
+    'biz-save-settings'() {
+      toast('Business settings updated successfully', 'check');
+    },
+    'biz-payout-modal'() {
+      toast('Statement downloaded for November 2026', 'check');
+    },
+    'biz-notif'() {
+      toast('You have 3 unread booking updates', 'bell');
+    },
+    'biz-user-menu'() {
+      ACT.account();
+    },
     'meet-open'(el) { const ev = S.events.find(e => e.id === el.dataset.ev); if (ev) meetingModal(ev); },
     'call-us'(el) { const ev = S.events.find(e => e.id === el.dataset.ev), g = gateOf(ev); if (g.inbound || answered(g)) return; g.inbound = { t: now() }; save(); render(); toast(`Thank you. We received your call to ${CALL_NO}.`, 'phone'); },
     'wa-open'(el) { const ev = el.dataset.ev ? S.events.find(e => e.id === el.dataset.ev) : null; if (ev) { gateOf(ev).waRequested = now(); save(); } waModal(ev); },
@@ -2292,23 +3530,29 @@
     'cg-wa-send'(el) { const g = gateOf(S.events.find(e => e.id === el.dataset.ev)); g.waSent = now(); save(); render(); toast('WhatsApp catalog sent to the customer (demo)', 'message'); },
     'login-tab'(el) { loginModal(undefined, el.dataset.tab); },
     account() {
-      if (!S.user && !S.partner && !S.staff) return loginModal(() => render());
+      if (!S.user && !S.partner && !(S.business && S.business.auth)) return loginModal(() => render());
       const mask = ph => '+91 ' + esc(ph.replace(/^(\d{2})\d{6}/, '$1••••••'));
+      const bizId = (S.business && S.business.auth && S.business.auth.id) || (S.partner && S.partner.id);
       openModal('Your account', `${S.user ? `<h4 style="margin:0">${ic('user')} Customer</h4><dl class="kv"><dt>Name</dt><dd>${esc(S.user.name)}</dd><dt>Mobile</dt><dd>${mask(S.user.phone)}</dd><dt>City</dt><dd>${esc(S.user.city)}</dd></dl>
           <div class="modal-f" style="justify-content:flex-start"><a class="btn btn-ghost btn-sm" href="#/bookings">My Bookings</a><button class="btn btn-ghost btn-sm" data-act="logout">Log out customer</button></div>`
         : `<button class="btn btn-ghost" data-act="login">${ic('user')}Customer login</button>`}
         <hr style="border:0;border-top:1px solid var(--line);width:100%">
-        ${S.partner ? `<h4 style="margin:0">${ic('store')} Partner</h4><dl class="kv"><dt>Business</dt><dd>${esc(partner(S.partner.id).name)}</dd><dt>Mobile</dt><dd>${mask(S.partner.phone)}</dd></dl>
-          <div class="modal-f" style="justify-content:flex-start"><a class="btn btn-primary btn-sm" href="#/partner-dashboard">Partner dashboard</a><button class="btn btn-ghost btn-sm" data-act="partner-logout">Log out partner</button></div>`
-        : `<button class="btn btn-ghost" data-act="partner-login">${ic('store')}Partner login</button>`}
-        <hr style="border:0;border-top:1px solid var(--line);width:100%">
-        ${S.staff ? `<h4 style="margin:0">${ic('headset')} ShaadiKart staff</h4><dl class="kv"><dt>Executive</dt><dd>${esc(S.staff.name)}</dd></dl>
-          <div class="modal-f" style="justify-content:flex-start"><a class="btn btn-primary btn-sm" href="#/concierge">Concierge console</a><button class="btn btn-ghost btn-sm" data-act="staff-logout">Log out staff</button></div>`
-        : `<button class="btn btn-ghost" data-act="staff-login">${ic('headset')}Staff login</button>`}
+        ${bizId ? `<h4 style="margin:0">${ic('store')} Business Account</h4><dl class="kv"><dt>Business</dt><dd>${esc(partner(bizId).name)}</dd><dt>Status</dt><dd><span class="tag tag-green">Verified Business</span></dd></dl>
+          <div class="modal-f" style="justify-content:flex-start"><a class="btn btn-primary btn-sm" href="#/business-dashboard">Business Dashboard</a><button class="btn btn-ghost btn-sm" data-act="business-logout">Log out business</button></div>`
+        : `<button class="btn btn-ghost" data-act="business-login">${ic('store')}Business login</button>`}
         <div class="modal-f"><button class="btn btn-ghost btn-sm" data-act="reset">Reset demo data</button></div>`);
     },
     logout() { S.user = null; save(); closeModal(); render(); toast('Customer logged out', 'user'); },
-    'partner-logout'() { S.partner = null; save(); closeModal(); go('#/'); toast('Partner logged out', 'store'); },
+    'business-logout'() {
+      if (S.business) S.business.auth = null;
+      S.partner = null;
+      save(); closeModal(); go('#/'); toast('Logged out of Business Portal', 'store');
+    },
+    'partner-logout'() {
+      if (S.business) S.business.auth = null;
+      S.partner = null;
+      save(); closeModal(); go('#/'); toast('Logged out of Business Portal', 'store');
+    },
     dd(el) {
       const m = el.nextElementSibling, open = m.hidden;
       document.querySelectorAll('.dd-menu').forEach(x => { x.hidden = true; });
@@ -2488,20 +3732,59 @@
       else g.meeting = { ...next, status: 'scheduled', changes: 0, history: [] };
       save(); closeModal(); render(); toast(m ? 'Meeting rescheduled' : 'Meeting confirmed', 'calendarCheck');
     },
-    'partner-login'(f) {
+    'business-login'(f) {
       const pid = f.pid.value, phone = f.phone.value.trim();
       if (!/^\d{10}$/.test(phone)) { toast('Enter a 10-digit mobile number', 'alert'); return; }
-      openModal('Verify OTP', `<form data-form="partner-otp" data-pid="${esc(pid)}" data-phone="${esc(phone)}" class="modal-b" style="padding:0">
-        <p style="margin:0;color:var(--muted)">Partner login for <b>${esc(partner(pid).name)}</b>. OTP sent to +91 ${esc(phone.slice(0, 2))}••••••${esc(phone.slice(-2))}.</p>
+      const v = partner(pid);
+      openModal('Verify OTP', `<form data-form="business-otp" data-pid="${esc(pid)}" data-phone="${esc(phone)}" class="modal-b" style="padding:0">
+        <p style="margin:0;color:var(--muted)">Business login for <b>${esc(v.name)}</b>. OTP sent to +91 ${esc(phone.slice(0, 2))}••••••${esc(phone.slice(-2))}.</p>
         <div class="callout gold">${ic('info')}<span>Demo OTP: <b>1234</b></span></div>
-        <label class="field">OTP<input name="otp" inputmode="numeric" maxlength="4" required autocomplete="one-time-code"></label>
-        <button class="btn btn-primary" type="submit">Verify &amp; open dashboard</button></form>`);
+        <label class="field">OTP<input name="otp" inputmode="numeric" maxlength="4" required autocomplete="one-time-code" autofocus></label>
+        <button class="btn btn-primary" type="submit">Verify &amp; open Business Dashboard</button></form>`);
     },
-    'partner-otp'(f) {
+    'business-otp'(f) {
       if (f.otp.value !== '1234') { toast('Incorrect OTP. Use 1234 in this demo.', 'alert'); return; }
-      S.partner = { id: f.dataset.pid, phone: f.dataset.phone };
-      save(); closeModal(); toast(`Welcome, ${partner(S.partner.id).name}!`, 'store');
-      go('#/partner-dashboard');
+      const pid = f.dataset.pid, v = partner(pid);
+      if (!S.business) S.business = { auth: null, photos: {} };
+      S.business.auth = { id: pid, name: v.name, phone: f.dataset.phone, email: 'owner@' + pid + '.com' };
+      S.partner = { id: pid, phone: f.dataset.phone };
+      save(); closeModal(); toast(`Welcome, ${v.name}!`, 'store');
+      go('#/business-dashboard');
+    },
+    'partner-login'(f) { FORMS['business-login'](f); },
+    'partner-otp'(f) { FORMS['business-otp'](f); },
+    'biz-upload-photo'(f) {
+      const v = getBizVenue();
+      const title = (f.title.value || '').trim() || 'Signature Property Photo';
+      const category = f.category.value || 'decor';
+      const caption = (f.caption.value || '').trim() || '';
+
+      const sampleUrls = {
+        raw: ['photo-1768851142332-75f3d1b47452', 'photo-1779301674216-506de8607c87', 'photo-1768209373252-1819f7cc699a'],
+        decor: ['photo-1519741497674-611481863552', 'photo-1519689950823-0a2251441815', 'photo-1511795409834-ef04bbd61622'],
+        people: ['photo-1469371670807-013ccf25f16a', 'photo-1511795409834-ef04bbd61622', 'photo-1540575467063-178a50c2df87']
+      };
+      const catList = sampleUrls[category] || sampleUrls.decor;
+      const url = catList[Math.floor(Math.random() * catList.length)];
+
+      const newPhoto = {
+        id: 'rb-custom-' + Date.now(),
+        url,
+        category,
+        status: 'live',
+        title,
+        caption,
+        uploadedAt: 'Today',
+        size: '3.2 MB'
+      };
+
+      if (!S.business) S.business = { auth: null, photos: {} };
+      if (!S.business.photos) S.business.photos = {};
+      if (!S.business.photos[v.id]) S.business.photos[v.id] = JSON.parse(JSON.stringify(D.SEED_ROYAL_PHOTOS || []));
+
+      S.business.photos[v.id].unshift(newPhoto);
+      save(); closeModal(); render();
+      toast('Photo uploaded and published Live to customer page!', 'check');
     },
     'add-to-cart'(f) {
       const vid = f.dataset.vid, pkg = f.pkg.value, diet = f.diet ? f.diet.value : 'veg';
