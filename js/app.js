@@ -723,9 +723,12 @@
     return ['#' + (p.split('/').filter(Boolean).join('--') || 'home'), new URLSearchParams(qs || '')];
   }
   function route() {
-    const h = location.hash.replace(/^#/, '');
-    const parts = h === 'home' ? [] : h.split('--').filter(Boolean);
-    return { parts, q: curQ, path: h };
+    const raw = location.hash.replace(/^#\/?/, '');
+    const [pathOnly, qs] = raw.split('?');
+    if (qs && !curQ.toString()) curQ = new URLSearchParams(qs);
+    const normalized = (pathOnly || '').replace(/\//g, '--');
+    const parts = (normalized === 'home' || !normalized) ? [] : normalized.split('--').filter(Boolean);
+    return { parts, q: curQ, path: raw };
   }
   const go = h => {
     const sb = $('#biz-sidebar'), bd = $('#biz-sidebar-backdrop');
@@ -790,7 +793,7 @@
         <button class="hic burger" data-act="menu" aria-label="Menu">${ic('menu')}</button>
       </div></div>`;
     $('#tabbar').innerHTML = [['#/', 'home', 'Home', p0 === ''], ['#/cart', 'cart', 'Cart', p0 === 'cart'], ['#/bookings', 'calendarCheck', 'Bookings', p0 === 'bookings' || p0 === 'checkout'], ['', 'user', S.user || S.partner || (S.business && S.business.auth) ? 'Profile' : 'Login', false]]
-      .map(([h, i, l, on]) => h ? `<a href="${h}" class="${on ? 'on' : ''}">${ic(i)}${l}${i === 'cart' && cartCount() ? `<span class="badge-count">${cartCount()}</span>` : ''}</a>` : `<a href="#" data-act="account">${ic(i)}${l}</a>`).join('');
+      .map(([h, i, l, on]) => h ? `<a href="${h}" class="${on ? 'on' : ''}">${ic(i)}${l}${i === 'cart' && cartCount() ? `<span class="badge-count">${cartCount()}</span>` : ''}</a>` : `<button type="button" class="tabbar-btn" data-act="account">${ic(i)}${l}</button>`).join('');
   }
   function footer() {
     $('#site-footer').innerHTML = `<div class="wrap foot">
@@ -4015,6 +4018,14 @@
     login() { loginModal(() => render()); },
     'business-login'() { loginModal(null, 'business'); },
     'partner-login'() { loginModal(null, 'business'); },
+    'staff-login'() {
+      const staffList = ['Ananya Sharma (Concierge Lead)', 'Rahul Verma (Relationship Manager)', 'Priya Iyer (Operations)', 'Vikram Malhotra (Executive)'];
+      openModal('Staff Login', `<form data-form="staff-login" class="modal-b" style="padding:0">
+        <p style="margin:0;color:var(--muted)">For ShaadiKart operations and concierge staff.</p>
+        <label class="field">Staff member<select name="who">${staffList.map(s => `<option value="${s.split(' (')[0]}">${s}</option>`).join('')}</select></label>
+        <label class="field">Passcode<input type="password" name="code" placeholder="1234" value="1234" required></label>
+        <button class="btn btn-primary" type="submit">Sign in</button></form>`);
+    },
     'biz-menu-toggle'() {
       const sb = $('#biz-sidebar'), bd = $('#biz-sidebar-backdrop');
       if (sb) sb.classList.toggle('open');
@@ -4025,10 +4036,12 @@
       if (sb) sb.classList.remove('open');
       if (bd) bd.classList.remove('open');
     },
-    'biz-nav-click'() {
+    'biz-nav-click'(el) {
       const sb = $('#biz-sidebar'), bd = $('#biz-sidebar-backdrop');
       if (sb) sb.classList.remove('open');
       if (bd) bd.classList.remove('open');
+      const href = el.getAttribute('href');
+      if (href) go(href);
     },
     'biz-media-tab'(el) {
       BIZ.photoTab = el.dataset.tab;
@@ -4491,7 +4504,7 @@
     },
     contact() {
       openModal('Contact us', `<div class="side-list">
-        <div class="callout">${ic('phone')}<span><b>Phone (demo)</b><br>+91 00000 00000 · 9 am – 9 pm</span></div>
+        <div class="callout">${ic('phone')}<span><b>Phone (demo)</b><br>${CALL_NO} · 9 am – 9 pm</span></div>
         <div class="callout">${ic('message')}<span><b>Email (demo)</b><br>help@shaadikart.example</span></div>
         <div class="callout gold">${ic('info')}<span>Have a booking? Raise a ticket from My Bookings → Support so we can see your order.</span></div></div>
         <div class="modal-f"><a class="btn btn-primary" href="#/bookings/_/support">Go to Support</a></div>`);
@@ -4775,7 +4788,7 @@
   document.addEventListener('click', e => {
     document.querySelectorAll('.dd-menu:not([hidden])').forEach(m => { if (!m.parentElement.contains(e.target)) m.hidden = true; });
     const a = e.target.closest('a[href^="#/"]');
-    if (a && !a.dataset.act && !e.metaKey && !e.ctrlKey) { e.preventDefault(); closeModal(); go(a.getAttribute('href')); return; }
+    if (a && !a.dataset.act && (!a.target || a.target !== '_blank') && !e.metaKey && !e.ctrlKey) { e.preventDefault(); closeModal(); go(a.getAttribute('href')); return; }
     const el = e.target.closest('[data-act]');
     if (!el || !ACT[el.dataset.act]) return;
     if (el.dataset.act !== 'modal-bg') e.preventDefault();
