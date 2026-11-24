@@ -728,6 +728,9 @@
     return { parts, q: curQ, path: h };
   }
   const go = h => {
+    const sb = $('#biz-sidebar'), bd = $('#biz-sidebar-backdrop');
+    if (sb) sb.classList.remove('open');
+    if (bd) bd.classList.remove('open');
     const [hash, q] = toHash(h);
     if (location.hash === hash) { curQ = q; render(); } else { nextQ = q; location.hash = hash; }
   };
@@ -781,8 +784,9 @@
         <button type="button" class="btn btn-ghost btn-sm demo-pill-btn" data-act="dock-toggle" style="border-radius:999px;border:1px solid var(--gold);color:var(--gold);padding:4px 10px;font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:4px">${ic('message')}Demo Mode</button>
         <button class="hic" data-act="search-modal" aria-label="Search">${ic('search')}</button>
         <a class="hic" href="#/wishlist" aria-label="Wishlist, ${wish} items">${ic('heart')}${wish ? `<span class="badge-count">${wish}</span>` : ''}</a>
-        <a class="hic" href="#/cart" aria-label="Cart, ${cartCount()} items">${ic('cart')}${cartCount() ? `<span class="badge-count">${cartCount()}</span>` : ''}</a>
+        <a class="hic hic-cart" href="#/cart" aria-label="Cart, ${cartCount()} items">${ic('cart')}${cartCount() ? `<span class="badge-count">${cartCount()}</span>` : ''}</a>
         <button class="login-btn" data-act="account"><span class="av">${ic('user')}</span><span class="lbl">${who}</span></button>
+        <button class="hic hic-account" data-act="account" aria-label="Account">${ic('user')}</button>
         <button class="hic burger" data-act="menu" aria-label="Menu">${ic('menu')}</button>
       </div></div>`;
     $('#tabbar').innerHTML = [['#/', 'home', 'Home', p0 === ''], ['#/cart', 'cart', 'Cart', p0 === 'cart'], ['#/bookings', 'calendarCheck', 'Bookings', p0 === 'bookings' || p0 === 'checkout'], ['', 'user', S.user || S.partner || (S.business && S.business.auth) ? 'Profile' : 'Login', false]]
@@ -1249,6 +1253,7 @@
     <div class="biz-app">
       <div class="biz-bg-layer"></div>
       <div class="biz-glass-overlay"></div>
+      <div id="biz-sidebar-backdrop" class="biz-sidebar-backdrop" data-act="biz-menu-close"></div>
       ${renderBizSidebar(v, activeSubpage)}
       <main class="biz-main">
         ${renderBizTopbar(v)}
@@ -1275,8 +1280,9 @@
 
     return `
     <aside class="biz-sidebar" id="biz-sidebar">
+      <button class="biz-sidebar-close" data-act="biz-menu-close" aria-label="Close menu">&times;</button>
       <div class="biz-sidebar-brand">
-        <a href="#/business-dashboard" class="biz-brand-link">
+        <a href="#/business-dashboard" class="biz-brand-link" data-act="biz-nav-click">
           <div class="biz-brand-row">
             ${logo(true)}
           </div>
@@ -1295,7 +1301,7 @@
 
       <nav class="biz-nav">
         ${navItems.map(item => `
-          <a href="${item.href}" class="biz-nav-item ${activeSubpage === item.key ? 'active' : ''}">
+          <a href="${item.href}" class="biz-nav-item ${activeSubpage === item.key ? 'active' : ''}" data-act="biz-nav-click">
             <span class="biz-nav-icon">${ic(item.icon)}</span>
             <span>${esc(item.label)}</span>
             ${item.pill ? `<span class="biz-nav-pill">${item.pill}</span>` : ''}
@@ -4010,8 +4016,19 @@
     'business-login'() { loginModal(null, 'business'); },
     'partner-login'() { loginModal(null, 'business'); },
     'biz-menu-toggle'() {
-      const sb = $('#biz-sidebar');
+      const sb = $('#biz-sidebar'), bd = $('#biz-sidebar-backdrop');
       if (sb) sb.classList.toggle('open');
+      if (bd) bd.classList.toggle('open');
+    },
+    'biz-menu-close'() {
+      const sb = $('#biz-sidebar'), bd = $('#biz-sidebar-backdrop');
+      if (sb) sb.classList.remove('open');
+      if (bd) bd.classList.remove('open');
+    },
+    'biz-nav-click'() {
+      const sb = $('#biz-sidebar'), bd = $('#biz-sidebar-backdrop');
+      if (sb) sb.classList.remove('open');
+      if (bd) bd.classList.remove('open');
     },
     'biz-media-tab'(el) {
       BIZ.photoTab = el.dataset.tab;
@@ -4379,12 +4396,19 @@
       el.setAttribute('aria-expanded', String(open));
     },
     menu() {
+      const isAuth = !!(S.user || S.partner || (S.business && S.business.auth));
+      const authLabel = isAuth ? 'My Account' : 'Login / Sign Up';
+      const cCount = cartCount();
       openModal('Menu', `<nav class="mmenu">
+        <div class="mmenu-quick-cards">
+          <button class="mmenu-btn-auth" data-act="account">${ic('user')}<span>${authLabel}</span></button>
+          <a href="#/cart" class="mmenu-btn-cart">${ic('cart')}<span>Cart ${cCount ? `(${cCount})` : ''}</span></a>
+        </div>
         <a href="#/">${ic('home')}Home</a><a href="#/categories">${ic('menu')}All categories</a><a href="#/partners">${ic('store')}Our Partners</a><a href="#/offers">${ic('sparkles')}Offers</a><a href="#/about">${ic('heart')}About Us</a>
         <a href="#/wishlist">${ic('heart')}Wishlist</a><a href="#/cart">${ic('cart')}Cart</a><a href="#/bookings">${ic('calendarCheck')}My Bookings</a>
         <button data-act="chat">${ic('message')}Chat with us</button><button data-act="journey">${ic('list')}How it works</button><button data-act="policy">${ic('undo')}Cancellation &amp; refunds</button><button data-act="contact">${ic('phone')}Contact us</button>
-        <button data-act="account">${ic('user')}${S.user || S.partner ? 'My account' : 'Login / Sign Up'}</button></nav>
-        <label class="field">Location<select data-change="locality">${D.LOCALITIES.map(l => `<option ${S.locality === l ? 'selected' : ''}>${l}</option>`).join('')}</select></label>`);
+        </nav>
+        <label class="field" style="margin-top:12px">Location<select data-change="locality">${D.LOCALITIES.map(l => `<option ${S.locality === l ? 'selected' : ''}>${l}</option>`).join('')}</select></label>`);
     },
     'search-modal'() {
       openModal('Search', `<form data-form="search" class="modal-b" style="padding:0">
@@ -4775,6 +4799,80 @@
     st.querySelector('#sme-layer').style.clipPath = `inset(0 ${100 - w}% 0 0)`;
     st.querySelector('#sme-line').style.left = w + '%';
     st.querySelector('#sme-hs').hidden = w < 55;
+  });
+
+  // Touch & Mouse Drag Support for Sweep Comparison Sliders (iOS Safari & Mobile Web)
+  let isDraggingSweep = false;
+  let activeSweepBox = null;
+
+  function updateSweepFromPointer(box, clientX) {
+    if (!box) return;
+    const rect = box.getBoundingClientRect();
+    const x = clientX - rect.left;
+    const pct = Math.max(0, Math.min(100, Math.round((x / rect.width) * 100)));
+
+    if (box.classList.contains('biz-sweep-wrap') || box.id === 'biz-sweep-container') {
+      if (typeof window.updateBizSweep === 'function') {
+        window.updateBizSweep(pct);
+      }
+    } else {
+      SME.sweep = pct;
+      const inp = box.querySelector('[data-input="sme-sweep"]');
+      if (inp) inp.value = pct;
+      const rev = box.querySelector('#sme-rev'), ln = box.querySelector('#sme-line'), hs = box.querySelector('#sme-hs'), lyr = box.querySelector('#sme-layer');
+      if (rev) rev.style.width = pct + '%';
+      if (ln) ln.style.left = pct + '%';
+      if (lyr) lyr.style.clipPath = `inset(0 ${100 - pct}% 0 0)`;
+      if (hs) hs.hidden = pct < 55;
+    }
+  }
+
+  document.addEventListener('touchstart', e => {
+    const box = e.target.closest('.biz-sweep-wrap, .sme-sweep-box');
+    if (box) {
+      isDraggingSweep = true;
+      activeSweepBox = box;
+      const touch = e.touches[0];
+      if (touch) updateSweepFromPointer(box, touch.clientX);
+    }
+  }, { passive: true });
+
+  document.addEventListener('touchmove', e => {
+    if (isDraggingSweep && activeSweepBox) {
+      const touch = e.touches[0];
+      if (touch) {
+        if (e.cancelable) e.preventDefault();
+        updateSweepFromPointer(activeSweepBox, touch.clientX);
+      }
+    }
+  }, { passive: false });
+
+  document.addEventListener('touchend', () => {
+    isDraggingSweep = false;
+    activeSweepBox = null;
+  });
+  document.addEventListener('touchcancel', () => {
+    isDraggingSweep = false;
+    activeSweepBox = null;
+  });
+
+  // Desktop mouse dragging for biz-sweep-wrap
+  document.addEventListener('mousedown', e => {
+    const box = e.target.closest('.biz-sweep-wrap');
+    if (box) {
+      isDraggingSweep = true;
+      activeSweepBox = box;
+      updateSweepFromPointer(box, e.clientX);
+    }
+  });
+  document.addEventListener('mousemove', e => {
+    if (isDraggingSweep && activeSweepBox && e.buttons === 1) {
+      updateSweepFromPointer(activeSweepBox, e.clientX);
+    }
+  });
+  document.addEventListener('mouseup', () => {
+    isDraggingSweep = false;
+    activeSweepBox = null;
   });
   document.addEventListener('change', e => {
     const el = e.target.closest('[data-change]');
