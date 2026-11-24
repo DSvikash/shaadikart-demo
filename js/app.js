@@ -1004,8 +1004,183 @@
     smeStage: 'decor', // 'raw', 'decor', 'people'
     smeSweep: 50,
     smeGuests: 250,
-    smeLighting: 'dusk' // 'day', 'dusk', 'night'
+    smeLighting: 'dusk', // 'day', 'dusk', 'night'
+    searchQuery: '',
+    notifOpen: false,
+    userMenuOpen: false,
+    listingsTab: 'overview', // 'overview', 'media', 'preview'
+    bookingsFilter: 'all', // 'all', 'pending', 'confirmed', 'completed', 'cancelled'
+    calendarMonth: 11, // 0-indexed, 11 = Dec 2025
+    calendarYear: 2025,
+    blockedDates: new Set([4, 18]),
+    reviewsReplies: {
+      'rev-1': 'Thank you so much Pooja & Kunal! It was an absolute honor hosting your royal wedding celebration.'
+    },
+    promotions: [
+      { id: 'promo-1', title: 'Winter Wedding Festive Perk', desc: '10% off on venue booking for Dec–Jan events with >300 guests', active: true, tag: '10% OFF' },
+      { id: 'promo-2', title: 'Complimentary Bridal Dressing Suite', desc: 'Free luxury AC suite upgrade on bookings finalized 60 days ahead', active: true, tag: 'FREE PERK' },
+      { id: 'promo-3', title: 'Weekday Sangeet Special', desc: '15% discount on Monday–Thursday banquet rentals', active: false, tag: '15% OFF' }
+    ],
+    tickets: [
+      { id: 'TKT#7491', subject: 'High-res Mandap Photo Set Verification', category: 'Listing Update', date: '22 Nov 2026', status: 'Open' },
+      { id: 'TKT#7489', subject: 'GST Invoice Clarification for Oct Payout', category: 'Payout & Invoicing', date: '14 Nov 2026', status: 'Resolved' }
+    ],
+    bookings: [
+      {
+        id: '10248',
+        code: 'SKB#10248',
+        customer: 'Riya & Arjun',
+        phone: '98100•••••',
+        event: 'Wedding',
+        date: '15 Dec 2025',
+        time: '7:00 PM – 2:00 AM',
+        guests: 450,
+        value: 250000,
+        status: 'Confirmed',
+        thumb: 'photo-1519741497674-611481863552',
+        space: 'Grand Ballroom + Open Lawn',
+        menu: 'Royal Vegetarian Feast + Live Counters',
+        blueprint: 'Approved (Crimson Royal)',
+        advance: 100000,
+        balance: 150000
+      },
+      {
+        id: '10247',
+        code: 'SKB#10247',
+        customer: 'Kabir & Meera',
+        phone: '98111•••••',
+        event: 'Engagement',
+        date: '10 Dec 2025',
+        time: '6:30 PM – 11:30 PM',
+        guests: 200,
+        value: 120000,
+        status: 'Pending',
+        thumb: 'photo-1511795409834-ef04bbd61622',
+        space: 'Crystal Ballroom',
+        menu: 'High-Tea & Multi-Cuisine Dinner',
+        blueprint: 'In Review',
+        advance: 50000,
+        balance: 70000
+      },
+      {
+        id: '10246',
+        code: 'SKB#10246',
+        customer: 'Rohit Verma',
+        phone: '98122•••••',
+        event: 'Birthday Party',
+        date: '28 Nov 2025',
+        time: '7:00 PM – 11:00 PM',
+        guests: 120,
+        value: 75000,
+        status: 'Confirmed',
+        thumb: 'photo-1469371670807-013ccf25f16a',
+        space: 'Poolside Pavilion',
+        menu: 'Cocktail Snacks & Buffet',
+        blueprint: 'Standard Setup',
+        advance: 35000,
+        balance: 40000
+      },
+      {
+        id: '10245',
+        code: 'SKB#10245',
+        customer: 'TechCorp Solutions',
+        phone: '98133•••••',
+        event: 'Corporate Event',
+        date: '20 Nov 2025',
+        time: '10:00 AM – 6:00 PM',
+        guests: 300,
+        value: 180000,
+        status: 'Completed',
+        thumb: 'photo-1540575467063-178a50c2df87',
+        space: 'Main Convention Hall',
+        menu: 'Executive Corporate Buffet',
+        blueprint: 'AV & Stage Setup Completed',
+        advance: 180000,
+        balance: 0
+      },
+      {
+        id: '10249',
+        code: 'SKB#10249',
+        customer: 'Ananya & Siddharth',
+        phone: '98144•••••',
+        event: 'Sangeet & Cocktail',
+        date: '18 Jan 2026',
+        time: '7:00 PM – 1:00 AM',
+        guests: 350,
+        value: 210000,
+        status: 'Pending',
+        thumb: 'photo-1519741497674-611481863552',
+        space: 'Grand Ballroom',
+        menu: 'Cocktail & North Indian Buffet',
+        blueprint: 'Pending Design Call',
+        advance: 80000,
+        balance: 130000
+      },
+      {
+        id: '10244',
+        code: 'SKB#10244',
+        customer: 'Priya & Karan',
+        phone: '98155•••••',
+        event: 'Wedding Reception',
+        date: '05 Nov 2025',
+        time: '7:30 PM – 1:30 AM',
+        guests: 500,
+        value: 280000,
+        status: 'Completed',
+        thumb: 'photo-1511795409834-ef04bbd61622',
+        space: 'Grand Ballroom + Open Lawn',
+        menu: 'Deluxe Royal Spread',
+        blueprint: 'Executed Flawlessly',
+        advance: 280000,
+        balance: 0
+      },
+      {
+        id: '10243',
+        code: 'SKB#10243',
+        customer: 'Vikram Malhotra',
+        phone: '98166•••••',
+        event: 'Anniversary Celebration',
+        date: '12 Oct 2025',
+        time: '7:00 PM – 11:30 PM',
+        guests: 100,
+        value: 90000,
+        status: 'Cancelled',
+        thumb: 'photo-1469371670807-013ccf25f16a',
+        space: 'Crystal Ballroom',
+        menu: 'Signature Family Dinner',
+        blueprint: 'Cancelled by Customer (Refund Processed)',
+        advance: 90000,
+        balance: 0
+      }
+    ]
   };
+
+  const BIZ_NOTIFICATIONS = [
+    {
+      id: 'notif-1',
+      title: 'New Booking Enquiry Received',
+      desc: 'SKB#10249 received for Ananya & Siddharth (18 Jan 2026, 350 Guests)',
+      time: '10 mins ago',
+      unread: true,
+      icon: 'bell'
+    },
+    {
+      id: 'notif-2',
+      title: 'Customer Approved Blueprint',
+      desc: 'Riya & Arjun confirmed their decoration Blueprint for SKB#10248',
+      time: '2 hours ago',
+      unread: true,
+      icon: 'check'
+    },
+    {
+      id: 'notif-3',
+      title: 'Payout Processed Successfully',
+      desc: '₹1,20,000 settled to HDFC Bank •••• 4091 (Ref #SKP8841)',
+      time: 'Yesterday',
+      unread: true,
+      icon: 'rupee'
+    }
+  ];
 
   // Parallax subtle motion for the background layer on mousemove
   if (typeof window !== 'undefined') {
@@ -1016,6 +1191,15 @@
       const y = ((e.clientY / window.innerHeight) - 0.5) * 14;
       bg.style.transform = `translate3d(${-x}px, ${-y}px, 0) scale(1.03)`;
     });
+
+    window.bizLiveSearch = function(val) {
+      BIZ.searchQuery = (val || '').toLowerCase().trim();
+      const rows = document.querySelectorAll('.biz-table tbody tr');
+      rows.forEach(tr => {
+        const text = tr.textContent.toLowerCase();
+        tr.style.display = (!BIZ.searchQuery || text.includes(BIZ.searchQuery)) ? '' : 'none';
+      });
+    };
   }
 
   function getBizVenue() {
@@ -1031,25 +1215,41 @@
       S.business.photos[v.id] = JSON.parse(JSON.stringify(D.SEED_ROYAL_PHOTOS || []));
     }
 
+    let activeSubpage = subpage;
+    if (subpage === 'media' || subpage === 'portfolio' || subpage === 'event-preview' || subpage === 'see-my-event') {
+      activeSubpage = 'listings';
+      if (subpage === 'media' || subpage === 'portfolio') BIZ.listingsTab = 'media';
+      else if (subpage === 'event-preview' || subpage === 'see-my-event') BIZ.listingsTab = 'preview';
+    }
+
     let mainContent = '';
-    if (subpage === 'media' || subpage === 'portfolio') mainContent = renderBizMedia(v, q);
-    else if (subpage === 'event-preview' || subpage === 'see-my-event') mainContent = renderBizEventPreview(v);
-    else if (subpage === 'listings') mainContent = renderBizListings(v);
-    else if (subpage === 'bookings') mainContent = renderBizBookings(v);
-    else if (subpage === 'calendar') mainContent = renderBizCalendar(v);
-    else if (subpage === 'earnings') mainContent = renderBizEarnings(v);
-    else if (subpage === 'reviews') mainContent = renderBizReviews(v);
-    else if (subpage === 'promotions') mainContent = renderBizPromotions(v);
-    else if (subpage === 'analytics') mainContent = renderBizAnalytics(v);
-    else if (subpage === 'support') mainContent = renderBizSupport(v);
-    else if (subpage === 'settings') mainContent = renderBizSettings(v);
-    else mainContent = renderBizDashboard(v);
+    if (subpage === 'listings' || subpage === 'media' || subpage === 'portfolio' || subpage === 'event-preview' || subpage === 'see-my-event') {
+      mainContent = renderBizListings(v, q);
+    } else if (subpage === 'bookings') {
+      mainContent = renderBizBookings(v);
+    } else if (subpage === 'calendar') {
+      mainContent = renderBizCalendar(v);
+    } else if (subpage === 'earnings') {
+      mainContent = renderBizEarnings(v);
+    } else if (subpage === 'reviews') {
+      mainContent = renderBizReviews(v);
+    } else if (subpage === 'promotions') {
+      mainContent = renderBizPromotions(v);
+    } else if (subpage === 'analytics') {
+      mainContent = renderBizAnalytics(v);
+    } else if (subpage === 'support') {
+      mainContent = renderBizSupport(v);
+    } else if (subpage === 'settings') {
+      mainContent = renderBizSettings(v);
+    } else {
+      mainContent = renderBizDashboard(v);
+    }
 
     return `
     <div class="biz-app">
       <div class="biz-bg-layer"></div>
       <div class="biz-glass-overlay"></div>
-      ${renderBizSidebar(v, subpage)}
+      ${renderBizSidebar(v, activeSubpage)}
       <main class="biz-main">
         ${renderBizTopbar(v)}
         <div class="biz-content">
@@ -1060,12 +1260,8 @@
   }
 
   function renderBizSidebar(v, activeSubpage) {
-    const bPhotos = (S.business && S.business.photos && S.business.photos[v.id]) || [];
-    const liveCount = bPhotos.filter(p => p.status === 'published' || p.status === 'live').length;
     const navItems = [
       { key: 'dashboard', href: '#/business-dashboard', label: 'Dashboard', icon: 'home' },
-      { key: 'media', href: '#/business/media', label: 'Portfolio & Media', icon: 'image', pill: `${liveCount} Live` },
-      { key: 'event-preview', href: '#/business/event-preview', label: 'Event Preview (See My Event)', icon: 'sparkles' },
       { key: 'listings', href: '#/business/listings', label: 'My Listings', icon: 'store' },
       { key: 'bookings', href: '#/business/bookings', label: 'Bookings', icon: 'calendarCheck' },
       { key: 'calendar', href: '#/business/calendar', label: 'Calendar', icon: 'calendar' },
@@ -1124,35 +1320,104 @@
   }
 
   function renderBizTopbar(v) {
+    const unreadCount = BIZ_NOTIFICATIONS.filter(n => n.unread).length;
     return `
     <header class="biz-topbar">
       <div class="biz-topbar-left">
         <button class="biz-menu-toggle" data-act="biz-menu-toggle" aria-label="Toggle menu">${ic('menu')}</button>
         <div class="biz-search-bar">
           ${ic('search')}
-          <input type="text" placeholder="Search bookings, customers..." aria-label="Search">
+          <input type="text" placeholder="Search bookings, customers..." aria-label="Search" value="${esc(BIZ.searchQuery || '')}" oninput="window.bizLiveSearch(this.value)">
         </div>
       </div>
       <div class="biz-topbar-right">
         <a href="#/partner/${v.id}" class="biz-view-live-btn" target="_blank" title="View customer-facing page">${ic('external')} View Public Profile</a>
         <button class="biz-notif-btn" data-act="biz-notif" aria-label="Notifications">
           ${ic('bell')}
-          <span class="biz-notif-badge">3</span>
+          ${unreadCount > 0 ? `<span class="biz-notif-badge">${unreadCount}</span>` : ''}
         </button>
-        <div class="biz-user-dropdown" data-act="account">
+        <div class="biz-user-dropdown" data-act="biz-user-menu">
           <img src="${D.img('photo-1507309270028-9121e9937409', 100)}" alt="Aman" class="biz-user-avatar">
           <span class="biz-user-name">Hi, Aman</span>
           ${ic('chevronDown')}
         </div>
       </div>
+
+      ${BIZ.notifOpen ? `
+      <div class="biz-notif-popover">
+        <div class="biz-notif-pop-head">
+          <h4>Notifications (${unreadCount} unread)</h4>
+          <button class="biz-notif-pop-clear" data-act="biz-clear-notifs">Mark all as read</button>
+        </div>
+        <div class="biz-notif-pop-list">
+          ${BIZ_NOTIFICATIONS.map(n => `
+            <div class="biz-notif-item ${n.unread ? 'unread' : ''}">
+              <div class="biz-notif-item-icon">${ic(n.icon)}</div>
+              <div class="biz-notif-item-content">
+                <h5>${esc(n.title)}</h5>
+                <p>${esc(n.desc)}</p>
+                <time>${esc(n.time)}</time>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </div>` : ''}
+
+      ${BIZ.userMenuOpen ? `
+      <div class="biz-user-popover">
+        <a href="#/business/settings">${ic('settings')} Business Settings</a>
+        <a href="#/business/support">${ic('headset')} Support &amp; RM</a>
+        <button data-act="business-logout" style="color:#DC2626">${ic('logOut')} Logout</button>
+      </div>` : ''}
     </header>`;
   }
 
+  function openBizBookingModal(id) {
+    const b = BIZ.bookings.find(x => x.id === String(id)) || BIZ.bookings[0];
+    openModal('Booking Details — ' + b.code, `
+    <div class="modal-b" style="padding:0">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;background:#f9f7fd;padding:12px;border-radius:12px;border:1px solid rgba(226,218,242,0.8)">
+        <div style="width:52px;height:52px;border-radius:10px;background:url('${D.img(b.thumb, 200)}') center / cover no-repeat;flex:none"></div>
+        <div>
+          <h3 style="margin:0 0 2px;font-size:16px;color:#281448">${esc(b.code)} · ${esc(b.customer)}</h3>
+          <span style="font-size:12px;color:#7A6F91">${esc(b.event)} · ${esc(b.date)} (${esc(b.time)})</span>
+        </div>
+        <div style="margin-left:auto">
+          <span class="biz-status-pill ${b.status === 'Confirmed' ? 'biz-pill-confirmed' : b.status === 'Pending' ? 'biz-pill-pending' : 'biz-pill-completed'}">${esc(b.status)}</span>
+        </div>
+      </div>
+      <dl class="kv">
+        <dt>Customer Contact</dt><dd>+91 ${esc(b.phone)} (Verified)</dd>
+        <dt>Expected Guests</dt><dd><b>${b.guests} Guests</b></dd>
+        <dt>Venue Space</dt><dd>${esc(b.space)}</dd>
+        <dt>Catering Choice</dt><dd>${esc(b.menu)}</dd>
+        <dt>Decoration Blueprint</dt><dd><span class="tag tag-gold">${esc(b.blueprint)}</span></dd>
+        <dt>Advance Paid</dt><dd><b style="color:#059669">${inr(b.advance)}</b></dd>
+        <dt>Balance Due</dt><dd><b>${inr(b.balance)}</b> (at check-in)</dd>
+        <dt>Total Value</dt><dd><b style="font-size:15px;color:#281448">${inr(b.value)}</b></dd>
+      </dl>
+      <div class="modal-f" style="justify-content:space-between;margin-top:16px;gap:8px">
+        <button class="btn btn-ghost" onclick="toast('Booking slip printed', 'check')">${ic('check')} Print Slip</button>
+        <div style="display:flex;gap:8px">
+          ${b.status === 'Pending' ? `
+            <button class="btn btn-primary" style="background:#10B981;border-color:#10B981" data-act="biz-accept-booking" data-id="${b.id}">Accept Booking</button>
+            <button class="btn btn-danger" data-act="biz-decline-booking" data-id="${b.id}">Decline</button>
+          ` : ''}
+          <button class="btn btn-primary" onclick="closeModal()">Close</button>
+        </div>
+      </div>
+    </div>`);
+  }
+
   function renderBizDashboard(v) {
-    const rows = [];
-    S.events.forEach(ev => ev.services.filter(s => s.partnerId === v.id && !s.removed).forEach(s => rows.push({ ev, s, st: svcStatus(s) })));
-    const booked = rows.filter(r => ['booked', 'paid', 'confirmed'].includes(r.st));
-    const earned = rows.reduce((a, r) => a + r.s.paid, 0);
+    let dashBookings = BIZ.bookings.slice(0, 4);
+    if (BIZ.searchQuery) {
+      dashBookings = BIZ.bookings.filter(b => 
+        b.code.toLowerCase().includes(BIZ.searchQuery) ||
+        b.customer.toLowerCase().includes(BIZ.searchQuery) ||
+        b.event.toLowerCase().includes(BIZ.searchQuery)
+      );
+    }
 
     return `
     <!-- Row 1: Hero Banner (2/3) & Performance Card (1/3) -->
@@ -1182,12 +1447,12 @@
         </div>
         <div class="biz-perf-stats">
           <div class="biz-perf-item">
-            <span class="biz-perf-num">${48 + rows.length}</span>
+            <span class="biz-perf-num">48</span>
             <span class="biz-perf-label">Total Enquiries</span>
             <span class="biz-kpi-badge-green">${ic('trending')} 12%</span>
           </div>
           <div class="biz-perf-item">
-            <span class="biz-perf-num">${12 + booked.length}</span>
+            <span class="biz-perf-num">12</span>
             <span class="biz-perf-label">Confirmed Bookings</span>
             <span class="biz-kpi-badge-green">${ic('trending')} 20%</span>
           </div>
@@ -1222,7 +1487,7 @@
         <div class="biz-kpi-top">
           <div class="biz-kpi-icon-box">${ic('calendar')}</div>
           <div class="biz-kpi-data">
-            <span class="biz-kpi-val">${12 + booked.length}</span>
+            <span class="biz-kpi-val">12</span>
             <span class="biz-kpi-sub">Active Bookings</span>
           </div>
         </div>
@@ -1233,7 +1498,7 @@
         <div class="biz-kpi-top">
           <div class="biz-kpi-icon-box">${ic('rupee')}</div>
           <div class="biz-kpi-data">
-            <span class="biz-kpi-val">${inr(380000 + earned)}</span>
+            <span class="biz-kpi-val">₹3,80,000</span>
             <span class="biz-kpi-sub">Earnings (This Month)</span>
           </div>
         </div>
@@ -1244,7 +1509,7 @@
         <div class="biz-kpi-top">
           <div class="biz-kpi-icon-box">${ic('star')}</div>
           <div class="biz-kpi-data">
-            <span class="biz-kpi-val">${v.rating || 4.8}</span>
+            <span class="biz-kpi-val">4.8</span>
             <span class="biz-kpi-sub">Your Rating</span>
           </div>
         </div>
@@ -1283,58 +1548,21 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>
-                  <div class="biz-booking-id-cell">
-                    <div class="biz-booking-thumb" style="background-image:url('${D.img('photo-1519741497674-611481863552', 100)}')"></div>
-                    <span class="biz-booking-code">SKB#10248</span>
-                  </div>
-                </td>
-                <td><b>Wedding</b></td>
-                <td>15 Dec 2025</td>
-                <td><b>₹2,50,000</b></td>
-                <td><span class="biz-status-pill biz-pill-confirmed">Confirmed</span></td>
-                <td><button class="biz-tbl-action" data-act="biz-view-booking" data-id="10248">View →</button></td>
-              </tr>
-              <tr>
-                <td>
-                  <div class="biz-booking-id-cell">
-                    <div class="biz-booking-thumb" style="background-image:url('${D.img('photo-1511795409834-ef04bbd61622', 100)}')"></div>
-                    <span class="biz-booking-code">SKB#10247</span>
-                  </div>
-                </td>
-                <td><b>Engagement</b></td>
-                <td>10 Dec 2025</td>
-                <td><b>₹1,20,000</b></td>
-                <td><span class="biz-status-pill biz-pill-pending">Pending</span></td>
-                <td><button class="biz-tbl-action" data-act="biz-view-booking" data-id="10247">View →</button></td>
-              </tr>
-              <tr>
-                <td>
-                  <div class="biz-booking-id-cell">
-                    <div class="biz-booking-thumb" style="background-image:url('${D.img('photo-1469371670807-013ccf25f16a', 100)}')"></div>
-                    <span class="biz-booking-code">SKB#10246</span>
-                  </div>
-                </td>
-                <td><b>Birthday Party</b></td>
-                <td>28 Nov 2025</td>
-                <td><b>₹75,000</b></td>
-                <td><span class="biz-status-pill biz-pill-confirmed">Confirmed</span></td>
-                <td><button class="biz-tbl-action" data-act="biz-view-booking" data-id="10246">View →</button></td>
-              </tr>
-              <tr>
-                <td>
-                  <div class="biz-booking-id-cell">
-                    <div class="biz-booking-thumb" style="background-image:url('${D.img('photo-1540575467063-178a50c2df87', 100)}')"></div>
-                    <span class="biz-booking-code">SKB#10245</span>
-                  </div>
-                </td>
-                <td><b>Corporate Event</b></td>
-                <td>20 Nov 2025</td>
-                <td><b>₹1,80,000</b></td>
-                <td><span class="biz-status-pill biz-pill-completed">Completed</span></td>
-                <td><button class="biz-tbl-action" data-act="biz-view-booking" data-id="10245">View →</button></td>
-              </tr>
+              ${dashBookings.map(b => `
+                <tr>
+                  <td>
+                    <div class="biz-booking-id-cell">
+                      <div class="biz-booking-thumb" style="background-image:url('${D.img(b.thumb, 100)}')"></div>
+                      <span class="biz-booking-code">${b.code}</span>
+                    </div>
+                  </td>
+                  <td><b>${b.event}</b></td>
+                  <td>${b.date}</td>
+                  <td><b>${inr(b.value)}</b></td>
+                  <td><span class="biz-status-pill ${b.status === 'Confirmed' ? 'biz-pill-confirmed' : b.status === 'Pending' ? 'biz-pill-pending' : 'biz-pill-completed'}">${b.status}</span></td>
+                  <td><button class="biz-tbl-action" data-act="biz-view-booking" data-id="${b.id}">View →</button></td>
+                </tr>
+              `).join('')}
             </tbody>
           </table>
         </div>
@@ -1404,10 +1632,10 @@
             <div class="biz-quick-icon">${ic('edit')}</div>
             <span>Update Profile</span>
           </a>
-          <a href="#/business/media" class="biz-quick-tile">
+          <button class="biz-quick-tile" data-act="biz-add-listing-modal">
             <div class="biz-quick-icon">${ic('plus')}</div>
-            <span>Upload Photos</span>
-          </a>
+            <span>Add New Listing</span>
+          </button>
           <a href="#/business/calendar" class="biz-quick-tile">
             <div class="biz-quick-icon">${ic('calendar')}</div>
             <span>Manage Calendar</span>
@@ -1440,6 +1668,100 @@
     </div>`;
   }
 
+  /* ---------- My Listings (with Overview, Portfolio & Event Preview tabs) ---------- */
+  function renderBizListings(v, q) {
+    const bPhotos = (S.business && S.business.photos && S.business.photos[v.id]) || [];
+    const liveCount = bPhotos.filter(p => p.status === 'published' || p.status === 'live').length;
+    const tab = BIZ.listingsTab || 'overview';
+
+    return `
+    <div class="biz-card" style="margin-bottom:16px">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:14px">
+        <div>
+          <h2 style="margin:0 0 4px;font-size:22px;color:#1f1435;font-weight:800">My Business Listings</h2>
+          <p style="margin:0;font-size:13px;color:#64567C">Manage venue spaces, photo curation, and interactive See My Event preview.</p>
+        </div>
+        <div class="biz-subnav-tabs" style="margin:0">
+          <button class="biz-subnav-tab ${tab === 'overview' ? 'active' : ''}" data-act="biz-listings-tab" data-tab="overview">
+            ${ic('store')} Listings Overview
+          </button>
+          <button class="biz-subnav-tab ${tab === 'media' ? 'active' : ''}" data-act="biz-listings-tab" data-tab="media">
+            ${ic('image')} Portfolio &amp; Media (${liveCount} Live)
+          </button>
+          <button class="biz-subnav-tab ${tab === 'preview' ? 'active' : ''}" data-act="biz-listings-tab" data-tab="preview">
+            ${ic('sparkles')} Event Preview (See My Event)
+          </button>
+        </div>
+      </div>
+
+      ${tab === 'media' ? renderBizMedia(v, q) : tab === 'preview' ? renderBizEventPreview(v) : `
+      <!-- TAB 1: LISTINGS OVERVIEW -->
+      <div style="display:flex;gap:18px;margin-bottom:20px;background:#f9f7fd;padding:16px;border-radius:12px;border:1px solid rgba(226,218,242,0.8)">
+        <div style="width:140px;height:100px;border-radius:10px;background:url('${D.img(v.img || 'photo-1768851142332-75f3d1b47452', 400)}') center / cover no-repeat;flex:none"></div>
+        <div style="flex:1">
+          <h3 style="margin:0 0 4px;font-size:16px;color:#281448">${esc(v.name)}</h3>
+          <p style="margin:0 0 8px;font-size:12.5px;color:#64567C">📍 ${esc(v.area)}, ${esc(v.locality)} · Starting from <b>${inr(v.base)}</b></p>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <span class="tag tag-green">Verified Business</span>
+            <span class="tag tag-plum">${v.packages.length} Active Spaces</span>
+            <span class="tag tag-gold">★ ${v.rating} (1.2k reviews)</span>
+          </div>
+        </div>
+        <div style="align-self:center">
+          <button class="biz-gold-btn" data-act="biz-add-listing-modal">${ic('plus')} Add New Space</button>
+        </div>
+      </div>
+
+      <div>
+        <h4 style="margin:0 0 12px;font-size:15px;color:#281448">Active Event Spaces &amp; Packages</h4>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px">
+          <div style="background:#fff;padding:16px;border-radius:12px;border:1px solid rgba(226,218,242,0.9);box-shadow:0 2px 8px rgba(0,0,0,0.03)">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start">
+              <b style="font-size:15px;color:#281448">Grand Ballroom</b>
+              <span class="tag tag-green">Active</span>
+            </div>
+            <span style="font-size:18px;font-weight:800;color:#7C3AED;display:block;margin:6px 0">₹2,50,000</span>
+            <p style="margin:0 0 10px;font-size:12.5px;color:#64567C">Air-conditioned luxury banquet hall with 18ft clearance ceiling and imported chandeliers.</p>
+            <div style="font-size:11.5px;color:#7A6F91;display:flex;gap:12px;margin-bottom:12px">
+              <span>👥 Max 600 Guests</span>
+              <span>📐 12,500 sq.ft</span>
+            </div>
+            <button class="btn btn-sm btn-ghost" data-act="biz-edit-listing-modal" data-space="Grand Ballroom">${ic('edit')} Edit Space</button>
+          </div>
+
+          <div style="background:#fff;padding:16px;border-radius:12px;border:1px solid rgba(226,218,242,0.9);box-shadow:0 2px 8px rgba(0,0,0,0.03)">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start">
+              <b style="font-size:15px;color:#281448">Royal Lawn &amp; Pavilion</b>
+              <span class="tag tag-green">Active</span>
+            </div>
+            <span style="font-size:18px;font-weight:800;color:#7C3AED;display:block;margin:6px 0">₹3,20,000</span>
+            <p style="margin:0 0 10px;font-size:12.5px;color:#64567C">Lush manicured open lawn connected to a covered buffet dining pavilion.</p>
+            <div style="font-size:11.5px;color:#7A6F91;display:flex;gap:12px;margin-bottom:12px">
+              <span>👥 Max 800 Guests</span>
+              <span>📐 18,000 sq.ft</span>
+            </div>
+            <button class="btn btn-sm btn-ghost" data-act="biz-edit-listing-modal" data-space="Royal Lawn & Pavilion">${ic('edit')} Edit Space</button>
+          </div>
+
+          <div style="background:#fff;padding:16px;border-radius:12px;border:1px solid rgba(226,218,242,0.9);box-shadow:0 2px 8px rgba(0,0,0,0.03)">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start">
+              <b style="font-size:15px;color:#281448">Royal Catering Package</b>
+              <span class="tag tag-green">Active</span>
+            </div>
+            <span style="font-size:18px;font-weight:800;color:#7C3AED;display:block;margin:6px 0">₹1,850 / Plate</span>
+            <p style="margin:0 0 10px;font-size:12.5px;color:#64567C">Comprehensive 40+ dish spread including Delhi special live chaat, Mughlai and Continental.</p>
+            <div style="font-size:11.5px;color:#7A6F91;display:flex;gap:12px;margin-bottom:12px">
+              <span>🍲 Veg &amp; Non-Veg</span>
+              <span>👨‍🍳 Live Kitchens</span>
+            </div>
+            <button class="btn btn-sm btn-ghost" data-act="biz-edit-listing-modal" data-space="Royal Catering Package">${ic('edit')} Edit Space</button>
+          </div>
+        </div>
+      </div>
+      `}
+    </div>`;
+  }
+
   /* ---------- Feature 2: Portfolio & Media Manager ---------- */
   function renderBizMedia(v, q) {
     const photos = (S.business && S.business.photos && S.business.photos[v.id]) || [];
@@ -1463,11 +1785,11 @@
     const isAllSelected = list.length > 0 && list.every(p => BIZ.selectedPhotos.has(p.id));
 
     return `
-    <div class="biz-card" style="margin-bottom:16px">
+    <div>
       <div class="biz-media-header">
         <div>
-          <h2 style="margin:0 0 4px;font-size:22px;color:#1f1435;font-weight:800">Portfolio &amp; Media Management</h2>
-          <p style="margin:0;font-size:13px;color:#64567C">Curate authentic property photographs. Choose which photos go live on your public customer listing.</p>
+          <h3 style="margin:0 0 4px;font-size:18px;color:#1f1435;font-weight:700">Photo Curation &amp; Gallery Management</h3>
+          <p style="margin:0;font-size:12.5px;color:#64567C">Select which photographs appear on your public customer listing.</p>
         </div>
         <div class="biz-media-counter-badge">
           ${ic('check')} Showing <b>${liveCount}</b> of <b>${totalCount}</b> photos on Customer Page
@@ -1559,16 +1881,15 @@
 
     const rawPhoto = 'photo-1768851142332-75f3d1b47452';
     const decorPhoto = 'photo-1519741497674-611481863552';
-    const peoplePhoto = 'photo-1511795409834-ef04bbd61622';
 
     return `
-    <div class="biz-card">
+    <div>
       <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:14px;margin-bottom:16px">
         <div>
-          <h2 style="margin:0 0 4px;font-size:22px;color:#1f1435;font-weight:800">Event Preview (See My Event)</h2>
-          <p style="margin:0;font-size:13px;color:#64567C">Experience how prospective customers visualize ${esc(v.name)} across Raw, Dressed, and Celebration stages.</p>
+          <h3 style="margin:0 0 4px;font-size:18px;color:#1f1435;font-weight:700">Event Preview (See My Event)</h3>
+          <p style="margin:0;font-size:12.5px;color:#64567C">Experience how prospective customers visualize ${esc(v.name)} across Raw, Dressed, and Celebration stages.</p>
         </div>
-        <div class="biz-preview-tabs">
+        <div class="biz-preview-tabs" style="margin:0">
           <button class="biz-prev-tab ${stage === 'raw' ? 'active' : ''}" data-act="biz-sme-stage" data-stage="raw">
             ${ic('camera')} 1. Raw Space
           </button>
@@ -1721,34 +2042,394 @@
     </div>`;
   }
 
-  // Supporting Subpage Views for Full Functionality
-  function renderBizListings(v) {
+  /* ---------- Bookings Page (Full Filterable Table with Accept/Decline) ---------- */
+  function renderBizBookings(v) {
+    const filter = BIZ.bookingsFilter || 'all';
+    let list = BIZ.bookings;
+    if (filter !== 'all') {
+      list = list.filter(b => b.status.toLowerCase() === filter);
+    }
+    if (BIZ.searchQuery) {
+      list = list.filter(b => 
+        b.code.toLowerCase().includes(BIZ.searchQuery) ||
+        b.customer.toLowerCase().includes(BIZ.searchQuery) ||
+        b.event.toLowerCase().includes(BIZ.searchQuery)
+      );
+    }
+
+    const allCount = BIZ.bookings.length;
+    const pendCount = BIZ.bookings.filter(b => b.status === 'Pending').length;
+    const confCount = BIZ.bookings.filter(b => b.status === 'Confirmed').length;
+    const compCount = BIZ.bookings.filter(b => b.status === 'Completed').length;
+    const cancCount = BIZ.bookings.filter(b => b.status === 'Cancelled').length;
+
     return `
     <div class="biz-card">
       <div class="biz-card-head">
-        <h2 style="margin:0;font-size:20px;font-weight:800;color:#1f1435">My Business Listings</h2>
-        <a href="#/partner/${v.id}" class="biz-gold-btn" target="_blank">${ic('external')} View Public Page</a>
+        <div>
+          <h2 style="margin:0 0 4px;font-size:20px;font-weight:800;color:#1f1435">Bookings Ledger</h2>
+          <p style="margin:0;font-size:12.5px;color:#64567C">Track customer reservations, review new requests, and accept bookings.</p>
+        </div>
+        <div class="biz-subnav-tabs" style="margin:0">
+          <button class="biz-subnav-tab ${filter === 'all' ? 'active' : ''}" data-act="biz-bookings-filter" data-filter="all">All (${allCount})</button>
+          <button class="biz-subnav-tab ${filter === 'pending' ? 'active' : ''}" data-act="biz-bookings-filter" data-filter="pending">Pending (${pendCount})</button>
+          <button class="biz-subnav-tab ${filter === 'confirmed' ? 'active' : ''}" data-act="biz-bookings-filter" data-filter="confirmed">Confirmed (${confCount})</button>
+          <button class="biz-subnav-tab ${filter === 'completed' ? 'active' : ''}" data-act="biz-bookings-filter" data-filter="completed">Completed (${compCount})</button>
+          <button class="biz-subnav-tab ${filter === 'cancelled' ? 'active' : ''}" data-act="biz-bookings-filter" data-filter="cancelled">Cancelled (${cancCount})</button>
+        </div>
       </div>
-      <div style="display:flex;gap:18px;margin-top:16px;background:#f9f7fd;padding:16px;border-radius:12px;border:1px solid rgba(226,218,242,0.8)">
-        <div style="width:140px;height:100px;border-radius:10px;background:url('${D.img(v.img || 'photo-1768851142332-75f3d1b47452', 400)}') center / cover no-repeat;flex:none"></div>
-        <div style="flex:1">
-          <h3 style="margin:0 0 4px;font-size:16px;color:#281448">${esc(v.name)}</h3>
-          <p style="margin:0 0 8px;font-size:12.5px;color:#64567C">📍 ${esc(v.area)}, ${esc(v.locality)} · Starting from <b>${inr(v.base)}</b></p>
-          <div style="display:flex;gap:6px;flex-wrap:wrap">
-            <span class="tag tag-green">Verified Business</span>
-            <span class="tag tag-plum">${v.packages.length} Active Packages</span>
-            <span class="tag tag-gold">★ ${v.rating} (1.2k reviews)</span>
+
+      <div class="biz-tbl-scroll" style="margin-top:16px">
+        <table class="biz-table">
+          <thead>
+            <tr>
+              <th>Booking ID</th>
+              <th>Customer</th>
+              <th>Event</th>
+              <th>Date &amp; Time</th>
+              <th>Guests</th>
+              <th>Total Value</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${list.map(b => `
+              <tr>
+                <td>
+                  <div class="biz-booking-id-cell">
+                    <div class="biz-booking-thumb" style="background-image:url('${D.img(b.thumb, 100)}')"></div>
+                    <span class="biz-booking-code">${b.code}</span>
+                  </div>
+                </td>
+                <td><b>${esc(b.customer)}</b></td>
+                <td>${esc(b.event)}</td>
+                <td>${esc(b.date)}</td>
+                <td>${b.guests}</td>
+                <td><b>${inr(b.value)}</b></td>
+                <td><span class="biz-status-pill ${b.status === 'Confirmed' ? 'biz-pill-confirmed' : b.status === 'Pending' ? 'biz-pill-pending' : 'biz-pill-completed'}">${b.status}</span></td>
+                <td>
+                  <div style="display:flex;gap:6px;align-items:center">
+                    <button class="biz-tbl-action" data-act="biz-view-booking" data-id="${b.id}">View Details</button>
+                    ${b.status === 'Pending' ? `
+                      <button class="btn btn-sm btn-primary" style="background:#10B981;border-color:#10B981;padding:4px 10px;font-size:11px" data-act="biz-accept-booking" data-id="${b.id}">Accept</button>
+                      <button class="btn btn-sm btn-ghost text-danger" style="padding:4px 8px;font-size:11px" data-act="biz-decline-booking" data-id="${b.id}">Decline</button>
+                    ` : ''}
+                  </div>
+                </td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>`;
+  }
+
+  /* ---------- Calendar & Availability Page ---------- */
+  function renderBizCalendar(v) {
+    const bookedDays = [10, 15, 20, 28];
+    const pendingDays = [18];
+    const blockedDays = BIZ.blockedDates || new Set([4]);
+
+    return `
+    <div class="biz-card">
+      <div class="biz-card-head">
+        <div>
+          <h2 style="margin:0 0 4px;font-size:20px;font-weight:800;color:#1f1435">Calendar &amp; Availability</h2>
+          <p style="margin:0;font-size:12.5px;color:#64567C">Click any available date to block it for maintenance or private events.</p>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px">
+          <span class="tag tag-green">Auto-Sync Enabled</span>
+          <b style="color:#281448;font-size:15px">December 2025</b>
+        </div>
+      </div>
+
+      <!-- Quick Legend & Status Summary -->
+      <div style="display:flex;gap:16px;flex-wrap:wrap;margin:12px 0 16px;background:#f9f7fd;padding:12px 16px;border-radius:10px;border:1px solid rgba(226,218,242,0.8)">
+        <div style="display:flex;align-items:center;gap:6px;font-size:12px">
+          <span style="width:12px;height:12px;border-radius:3px;background:#ECFDF5;border:1px solid #10B981"></span>
+          <b>${bookedDays.length} Booked</b>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:12px">
+          <span style="width:12px;height:12px;border-radius:3px;background:#FFFBEB;border:1px solid #F59E0B"></span>
+          <b>${pendingDays.length} Pending Enquiry</b>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:12px">
+          <span style="width:12px;height:12px;border-radius:3px;background:#FEF2F2;border:1px solid #EF4444"></span>
+          <b>${blockedDays.size} Blocked for Maintenance</b>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:12px">
+          <span style="width:12px;height:12px;border-radius:3px;background:#ffffff;border:1px solid #CBD5E1"></span>
+          <b>${31 - bookedDays.length - pendingDays.length - blockedDays.size} Available</b>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:10px;text-align:center">
+        ${['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map(d => `<div style="font-size:11.5px;font-weight:700;color:#7A6F91;padding:8px 0;text-transform:uppercase">${d}</div>`).join('')}
+        ${Array.from({length:31}, (_, i) => {
+          const day = i + 1;
+          const isBooked = bookedDays.includes(day);
+          const isPending = pendingDays.includes(day);
+          const isBlocked = blockedDays.has(day);
+
+          let cls = 'biz-cal-avail';
+          let tag = '<span class="biz-cal-tag" style="color:#10B981">Available</span>';
+
+          if (isBooked) {
+            cls = 'biz-cal-booked';
+            tag = '<span class="biz-cal-tag" style="color:#047857">Confirmed</span>';
+          } else if (isPending) {
+            cls = 'biz-cal-pending';
+            tag = '<span class="biz-cal-tag" style="color:#B45309">Pending</span>';
+          } else if (isBlocked) {
+            cls = 'biz-cal-blocked';
+            tag = '<span class="biz-cal-tag" style="color:#B91C1C">Blocked</span>';
+          }
+
+          return `
+          <div class="biz-cal-day ${cls}" data-act="biz-toggle-date" data-day="${day}" title="Click to block or unblock date">
+            <span>${day}</span>
+            ${tag}
+          </div>`;
+        }).join('')}
+      </div>
+    </div>`;
+  }
+
+  /* ---------- Earnings & Payouts Page ---------- */
+  function renderBizEarnings(v) {
+    return `
+    <div class="biz-card">
+      <div class="biz-card-head">
+        <div>
+          <h2 style="margin:0 0 4px;font-size:20px;font-weight:800;color:#1f1435">Earnings &amp; Settlements</h2>
+          <p style="margin:0;font-size:12.5px;color:#64567C">Bank settlements processed via Razorpay Route directly to your verified current account.</p>
+        </div>
+        <button class="biz-gold-btn" data-act="biz-download-invoice" data-id="8841">${ic('download')} Download GST Invoice</button>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:16px 0 24px">
+        <div class="biz-kpi-card biz-kpi-mint">
+          <small style="font-size:11px;color:#065F46;font-weight:700">TOTAL EARNINGS (THIS MONTH)</small>
+          <span style="font-size:24px;font-weight:800;color:#065F46;display:block;margin:4px 0">₹3,80,000</span>
+          <span style="font-size:12px;color:#047857">↑ 18% vs last month</span>
+        </div>
+        <div class="biz-kpi-card biz-kpi-lavender">
+          <small style="font-size:11px;color:#6D28D9;font-weight:700">NEXT SCHEDULED PAYOUT</small>
+          <span style="font-size:24px;font-weight:800;color:#6D28D9;display:block;margin:4px 0">₹1,20,000</span>
+          <span style="font-size:12px;color:#7C3AED">Due on 01 Dec 2026</span>
+        </div>
+        <div class="biz-kpi-card biz-kpi-blue">
+          <small style="font-size:11px;color:#4338CA;font-weight:700">LIFETIME GROSS EARNINGS</small>
+          <span style="font-size:24px;font-weight:800;color:#4338CA;display:block;margin:4px 0">₹14,50,000</span>
+          <span style="font-size:12px;color:#4338CA">12 verified wedding bookings</span>
+        </div>
+        <div class="biz-kpi-card biz-kpi-amber">
+          <small style="font-size:11px;color:#B45309;font-weight:700">PLATFORM COMMISSION</small>
+          <span style="font-size:24px;font-weight:800;color:#B45309;display:block;margin:4px 0">0% for Verified Pilot</span>
+          <span style="font-size:12px;color:#D97706">Pilot promotional waiver active</span>
+        </div>
+      </div>
+
+      <!-- Bank Account Details Card -->
+      <div style="background:#f9f7fd;padding:16px 20px;border-radius:12px;border:1px solid rgba(226,218,242,0.8);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:24px">
+        <div>
+          <b style="font-size:14px;color:#281448">Registered Payout Bank Account</b>
+          <p style="margin:2px 0 0;font-size:12px;color:#64567C">HDFC Bank · Current A/C •••• 4091 · IFSC: HDFC0001042 · South Extension Branch</p>
+        </div>
+        <span class="tag tag-green">${ic('check')} Verified for Automated Route Settlements</span>
+      </div>
+
+      <div>
+        <h4 style="margin:0 0 12px;font-size:15px;color:#281448">Recent Settlements &amp; Invoices</h4>
+        <div class="biz-tbl-scroll">
+          <table class="biz-table">
+            <thead>
+              <tr>
+                <th>Payout ID</th>
+                <th>Period / Event</th>
+                <th>Gross Amount</th>
+                <th>TDS (1%)</th>
+                <th>Net Settlement</th>
+                <th>Settlement Bank</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><b>SKP#8841</b></td>
+                <td>Nov 2025 Advance Payout</td>
+                <td>₹1,20,000</td>
+                <td>₹1,200</td>
+                <td><b>₹1,18,800</b></td>
+                <td>HDFC Bank •••• 4091</td>
+                <td><span class="biz-status-pill biz-pill-confirmed">Settled</span></td>
+                <td><button class="biz-tbl-action" data-act="biz-download-invoice" data-id="8841">Download Invoice</button></td>
+              </tr>
+              <tr>
+                <td><b>SKP#8840</b></td>
+                <td>Oct 2025 Balance Clearance</td>
+                <td>₹2,60,000</td>
+                <td>₹2,600</td>
+                <td><b>₹2,57,400</b></td>
+                <td>HDFC Bank •••• 4091</td>
+                <td><span class="biz-status-pill biz-pill-confirmed">Settled</span></td>
+                <td><button class="biz-tbl-action" data-act="biz-download-invoice" data-id="8840">Download Invoice</button></td>
+              </tr>
+              <tr>
+                <td><b>SKP#8839</b></td>
+                <td>Sep 2025 Payout Settlement</td>
+                <td>₹1,80,000</td>
+                <td>₹1,800</td>
+                <td><b>₹1,78,200</b></td>
+                <td>HDFC Bank •••• 4091</td>
+                <td><span class="biz-status-pill biz-pill-confirmed">Settled</span></td>
+                <td><button class="biz-tbl-action" data-act="biz-download-invoice" data-id="8839">Download Invoice</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  /* ---------- Reviews & Feedback Page ---------- */
+  function renderBizReviews(v) {
+    const reviews = [
+      {
+        id: 'rev-1',
+        author: 'Pooja & Kunal Malhotra',
+        date: 'Wedding Event · Nov 2026',
+        rating: 5,
+        text: 'Royal Banquet Hall looked even better in real life than on See My Event! The mandap setup was immaculate and the banquet management staff was extremely courteous throughout our wedding night.'
+      },
+      {
+        id: 'rev-2',
+        author: 'Amit & Simran Gupta',
+        date: 'Engagement Celebration · Oct 2026',
+        rating: 5,
+        text: 'The dining hall arrangements and catering were top-notch. Our 200 guests loved the live chaat counters and the central chandelier created gorgeous photographic lighting.'
+      },
+      {
+        id: 'rev-3',
+        author: 'Neha & Varun Sharma',
+        date: 'Reception Night · Sep 2026',
+        rating: 4,
+        text: 'Great venue with spacious banquet hall. Valet parking handled 140 cars seamlessly during peak arrival rush. Highly recommended for Delhi weddings.'
+      }
+    ];
+
+    return `
+    <div class="biz-card">
+      <div class="biz-card-head">
+        <div>
+          <h2 style="margin:0 0 4px;font-size:20px;font-weight:800;color:#1f1435">Customer Reviews &amp; Testimonials</h2>
+          <p style="margin:0;font-size:12.5px;color:#64567C">Verified feedback from couples and families who booked celebrations at ${esc(v.name)}.</p>
+        </div>
+        <span class="tag tag-gold" style="font-size:14px">★ 4.8 / 5.0 (1,240 Verified Reviews)</span>
+      </div>
+
+      <!-- Rating Breakdown Bar -->
+      <div style="background:#f9f7fd;padding:16px;border-radius:12px;border:1px solid rgba(226,218,242,0.8);display:flex;gap:24px;align-items:center;flex-wrap:wrap;margin:14px 0 20px">
+        <div style="text-align:center;min-width:110px">
+          <div style="font-size:36px;font-weight:800;color:#281448;line-height:1">4.8</div>
+          <div style="color:#D97706;font-size:16px;margin:4px 0">★★★★★</div>
+          <small style="color:#7A6F91;font-size:11px">1,240 Reviews</small>
+        </div>
+        <div style="flex:1;min-width:240px;display:flex;flex-direction:column;gap:6px">
+          <div style="display:flex;align-items:center;gap:8px;font-size:12px">
+            <span style="width:30px">5 ★</span>
+            <div style="flex:1;height:8px;background:#E5E7EB;border-radius:999px;overflow:hidden">
+              <div style="width:88%;height:100%;background:#10B981"></div>
+            </div>
+            <span style="width:30px;color:#7A6F91">88%</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:12px">
+            <span style="width:30px">4 ★</span>
+            <div style="flex:1;height:8px;background:#E5E7EB;border-radius:999px;overflow:hidden">
+              <div style="width:9%;height:100%;background:#3B82F6"></div>
+            </div>
+            <span style="width:30px;color:#7A6F91">9%</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:12px">
+            <span style="width:30px">3 ★</span>
+            <div style="flex:1;height:8px;background:#E5E7EB;border-radius:999px;overflow:hidden">
+              <div style="width:2%;height:100%;background:#F59E0B"></div>
+            </div>
+            <span style="width:30px;color:#7A6F91">2%</span>
           </div>
         </div>
       </div>
-      <div style="margin-top:20px">
-        <h4 style="margin:0 0 10px;font-size:15px;color:#281448">Active Packages</h4>
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px">
-          ${v.packages.map(p => `
-            <div style="background:#fff;padding:14px;border-radius:10px;border:1px solid rgba(226,218,242,0.8)">
-              <b style="display:block;font-size:14px;color:#281448">${esc(p.name)}</b>
-              <span style="font-size:16px;font-weight:800;color:#7C3AED;display:block;margin:4px 0">${inr(p.price)}</span>
-              <p style="margin:0;font-size:12px;color:#7A6F91">${esc(p.desc || 'Complete celebration setup with premium amenities.')}</p>
+
+      <div style="display:flex;flex-direction:column;gap:16px">
+        ${reviews.map(r => `
+          <div style="background:#fff;padding:18px;border-radius:12px;border:1px solid rgba(226,218,242,0.8);box-shadow:0 2px 6px rgba(0,0,0,0.02)">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+              <b style="font-size:14.5px;color:#281448">${esc(r.author)}</b>
+              <span style="color:#D97706;font-weight:700">★ ${r.rating}.0</span>
+            </div>
+            <p style="margin:0 0 8px;font-size:13px;color:#4B3E65;line-height:1.45">"${esc(r.text)}"</p>
+            <small style="color:#7A6F91;display:block;margin-bottom:8px">${esc(r.date)}</small>
+
+            ${BIZ.reviewsReplies[r.id] ? `
+              <div class="biz-review-reply">
+                <b>${esc(v.name)} (Business Response):</b>
+                <p style="margin:4px 0 0">${esc(BIZ.reviewsReplies[r.id])}</p>
+              </div>
+            ` : `
+              <div style="margin-top:10px;display:flex;gap:8px">
+                <input type="text" id="reply-inp-${r.id}" placeholder="Write an official business response..." style="flex:1;padding:6px 12px;border:1px solid rgba(220,214,235,0.9);border-radius:6px;font-size:12px;outline:none">
+                <button class="btn btn-sm btn-ghost" data-act="biz-reply-review" data-id="${r.id}">Post Reply</button>
+              </div>
+            `}
+          </div>
+        `).join('')}
+      </div>
+    </div>`;
+  }
+
+  /* ---------- Promotions & Boost Campaigns Page ---------- */
+  function renderBizPromotions(v) {
+    return `
+    <div class="biz-card">
+      <div class="biz-card-head">
+        <div>
+          <h2 style="margin:0 0 4px;font-size:20px;font-weight:800;color:#1f1435">Promotions &amp; Seasonal Offers</h2>
+          <p style="margin:0;font-size:12.5px;color:#64567C">Attract high-intent Delhi NCR couples looking for auspicious wedding dates.</p>
+        </div>
+        <button class="biz-gold-btn" data-act="biz-create-promo-modal">${ic('plus')} Create New Offer</button>
+      </div>
+
+      <div class="biz-boost-banner" style="margin:16px 0 24px">
+        <div>
+          <h3 class="biz-boost-title">ShaadiKart Prime Placement</h3>
+          <p class="biz-boost-sub">Featured in top 3 search results across Delhi NCR with Verified Gold badge and 3x enquiry boost.</p>
+        </div>
+        <div>
+          <button class="biz-gold-pill" data-act="biz-boost">Activate Boost Now →</button>
+        </div>
+      </div>
+
+      <div>
+        <h4 style="margin:0 0 12px;font-size:15px;color:#281448">Active Promotional Campaigns</h4>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          ${BIZ.promotions.map(p => `
+            <div style="background:#fff;padding:16px;border-radius:12px;border:1px solid rgba(226,218,242,0.8);display:flex;justify-content:space-between;align-items:center;gap:14px">
+              <div>
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+                  <b style="font-size:14.5px;color:#281448">${esc(p.title)}</b>
+                  <span class="tag tag-gold">${esc(p.tag)}</span>
+                </div>
+                <p style="margin:0;font-size:12.5px;color:#64567C">${esc(p.desc)}</p>
+              </div>
+              <div style="display:flex;align-items:center;gap:12px">
+                <span style="font-size:12px;font-weight:700;color:${p.active ? '#10B981' : '#6B7280'}">${p.active ? 'Active' : 'Paused'}</span>
+                <label class="biz-toggle-switch">
+                  <input type="checkbox" ${p.active ? 'checked' : ''} data-act="biz-toggle-promo" data-id="${p.id}">
+                  <span class="biz-toggle-slider"></span>
+                </label>
+              </div>
             </div>
           `).join('')}
         </div>
@@ -1756,148 +2437,182 @@
     </div>`;
   }
 
-  function renderBizBookings(v) {
-    return renderBizDashboard(v);
-  }
-
-  function renderBizCalendar(v) {
-    return `
-    <div class="biz-card">
-      <div class="biz-card-head">
-        <h2 style="margin:0;font-size:20px;font-weight:800;color:#1f1435">Calendar &amp; Availability</h2>
-        <span class="tag tag-green">Auto-Sync Enabled</span>
-      </div>
-      <p style="font-size:13px;color:#64567C;margin:0 0 16px">Manage wedding dates, blocked days and confirmed customer events.</p>
-      <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:8px;text-align:center">
-        ${['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map(d => `<div style="font-size:11px;font-weight:700;color:#7A6F91;padding:6px">${d}</div>`).join('')}
-        ${Array.from({length:31}, (_, i) => {
-          const day = i + 1;
-          const isBooked = [10, 15, 20, 28].includes(day);
-          return `<div style="padding:14px 4px;border-radius:8px;background:${isBooked ? '#FEE2E2' : '#ffffff'};border:1px solid ${isBooked ? '#FCA5A5' : 'rgba(226,218,242,0.6)'};color:${isBooked ? '#991B1B' : '#281448'};font-weight:700">
-            ${day}
-            ${isBooked ? '<small style="display:block;font-size:9.5px;color:#B91C1C">Booked</small>' : '<small style="display:block;font-size:9.5px;color:#10B981">Available</small>'}
-          </div>`;
-        }).join('')}
-      </div>
-    </div>`;
-  }
-
-  function renderBizEarnings(v) {
-    return `
-    <div class="biz-card">
-      <div class="biz-card-head">
-        <h2 style="margin:0;font-size:20px;font-weight:800;color:#1f1435">Earnings &amp; Payouts</h2>
-        <button class="biz-gold-btn" data-act="biz-payout-modal">Download Statement</button>
-      </div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:14px">
-        <div class="biz-kpi-card biz-kpi-mint">
-          <small style="font-size:11px;color:#065F46;font-weight:700">TOTAL EARNINGS (THIS MONTH)</small>
-          <span style="font-size:24px;font-weight:800;color:#065F46;display:block;margin:4px 0">₹3,80,000</span>
-          <span style="font-size:12px;color:#047857">↑ 18% vs last month</span>
-        </div>
-        <div class="biz-kpi-card biz-kpi-lavender">
-          <small style="font-size:11px;color:#6D28D9;font-weight:700">NEXT PAYOUT</small>
-          <span style="font-size:24px;font-weight:800;color:#6D28D9;display:block;margin:4px 0">₹1,20,000</span>
-          <span style="font-size:12px;color:#7C3AED">Scheduled for 01 Dec 2026</span>
-        </div>
-        <div class="biz-kpi-card biz-kpi-amber">
-          <small style="font-size:11px;color:#B45309;font-weight:700">PLATFORM COMMISSION</small>
-          <span style="font-size:24px;font-weight:800;color:#B45309;display:block;margin:4px 0">0% for Verified Pilot</span>
-          <span style="font-size:12px;color:#D97706">Pilot promotional waiver</span>
-        </div>
-      </div>
-    </div>`;
-  }
-
-  function renderBizReviews(v) {
-    return `
-    <div class="biz-card">
-      <div class="biz-card-head">
-        <h2 style="margin:0;font-size:20px;font-weight:800;color:#1f1435">Customer Reviews</h2>
-        <span class="tag tag-gold" style="font-size:14px">★ 4.8 / 5.0 (1,240 Verified Reviews)</span>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:12px;margin-top:14px">
-        <div style="background:#fff;padding:16px;border-radius:12px;border:1px solid rgba(226,218,242,0.8)">
-          <div style="display:flex;justify-content:space-between;margin-bottom:6px">
-            <b style="font-size:14px;color:#281448">Pooja &amp; Kunal Malhotra</b>
-            <span style="color:#D97706;font-weight:700">★★★★★</span>
-          </div>
-          <p style="margin:0 0 6px;font-size:13px;color:#4B3E65">"Royal Banquet Hall looked even better in real life than on See My Event! The mandap setup was immaculate."</p>
-          <small style="color:#7A6F91">Wedding Event · Nov 2026</small>
-        </div>
-      </div>
-    </div>`;
-  }
-
-  function renderBizPromotions(v) {
-    return `
-    <div class="biz-card">
-      <h2 style="margin:0 0 8px;font-size:20px;font-weight:800;color:#1f1435">Promotions &amp; Boost Campaigns</h2>
-      <p style="font-size:13px;color:#64567C;margin:0 0 16px">Reach high-intent couples in Delhi NCR looking for wedding venues.</p>
-      <div class="biz-boost-banner">
-        <div>
-          <h3 class="biz-boost-title">ShaadiKart Prime Placement</h3>
-          <p class="biz-boost-sub">Featured in top 3 search results across Delhi NCR with Verified Gold badge.</p>
-        </div>
-        <div>
-          <button class="biz-gold-pill" data-act="biz-boost">Activate Boost Now →</button>
-        </div>
-      </div>
-    </div>`;
-  }
-
+  /* ---------- Analytics & Performance Breakdown Page ---------- */
   function renderBizAnalytics(v) {
     return `
     <div class="biz-card">
-      <h2 style="margin:0 0 8px;font-size:20px;font-weight:800;color:#1f1435">Business Analytics &amp; Conversion</h2>
-      <p style="font-size:13px;color:#64567C;margin:0 0 16px">Track enquiry-to-booking velocity and guest engagement across your listing.</p>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px">
+      <div class="biz-card-head">
+        <div>
+          <h2 style="margin:0 0 4px;font-size:20px;font-weight:800;color:#1f1435">Business Analytics &amp; Conversion</h2>
+          <p style="margin:0;font-size:12.5px;color:#64567C">Track enquiry velocity, profile views, and guest engagement across Delhi NCR.</p>
+        </div>
+        <select class="biz-select-sm" aria-label="Select period">
+          <option>Past 30 Days</option>
+          <option>Past Quarter</option>
+          <option>Year 2025–2026</option>
+        </select>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin:16px 0 24px">
         <div class="biz-kpi-card biz-kpi-blue">
           <small style="font-weight:700;color:#4338CA">LISTING VIEWS</small>
-          <span style="font-size:22px;font-weight:800;color:#4338CA;display:block;margin:4px 0">4,280</span>
+          <span style="font-size:24px;font-weight:800;color:#4338CA;display:block;margin:4px 0">4,280</span>
           <span style="font-size:11.5px;color:#059669">↑ 24% this week</span>
         </div>
         <div class="biz-kpi-card biz-kpi-mint">
           <small style="font-weight:700;color:#065F46">SEE MY EVENT CLICKS</small>
-          <span style="font-size:22px;font-weight:800;color:#065F46;display:block;margin:4px 0">1,420</span>
+          <span style="font-size:24px;font-weight:800;color:#065F46;display:block;margin:4px 0">1,420</span>
           <span style="font-size:11.5px;color:#059669">↑ 33% high intent</span>
         </div>
         <div class="biz-kpi-card biz-kpi-lavender">
           <small style="font-weight:700;color:#6D28D9">CONVERSION RATE</small>
-          <span style="font-size:22px;font-weight:800;color:#6D28D9;display:block;margin:4px 0">28.4%</span>
+          <span style="font-size:24px;font-weight:800;color:#6D28D9;display:block;margin:4px 0">28.4%</span>
           <span style="font-size:11.5px;color:#6D28D9">Industry average 12%</span>
+        </div>
+        <div class="biz-kpi-card biz-kpi-amber">
+          <small style="font-weight:700;color:#B45309">AVERAGE BOOKING VALUE</small>
+          <span style="font-size:24px;font-weight:800;color:#B45309;display:block;margin:4px 0">₹2,15,000</span>
+          <span style="font-size:11.5px;color:#B45309">Delhi NCR average</span>
+        </div>
+      </div>
+
+      <!-- Funnel Visualization -->
+      <div style="background:#f9f7fd;padding:20px;border-radius:12px;border:1px solid rgba(226,218,242,0.8);margin-bottom:20px">
+        <h4 style="margin:0 0 14px;font-size:14.5px;color:#281448">Client Booking Funnel</h4>
+        <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap">
+          <div style="flex:1;min-width:140px;background:#fff;padding:12px;border-radius:8px;border:1px solid rgba(226,218,242,0.8)">
+            <small style="font-size:11px;color:#7A6F91;font-weight:700">1. IMPRESSIONS</small>
+            <b style="display:block;font-size:18px;color:#281448;margin:2px 0">18,400</b>
+            <span style="font-size:11px;color:#7A6F91">Search results</span>
+          </div>
+          <div style="flex:1;min-width:140px;background:#fff;padding:12px;border-radius:8px;border:1px solid rgba(226,218,242,0.8)">
+            <small style="font-size:11px;color:#7A6F91;font-weight:700">2. VENUE VISITS</small>
+            <b style="display:block;font-size:18px;color:#4338CA;margin:2px 0">4,280</b>
+            <span style="font-size:11px;color:#10B981">23% CTR</span>
+          </div>
+          <div style="flex:1;min-width:140px;background:#fff;padding:12px;border-radius:8px;border:1px solid rgba(226,218,242,0.8)">
+            <small style="font-size:11px;color:#7A6F91;font-weight:700">3. SEE MY EVENT</small>
+            <b style="display:block;font-size:18px;color:#7C3AED;margin:2px 0">1,420</b>
+            <span style="font-size:11px;color:#10B981">33% 3D views</span>
+          </div>
+          <div style="flex:1;min-width:140px;background:#fff;padding:12px;border-radius:8px;border:1px solid rgba(226,218,242,0.8)">
+            <small style="font-size:11px;color:#7A6F91;font-weight:700">4. ENQUIRIES</small>
+            <b style="display:block;font-size:18px;color:#D97706;margin:2px 0">148</b>
+            <span style="font-size:11px;color:#10B981">10% enquiry rate</span>
+          </div>
+          <div style="flex:1;min-width:140px;background:#fff;padding:12px;border-radius:8px;border:1px solid rgba(226,218,242,0.8)">
+            <small style="font-size:11px;color:#7A6F91;font-weight:700">5. CONFIRMED</small>
+            <b style="display:block;font-size:18px;color:#059669;margin:2px 0">12</b>
+            <span style="font-size:11px;color:#10B981">8% conversion</span>
+          </div>
         </div>
       </div>
     </div>`;
   }
 
+  /* ---------- Support & Business RM Hub Page ---------- */
   function renderBizSupport(v) {
     return `
     <div class="biz-card">
-      <h2 style="margin:0 0 8px;font-size:20px;font-weight:800;color:#1f1435">Business Support Team</h2>
-      <p style="font-size:13px;color:#64567C;margin:0 0 16px">Our business support team is dedicated to helping you maximize bookings and manage events smoothly.</p>
-      <div style="display:flex;gap:18px;align-items:center;background:#f9f7fd;padding:20px;border-radius:12px;border:1px solid rgba(226,218,242,0.8)">
+      <div class="biz-card-head">
+        <div>
+          <h2 style="margin:0 0 4px;font-size:20px;font-weight:800;color:#1f1435">Business Support Team</h2>
+          <p style="margin:0;font-size:12.5px;color:#64567C">Dedicated relationship managers helping you maximize bookings and manage events smoothly.</p>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:18px;align-items:center;background:#f9f7fd;padding:20px;border-radius:12px;border:1px solid rgba(226,218,242,0.8);margin:14px 0 24px">
         <div class="biz-help-avatar-wrap" style="background-image:url('${D.img('photo-1573496359142-b8d87734a5a2', 200)}')"></div>
         <div>
-          <h3 style="margin:0 0 4px;font-size:16px;color:#281448">Dedicated Business Relationship Manager</h3>
-          <p style="margin:0 0 8px;font-size:13px;color:#64567C">Available 7 days a week, 9:00 AM – 8:00 PM IST</p>
+          <h3 style="margin:0 0 4px;font-size:16px;color:#281448">Priya Verma · Senior Business Success Manager</h3>
+          <p style="margin:0 0 10px;font-size:13px;color:#64567C">Assigned to ${esc(v.name)}. Available 7 days a week, 9:00 AM – 8:00 PM IST.</p>
           <button class="biz-gold-btn" data-act="biz-contact-support">Call Helpline: ${CALL_NO}</button>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+        <!-- Create Ticket Form -->
+        <div style="background:#fff;padding:18px;border-radius:12px;border:1px solid rgba(226,218,242,0.8)">
+          <h4 style="margin:0 0 12px;font-size:15px;color:#281448">Raise a Business Request</h4>
+          <form data-form="biz-create-ticket" style="display:flex;flex-direction:column;gap:10px">
+            <label class="field">Subject<input name="subject" required placeholder="Brief description of the request"></label>
+            <label class="field">Category<select name="category">
+              <option value="Payout & Invoicing">Payout &amp; Invoicing</option>
+              <option value="Listing Update">Listing / Photos Update</option>
+              <option value="Customer Dispute">Customer Inquiry / Dispute</option>
+              <option value="Technical Support">Technical Support</option>
+            </select></label>
+            <label class="field">Details<textarea name="details" rows="3" required placeholder="Explain your query in detail..."></textarea></label>
+            <button class="biz-gold-btn" type="submit" style="align-self:flex-start">Submit Ticket</button>
+          </form>
+        </div>
+
+        <!-- Active Tickets List -->
+        <div style="background:#fff;padding:18px;border-radius:12px;border:1px solid rgba(226,218,242,0.8)">
+          <h4 style="margin:0 0 12px;font-size:15px;color:#281448">Recent Support Tickets</h4>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            ${BIZ.tickets.map(t => `
+              <div style="padding:12px;border-radius:8px;background:#f9f7fd;border:1px solid rgba(226,218,242,0.8)">
+                <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+                  <b style="font-size:13px;color:#281448">${esc(t.id)} · ${esc(t.category)}</b>
+                  <span class="tag ${t.status === 'Resolved' ? 'tag-green' : 'tag-gold'}">${esc(t.status)}</span>
+                </div>
+                <p style="margin:0 0 4px;font-size:12px;color:#4B3E65">${esc(t.subject)}</p>
+                <small style="color:#7A6F91">${esc(t.date)}</small>
+              </div>
+            `).join('')}
+          </div>
         </div>
       </div>
     </div>`;
   }
 
+  /* ---------- Settings & Business Profile Page ---------- */
   function renderBizSettings(v) {
     return `
     <div class="biz-card">
-      <h2 style="margin:0 0 8px;font-size:20px;font-weight:800;color:#1f1435">Business Settings &amp; Profile</h2>
-      <p style="font-size:13px;color:#64567C;margin:0 0 16px">Manage contact information, GST registration, and notifications.</p>
-      <div style="max-width:600px;display:flex;flex-direction:column;gap:12px">
-        <label class="field">Business Name<input value="${esc(v.name)}" readonly></label>
-        <label class="field">Registered Category<input value="Venues &amp; Banquet Halls" readonly></label>
-        <label class="field">Operational City<input value="${esc(v.locality)}, Delhi NCR" readonly></label>
-        <label class="field">Account Holder<input value="Aman Saxena (General Manager)" readonly></label>
-        <button class="biz-gold-btn" style="align-self:flex-start" data-act="biz-save-settings">Save Changes</button>
+      <div class="biz-card-head">
+        <div>
+          <h2 style="margin:0 0 4px;font-size:20px;font-weight:800;color:#1f1435">Business Settings &amp; Profile</h2>
+          <p style="margin:0;font-size:12.5px;color:#64567C">Manage registered venue details, GSTIN, and notification alerts.</p>
+        </div>
+      </div>
+
+      <div style="max-width:680px;display:flex;flex-direction:column;gap:14px;margin-top:14px">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <label class="field">Business Registered Entity<input value="Royal Banquet &amp; Conventions Pvt. Ltd." readonly></label>
+          <label class="field">Display Venue Name<input value="${esc(v.name)}" readonly></label>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <label class="field">Registered Category<input value="Venues &amp; Banquet Halls" readonly></label>
+          <label class="field">Operational City<input value="${esc(v.locality)}, Delhi NCR" readonly></label>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <label class="field">General Manager<input value="Aman Saxena" readonly></label>
+          <label class="field">Registered GSTIN<input value="07AAAAA0000A1Z5" readonly></label>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <label class="field">PAN Number<input value="AAAAA0000A" readonly></label>
+          <label class="field">Settlement Bank IFSC<input value="HDFC0001042" readonly></label>
+        </div>
+
+        <h4 style="margin:10px 0 2px;font-size:14px;color:#281448">Notification Preferences</h4>
+        <div style="display:flex;flex-direction:column;gap:8px;background:#f9f7fd;padding:14px;border-radius:10px;border:1px solid rgba(226,218,242,0.8)">
+          <label style="display:flex;align-items:center;gap:10px;font-size:13px;cursor:pointer">
+            <input type="checkbox" checked style="accent-color:#3A1C6E">
+            <span>Send instant SMS alert when a new booking request is received</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:10px;font-size:13px;cursor:pointer">
+            <input type="checkbox" checked style="accent-color:#3A1C6E">
+            <span>Send WhatsApp notification when customer approves wedding Blueprint</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:10px;font-size:13px;cursor:pointer">
+            <input type="checkbox" checked style="accent-color:#3A1C6E">
+            <span>Email monthly earnings and GST tax invoice statements</span>
+          </label>
+        </div>
+
+        <button class="biz-gold-btn" style="align-self:flex-start;margin-top:6px" data-act="biz-save-settings">Save Changes</button>
       </div>
     </div>`;
   }
@@ -3431,27 +4146,124 @@
       render();
     },
     'biz-view-booking'(el) {
-      const id = el.dataset.id || '10248';
-      openModal('Booking Details — SKB#' + id, `<div class="modal-b" style="padding:0">
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
-          <div style="width:50px;height:50px;border-radius:10px;background:url('${D.img('photo-1519741497674-611481863552', 200)}') center / cover no-repeat"></div>
-          <div>
-            <h3 style="margin:0;font-size:16px;color:#281448">SKB#${id} · Wedding Celebration</h3>
-            <span style="font-size:12px;color:#10B981;font-weight:700">✔ Confirmed on ShaadiKart</span>
-          </div>
+      openBizBookingModal(el.dataset.id);
+    },
+    'biz-accept-booking'(el) {
+      const b = BIZ.bookings.find(x => x.id === el.dataset.id);
+      if (b) b.status = 'Confirmed';
+      closeModal(); render();
+      toast('Booking accepted! Customer notified.', 'check');
+    },
+    'biz-decline-booking'(el) {
+      const b = BIZ.bookings.find(x => x.id === el.dataset.id);
+      if (b) b.status = 'Cancelled';
+      closeModal(); render();
+      toast('Booking request declined.', 'undo');
+    },
+    'biz-listings-tab'(el) {
+      BIZ.listingsTab = el.dataset.tab;
+      render();
+    },
+    'biz-bookings-filter'(el) {
+      BIZ.bookingsFilter = el.dataset.filter;
+      render();
+    },
+    'biz-toggle-date'(el) {
+      const day = parseInt(el.dataset.day, 10);
+      if ([10, 15, 20, 28].includes(day)) {
+        return toast('Date is confirmed with active booking', 'alert');
+      }
+      if (BIZ.blockedDates.has(day)) {
+        BIZ.blockedDates.delete(day);
+        toast(`Dec ${day} is now unblocked and Available`, 'check');
+      } else {
+        BIZ.blockedDates.add(day);
+        toast(`Dec ${day} blocked for Maintenance / Private Event`, 'alert');
+      }
+      render();
+    },
+    'biz-download-invoice'(el) {
+      const id = el.dataset.id || '8841';
+      openModal(`GST Tax Invoice — SKP#${id}`, `<div class="receipt">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
+          ${logo(true)}
+          <span class="tag tag-green">${ic('check')}Settled &amp; Paid</span>
         </div>
-        <dl class="kv">
-          <dt>Event Date</dt><dd>15 Dec 2025 (Evening Banquet)</dd>
-          <dt>Expected Guests</dt><dd>250 Guests</dd>
-          <dt>Booked Package</dt><dd>Royal Banquet Hall · Grand Package</dd>
-          <dt>Total Value</dt><dd><b>₹2,50,000</b></dd>
-          <dt>Customer</dt><dd>Aarav &amp; Riya Malhotra</dd>
-          <dt>Verified By</dt><dd>ShaadiKart Executive</dd>
+        <dl class="kv" style="margin-top:14px">
+          <dt>Invoice Ref</dt><dd>SKP#${id}</dd>
+          <dt>Settlement Date</dt><dd>20 Nov 2025</dd>
+          <dt>Beneficiary</dt><dd>Royal Banquet &amp; Conventions Pvt. Ltd.</dd>
+          <dt>GSTIN</dt><dd>07AAAAA0000A1Z5</dd>
+          <dt>Gross Payout</dt><dd>₹1,20,000</dd>
+          <dt>TDS Withheld (1%)</dt><dd>₹1,200</dd>
+          <dt>Net Transferred</dt><dd><b style="font-size:15px;color:#047857">₹1,18,800</b></dd>
+          <dt>Bank Reference</dt><dd>HDFC Bank •••• 4091 (UTR #8841920)</dd>
         </dl>
-        <div class="modal-f" style="justify-content:flex-end;margin-top:16px">
-          <button class="btn btn-primary" onclick="closeModal()">Close</button>
+        <div class="modal-f" style="justify-content:flex-end;margin-top:14px">
+          <button class="btn btn-primary" onclick="closeModal();toast('Invoice PDF downloaded', 'check')">${ic('download')} Download PDF</button>
         </div>
       </div>`);
+    },
+    'biz-reply-review'(el) {
+      const inp = document.getElementById('reply-inp-' + el.dataset.id);
+      const text = inp ? inp.value.trim() : '';
+      if (!text) return toast('Type a reply message first', 'alert');
+      BIZ.reviewsReplies[el.dataset.id] = text;
+      render();
+      toast('Reply published to customer review!', 'check');
+    },
+    'biz-toggle-promo'(el) {
+      const p = BIZ.promotions.find(x => x.id === el.dataset.id);
+      if (p) {
+        p.active = !p.active;
+        toast(`${p.title} is now ${p.active ? 'Active' : 'Paused'}`, p.active ? 'check' : 'undo');
+        render();
+      }
+    },
+    'biz-create-promo-modal'() {
+      openModal('Create New Promotional Offer', `<form data-form="biz-create-promo" class="modal-b" style="padding:0">
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <label class="field">Promotion Title<input name="title" required placeholder="e.g. Midweek Wedding 15% Off"></label>
+          <label class="field">Offer Tag Badge<input name="tag" required placeholder="e.g. 15% OFF or SPECIAL PERK" value="15% OFF"></label>
+          <label class="field">Offer Description<textarea name="desc" rows="2" required placeholder="Details of discount or complimentary services included..."></textarea></label>
+        </div>
+        <div class="modal-f" style="justify-content:flex-end;gap:10px;margin-top:16px">
+          <button type="button" class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+          <button class="biz-gold-btn" type="submit">Activate Campaign</button>
+        </div>
+      </form>`);
+    },
+    'biz-add-listing-modal'() {
+      openModal('Add New Listing / Event Space', `<form data-form="biz-add-space" class="modal-b" style="padding:0">
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <label class="field">Space Name<input name="name" required placeholder="e.g. Terrace Rooftop Lounge"></label>
+          <label class="field">Capacity (Guests)<input name="guests" type="number" required placeholder="e.g. 300" value="300"></label>
+          <label class="field">Carpet Area (sq. ft.)<input name="area" placeholder="e.g. 6,500 sq.ft" value="6,500 sq.ft"></label>
+          <label class="field">Base Package Price (₹)<input name="price" type="number" required placeholder="e.g. 150000" value="150000"></label>
+          <label class="field">Space Description<textarea name="desc" rows="2" placeholder="Key highlights and amenities..."></textarea></label>
+        </div>
+        <div class="modal-f" style="justify-content:flex-end;gap:10px;margin-top:16px">
+          <button type="button" class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+          <button class="biz-gold-btn" type="submit">Add Space to Listing</button>
+        </div>
+      </form>`);
+    },
+    'biz-edit-listing-modal'(el) {
+      const spaceName = el.dataset.space || 'Grand Ballroom';
+      openModal(`Edit Space — ${spaceName}`, `<form data-form="biz-edit-space" class="modal-b" style="padding:0">
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <label class="field">Space Name<input name="name" value="${esc(spaceName)}" required></label>
+          <label class="field">Capacity (Guests)<input name="guests" type="number" value="600" required></label>
+          <label class="field">Status<select name="status">
+            <option value="active" selected>Active on Public Listing</option>
+            <option value="maintenance">Under Maintenance</option>
+          </select></label>
+        </div>
+        <div class="modal-f" style="justify-content:flex-end;gap:10px;margin-top:16px">
+          <button type="button" class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+          <button class="biz-gold-btn" type="submit">Save Changes</button>
+        </div>
+      </form>`);
     },
     'biz-premium'() {
       openModal('ShaadiKart Verified Business Premium', `<div class="modal-b" style="padding:0;text-align:center">
@@ -3488,16 +4300,23 @@
       </div>`);
     },
     'biz-save-settings'() {
-      toast('Business settings updated successfully', 'check');
+      toast('Business profile and settings updated successfully', 'check');
     },
     'biz-payout-modal'() {
       toast('Statement downloaded for November 2026', 'check');
     },
     'biz-notif'() {
-      toast('You have 3 unread booking updates', 'bell');
+      BIZ.notifOpen = !BIZ.notifOpen;
+      render();
+    },
+    'biz-clear-notifs'() {
+      BIZ_NOTIFICATIONS.forEach(n => n.unread = false);
+      render();
+      toast('All notifications marked as read', 'check');
     },
     'biz-user-menu'() {
-      ACT.account();
+      BIZ.userMenuOpen = !BIZ.userMenuOpen;
+      render();
     },
     'meet-open'(el) { const ev = S.events.find(e => e.id === el.dataset.ev); if (ev) meetingModal(ev); },
     'call-us'(el) { const ev = S.events.find(e => e.id === el.dataset.ev), g = gateOf(ev); if (g.inbound || answered(g)) return; g.inbound = { t: now() }; save(); render(); toast(`Thank you. We received your call to ${CALL_NO}.`, 'phone'); },
@@ -3753,6 +4572,38 @@
     },
     'partner-login'(f) { FORMS['business-login'](f); },
     'partner-otp'(f) { FORMS['business-otp'](f); },
+    'biz-create-promo'(f) {
+      const newPromo = {
+        id: 'promo-' + Date.now(),
+        title: f.title.value.trim(),
+        tag: f.tag.value.trim(),
+        desc: f.desc.value.trim(),
+        active: true
+      };
+      BIZ.promotions.unshift(newPromo);
+      closeModal(); render();
+      toast('New promotional campaign created!', 'check');
+    },
+    'biz-add-space'(f) {
+      closeModal(); render();
+      toast('New space added to venue listing!', 'check');
+    },
+    'biz-edit-space'(f) {
+      closeModal(); render();
+      toast('Space details updated successfully', 'check');
+    },
+    'biz-create-ticket'(f) {
+      const newTkt = {
+        id: 'TKT#' + Math.floor(7000 + Math.random() * 2000),
+        subject: f.subject.value.trim(),
+        category: f.category.value,
+        date: 'Today',
+        status: 'Open'
+      };
+      BIZ.tickets.unshift(newTkt);
+      closeModal(); render();
+      toast(`Support ticket submitted! Ref: ${newTkt.id}`, 'check');
+    },
     'biz-upload-photo'(f) {
       const v = getBizVenue();
       const title = (f.title.value || '').trim() || 'Signature Property Photo';

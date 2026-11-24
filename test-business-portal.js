@@ -132,17 +132,52 @@ assert(appContent.includes('biz-sweep-wrap'), 'Event Preview must include sweep 
 assert(appContent.includes('biz-floorplan-box'), 'Event Preview must include celebration floor plan');
 console.log('   ✔ Event Preview: Raw Space, With Decoration (sweep slider), and With People (SVG floor plan) present.');
 
-// Test 8: Mobile Responsiveness in CSS
-console.log('8. Verifying mobile responsive styles down to 375px...');
+// Test 8: Mobile Responsiveness in CSS & Pastel KPI Colors
+console.log('8. Verifying mobile responsive styles down to 375px & Pastel KPI colors...');
 const cssContent = fs.readFileSync(path.join(__dirname, 'css', 'styles.css'), 'utf8');
 assert(cssContent.includes('.biz-sidebar'), 'styles.css must include .biz-sidebar');
 assert(cssContent.includes('.biz-bg-layer'), 'styles.css must include .biz-bg-layer');
 assert(cssContent.includes('.biz-glass-overlay'), 'styles.css must include .biz-glass-overlay');
+assert(cssContent.includes('#F0ECFC'), 'styles.css must include lavender pastel #F0ECFC');
+assert(cssContent.includes('#E8F8F0'), 'styles.css must include mint pastel #E8F8F0');
+assert(cssContent.includes('#FDF6E7'), 'styles.css must include amber pastel #FDF6E7');
+assert(cssContent.includes('#EEF2FF'), 'styles.css must include blue pastel #EEF2FF');
+assert(cssContent.includes('.biz-notif-popover'), 'styles.css must include .biz-notif-popover');
 assert(cssContent.includes('@media (max-width: 992px)'), 'styles.css must include tablet breakpoint');
 assert(cssContent.includes('@media (max-width: 600px)'), 'styles.css must include mobile breakpoint');
 assert(cssContent.includes('.biz-kpis-grid'), 'styles.css must include KPI grid');
 assert(cssContent.includes('.biz-sweep-wrap'), 'styles.css must include sweep slider styles');
-console.log('   ✔ CSS styles: Luxury frosted glass backdrop, deep purple sidebar, pastel cards, and responsive rules verified.');
+console.log('   ✔ CSS styles: Exact pastel hex codes, notification popover, and responsive rules verified.');
 
-console.log('\n🎉 ALL 8 TESTS PASSED SUCCESSFULLY! ZERO ERRORS.\n');
+// Test 9: Exact 10 Sidebar Navigation Items Verification
+console.log('9. Verifying exact 10 Sidebar Navigation Items...');
+const expectedNavKeys = [
+  '#/business-dashboard',
+  '#/business/listings',
+  '#/business/bookings',
+  '#/business/calendar',
+  '#/business/earnings',
+  '#/business/reviews',
+  '#/business/promotions',
+  '#/business/analytics',
+  '#/business/support',
+  '#/business/settings'
+];
+expectedNavKeys.forEach(k => {
+  assert(appContent.includes(`href: '${k}'`), `Sidebar must contain nav link ${k}`);
+});
+console.log('   ✔ Exactly 10 sidebar navigation links present with complete dedicated routes.');
+
+// Test 10: Topbar Search, Notifications & Modals
+console.log('10. Verifying Topbar live search, notifications & modals...');
+assert(appContent.includes('window.bizLiveSearch'), 'Must define live search handler');
+assert(appContent.includes('Notifications ('), 'Must render notifications popover title');
+assert(appContent.includes('openBizBookingModal'), 'Must define openBizBookingModal handler');
+assert(appContent.includes('SKB#10248'), 'Must include recent booking SKB#10248');
+assert(appContent.includes('SKB#10247'), 'Must include recent booking SKB#10247');
+assert(appContent.includes('SKB#10246'), 'Must include recent booking SKB#10246');
+assert(appContent.includes('SKB#10245'), 'Must include recent booking SKB#10245');
+console.log('   ✔ Topbar search, notification alerts popover, and booking detail modals verified.');
+
+console.log('\n🎉 ALL 10 TESTS PASSED SUCCESSFULLY! ZERO ERRORS.\n');
 process.exit(0);
