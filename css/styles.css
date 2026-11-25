@@ -3441,3 +3441,71 @@ textarea[data-change="cg-notes"] { width: 100%; font: inherit; padding: 12px; bo
   .pkg-tier-grid { grid-template-columns: 1fr; gap: 12px; }
 }
 
+/* Phase 1.10: Direct CTA Buttons on Package Cards & Step 3 Tier Switchers */
+.ptc-cta {
+  margin-top: 14px;
+  width: 100%;
+  padding: 10px 14px;
+  font-size: 13.5px;
+  font-weight: 700;
+  border-radius: 12px;
+  border: 1.5px solid var(--primary);
+  background: #fff;
+  color: var(--primary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all .18s ease;
+  min-height: 42px;
+}
+.pkg-tier-card:hover .ptc-cta {
+  background: var(--lav-50);
+}
+.pkg-tier-card.on .ptc-cta {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+  box-shadow: 0 4px 14px rgba(66, 32, 117, .25);
+}
+.pkg-tier-card.on .ptc-cta.in-cart {
+  background: var(--green);
+  border-color: var(--green);
+  box-shadow: 0 4px 14px rgba(22, 101, 52, .25);
+}
+
+.po-tiers {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+.po-tier-chip {
+  padding: 4px 10px;
+  font-size: 11.5px;
+  font-weight: 600;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: #4a4068;
+  cursor: pointer;
+  transition: all .15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 28px;
+}
+.po-tier-chip:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+.po-tier-chip.on {
+  border-color: var(--gold-600);
+  background: var(--gold-grad);
+  color: var(--plum-950);
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(245, 158, 11, .25);
+}
+
+

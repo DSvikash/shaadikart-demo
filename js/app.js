@@ -488,7 +488,22 @@
   const PLAN_STEPS = [['Choose Event', 'Wedding / Birthday / More'], ['Explore Partners', 'Compare &amp; Select'], ['Add to Cart', 'One Cart for All'], ['Book &amp; Celebrate', 'Make it Memorable']];
   const PLAN_MAIN = ['venues', 'decor', 'photo', 'catering', 'beauty', 'haldi']; // large cards; every other category sits under "Others"
   let PL = null, LV = null;
-  const planDraft = () => PL || (PL = { ...S.cart.event, diet: 'veg', cats: [], picks: {}, view: 'main' });
+  const planDraft = () => {
+    if (PL) return PL;
+    const initialPicks = {};
+    const initialPkgs = {};
+    const initialCats = [];
+    (S.cart.items || []).forEach(it => {
+      const v = partner(it.partnerId);
+      if (v) {
+        if (!initialCats.includes(v.cat)) initialCats.push(v.cat);
+        initialPicks[v.cat] = v.id;
+        initialPkgs[v.cat] = it.pkg;
+      }
+    });
+    PL = { ...S.cart.event, diet: S.cart.diet || 'veg', cats: initialCats, picks: initialPicks, pkgs: initialPkgs, view: 'main' };
+    return PL;
+  };
   const planSuggest = cat => D.PARTNERS.filter(v => v.cat === cat)
     .sort((a, b) => capFits(b, PL.guests) - capFits(a, PL.guests) || (b.locality === PL.locality) - (a.locality === PL.locality) || b.rating - a.rating).slice(0, 3);
   const planOptions = cat => { const top = planSuggest(cat), pick = PL.picks[cat]; if (pick && !top.some(v => v.id === pick)) top[top.length - 1] = partner(pick); return top; };
@@ -500,6 +515,11 @@
     }
     if (PL && PL.pkgs && PL.pkgs[v.cat]) {
       const p = v.packages.find(x => x.id === PL.pkgs[v.cat]);
+      if (p) return p;
+    }
+    const ex = inCart(v.id);
+    if (ex && ex.pkg) {
+      const p = v.packages.find(x => x.id === ex.pkg);
       if (p) return p;
     }
     return v.packages[0];
@@ -582,15 +602,46 @@
       body = `<div class="plan-3h"><h4 class="plan-h">Choose one partner for each service</h4>
         ${perPlateCats.length ? `<div class="diet-switch" role="group" aria-label="Food preference"><span>Food for ${d.guests} guests:</span>${['veg', 'nonveg'].map(x => `<button class="${d.diet === x ? 'on' : ''}" data-act="plan-diet" data-diet="${x}" aria-pressed="${d.diet === x}">${dietDot(x)}${dietLabel(x)}</button>`).join('')}</div>` : ''}</div>
         <p class="note" style="margin:-4px 0 0">${ic('info')}<span>We have picked the best-rated partner for you. Tap <b class="sf">+</b> to choose a partner. Tap the <b class="sf">›</b> arrow only if you want to see their artists and work.</span></p>
-        ${d.cats.map(c => { const cat = catOf(c); return `<div class="plan-cat-block"><h5>${ic(cat.icon)}${esc(cat.name)}<button class="link-btn" data-act="plan-view" data-cat="${c}">See all ${D.PARTNERS.filter(v => v.cat === c).length} partners ${ic('chevronRight')}</button></h5><div class="plan-opts">${planOptions(c).map(v => { const p = v.packages[0], fits = capFits(v, d.guests), on = d.picks[c] === v.id; return `<div class="plan-opt ${on ? 'on' : ''}">
-            <button class="po-photo" data-act="plan-pick" data-cat="${c}" data-vid="${v.id}" aria-label="Choose ${esc(v.name)}"><span class="ph" ${bg(v.photos[0], 300)}></span><i class="po-plus ${on ? 'on' : ''}">${ic(on ? 'check' : 'plus')}</i></button>
-            <button class="po-body" data-act="plan-pick" data-cat="${c}" data-vid="${v.id}" aria-pressed="${on}"><b>${esc(v.name)}</b><small>${esc(v.area)}, ${esc(v.locality)} · <span class="stars">${ic('star')}${v.rating}</span></small>
-              ${v.perPlate ? `<span class="po-p">${dietDot(d.diet)}${inr(unitPrice(v, p, d.diet))} <small>/ plate</small>${v.offer ? ` <span class="tag tag-gold">${v.offer}% off</span>` : ''}</span>
-                <small class="po-x">× ${d.guests} = <b>${inr(offerPrice(v, p, d.diet, d.guests))}</b></small>
-                ${v.cap ? `<small class="po-cap ${fits ? '' : 'bad'}">${ic('users2')}${v.kind} · ${capLabel(v)}${fits ? '' : ' · too small'}</small>` : ''}`
-              : `<span class="po-p">${inr(unitPrice(v, p))}${v.offer ? ` <span class="tag tag-gold">${v.offer}% off</span>` : ''}</span>${v.vegOnly ? `<small class="po-cap">${dietDot('veg')}Pure veg</small>` : ''}`}</button>
-            <button class="po-more" data-act="plan-view" data-cat="${c}" data-vid="${v.id}" aria-label="See details of ${esc(v.name)}">${ic('chevronRight')}</button>
-            ${on ? `<i class="ck on">${ic('check')}</i>` : ''}</div>`; }).join('')}</div></div>`; }).join('')}
+        ${d.cats.map(c => {
+          const cat = catOf(c);
+          const activeTier = (d.pkgs && d.pkgs[c]) || 'silver';
+          return `<div class="plan-cat-block">
+            <h5>${ic(cat.icon)}${esc(cat.name)}<button class="link-btn" data-act="plan-view" data-cat="${c}">See all ${D.PARTNERS.filter(v => v.cat === c).length} partners ${ic('chevronRight')}</button></h5>
+            <div class="plan-opts">${planOptions(c).map(v => {
+              const on = d.picks[c] === v.id;
+              const curTier = on ? activeTier : ((d.pkgs && d.pkgs[c]) || 'silver');
+              const p = v.packages.find(x => x.id === curTier) || v.packages[0];
+              const fits = capFits(v, d.guests);
+              return `<div class="plan-opt ${on ? 'on' : ''}">
+                <button class="po-photo" data-act="plan-pick" data-cat="${c}" data-vid="${v.id}" aria-label="Choose ${esc(v.name)}"><span class="ph" ${bg(v.photos[0], 300)}></span><i class="po-plus ${on ? 'on' : ''}">${ic(on ? 'check' : 'plus')}</i></button>
+                <div class="po-body" style="cursor:default">
+                  <div style="display:flex;justify-content:space-between;align-items:flex-start;width:100%">
+                    <div>
+                      <b style="font-size:15px;color:var(--plum-950)">${esc(v.name)}</b>
+                      <small style="display:block;color:var(--muted);font-size:12px">${esc(v.area)}, ${esc(v.locality)} · <span class="stars">${ic('star')}${v.rating}</span></small>
+                    </div>
+                    <button type="button" class="btn btn-sm ${on ? 'btn-ghost' : 'btn-primary'}" data-act="plan-pick" data-cat="${c}" data-vid="${v.id}" style="padding:4px 10px;font-size:12px">
+                      ${on ? `${ic('check')} Selected` : 'Select'}
+                    </button>
+                  </div>
+                  <div style="margin-top:6px">
+                    ${v.perPlate ? `<span class="po-p">${dietDot(d.diet)}${inr(unitPrice(v, p, d.diet))} <small>/ plate (${esc(p.name)})</small>${v.offer ? ` <span class="tag tag-gold">${v.offer}% off</span>` : ''}</span>
+                      <small class="po-x">× ${d.guests} = <b>${inr(offerPrice(v, p, d.diet, d.guests))}</b></small>
+                      ${v.cap ? `<small class="po-cap ${fits ? '' : 'bad'}">${ic('users2')}${v.kind} · ${capLabel(v)}${fits ? '' : ' · too small'}</small>` : ''}`
+                    : `<span class="po-p">${inr(unitPrice(v, p))}${v.offer ? ` <span class="tag tag-gold">${v.offer}% off</span>` : ''} <small>(${esc(p.name)} package)</small></span>${v.vegOnly ? `<small class="po-cap">${dietDot('veg')}Pure veg</small>` : ''}`}
+                  </div>
+                  <div class="po-tiers" role="radiogroup" aria-label="Package tier for ${esc(v.name)}">
+                    ${v.packages.map(pkg => `<button type="button" class="po-tier-chip ${pkg.id === p.id ? 'on' : ''}" data-act="plan-tier" data-cat="${c}" data-vid="${v.id}" data-t="${pkg.id}" role="radio" aria-checked="${pkg.id === p.id}">
+                      <b>${esc(pkg.name)}</b> <span>${v.perPlate ? inr(unitPrice(v, pkg, d.diet)) : inr(unitPrice(v, pkg))}</span>
+                    </button>`).join('')}
+                  </div>
+                </div>
+                <button class="po-more" data-act="plan-view" data-cat="${c}" data-vid="${v.id}" aria-label="See details of ${esc(v.name)}">${ic('chevronRight')}</button>
+                ${on ? `<i class="ck on">${ic('check')}</i>` : ''}
+              </div>`;
+            }).join('')}</div>
+          </div>`;
+        }).join('')}
         <div class="plan-budget"><div class="sum-row"><span>Estimated total incl. GST and platform fee</span><b>${inr(tot)}</b></div><div class="meter ${pct > 100 ? 'over' : ''}"><i style="width:${Math.min(pct, 100)}%"></i></div><div class="note">${ic(pct > 100 ? 'alert' : 'info')}<span>${pct}% of your ${inr(d.budget)} budget${pct > 100 ? '. Try another partner or a veg menu to bring it down.' : '.'}</span></div></div>`;
     } else {
       const lines = planLines(), sub = lines.reduce((a, l) => a + l.price, 0), gst = Math.round(sub * GST), fp = feeParts(sub + gst), total = sub + gst + fp.total, adv = Math.round((sub + gst) * ADV);
@@ -618,7 +669,16 @@
   function planToCart() {
     if (PL.query != null) S.cart.query = PL.query;
     S.cart.event = { ...S.cart.event, type: PL.type, date: PL.date, guests: PL.guests, gc: PL.gc, locality: PL.locality, budget: PL.budget, name: S.cart.event.name || '' };
-    planLines().forEach(l => { if (!inCart(l.v.id)) S.cart.items.push({ partnerId: l.v.id, pkg: planPkg(l.v).id, diet: PL.diet }); });
+    planLines().forEach(l => {
+      const ex = inCart(l.v.id);
+      const pkgId = planPkg(l.v).id;
+      if (ex) {
+        ex.pkg = pkgId;
+        ex.diet = PL.diet;
+      } else {
+        S.cart.items.push({ partnerId: l.v.id, pkg: pkgId, diet: PL.diet });
+      }
+    });
     const n = planLines().length;
     PL = null; save();
     return n;
@@ -667,8 +727,9 @@
   }
   function openLayer(cat, vid) {
     const pl = planDraft();
-    const existingTier = (pl.pkgs && pl.pkgs[cat]) || 'silver';
-    LV = { cat, vid: vid || (pl.picks && pl.picks[cat]) || planOptions(cat)[0].id, artist: 0, tier: existingTier };
+    const targetVid = vid || (pl.picks && pl.picks[cat]) || planOptions(cat)[0].id;
+    const existingTier = (pl.pkgs && pl.pkgs[cat]) || (inCart(targetVid) && inCart(targetVid).pkg) || 'silver';
+    LV = { cat, vid: targetVid, artist: 0, tier: existingTier };
     renderLayer(true);
   }
 
@@ -2850,8 +2911,10 @@
     if (!v) return notFound();
     const c = catOf(v.cat);
     const item = inCart(v.id);
-    if (!PGTIER || !v.packages.some(p => p.id === PGTIER)) {
-      PGTIER = item ? item.pkg : (v.packages[0] ? v.packages[0].id : 'silver');
+    if (item && item.pkg && v.packages.some(p => p.id === item.pkg)) {
+      PGTIER = item.pkg;
+    } else if (!PGTIER || !v.packages.some(p => p.id === PGTIER)) {
+      PGTIER = v.packages[0] ? v.packages[0].id : 'silver';
     }
     const sel = PGTIER;
     const diet = (item && item.diet) ? item.diet : (v.vegOnly ? 'veg' : (S.cart.diet || 'veg'));
@@ -2885,6 +2948,7 @@
                 const isSel = p.id === sel;
                 const uPrice = unitPrice(v, p, diet);
                 const tot = offerPrice(v, p, diet, g);
+                const isThisInCart = item && item.pkg === p.id;
                 return `<div class="pkg-tier-card ${isSel ? 'on' : ''}" data-act="select-pkg" data-vid="${v.id}" data-pkg="${p.id}" tabindex="0" role="radio" aria-checked="${isSel}">
                   ${isSel ? `<span class="tier-badge">${ic('check')} Selected</span>` : (p.id === 'gold' ? `<span class="tier-badge" style="background:var(--plum-100);color:var(--primary);box-shadow:none">Most Popular</span>` : '')}
                   <div class="ptc-h">
@@ -2899,6 +2963,9 @@
                   <ul class="ptc-inc">
                     ${p.includes.map(inc => `<li>${ic('check')}<span>${esc(inc)}</span></li>`).join('')}
                   </ul>
+                  <button type="button" class="ptc-cta ${isThisInCart ? 'in-cart' : ''}" data-act="select-pkg-add" data-vid="${v.id}" data-pkg="${p.id}">
+                    ${ic(isThisInCart ? 'check' : 'cart')} ${isThisInCart ? `${esc(p.name)} In Cart` : `Select ${esc(p.name)} · ${inr(tot)}`}
+                  </button>
                 </div>`;
               }).join('')}
             </div>
@@ -4531,15 +4598,49 @@
     // Step 2: + chooses a partner in place (no popup). The arrow beside it opens the details.
     'plan-choose'(el) {
       const c = el.dataset.cat, vid = el.dataset.vid;
-      if (PL.picks[c] === vid) delete PL.picks[c]; else PL.picks[c] = vid;
+      if (PL.picks[c] === vid) {
+        delete PL.picks[c];
+        if (PL.pkgs) delete PL.pkgs[c];
+      } else {
+        PL.picks[c] = vid;
+        PL.pkgs = PL.pkgs || {};
+        if (!PL.pkgs[c]) {
+          const ex = inCart(vid);
+          PL.pkgs[c] = (ex && ex.pkg) || 'silver';
+        }
+      }
       el.closest('.pt-list').querySelectorAll('.pt-p').forEach(b => { const on = PL.picks[c] === b.dataset.vid; b.classList.toggle('sel', on); b.setAttribute('aria-pressed', String(on)); b.querySelector('.pt-mark').innerHTML = ic(on ? 'check' : 'plus'); });
     },
-    'plan-pick'(el) { PL.picks[el.dataset.cat] = el.dataset.vid; openPlan(3); },
+    'plan-pick'(el) {
+      const c = el.dataset.cat, vid = el.dataset.vid;
+      PL.picks[c] = vid;
+      PL.pkgs = PL.pkgs || {};
+      if (!PL.pkgs[c]) {
+        const ex = inCart(vid);
+        PL.pkgs[c] = (ex && ex.pkg) || 'silver';
+      }
+      openPlan(3);
+    },
+    'plan-tier'(el, e) {
+      if (e) e.stopPropagation();
+      const c = el.dataset.cat, vid = el.dataset.vid, t = el.dataset.t;
+      PL.picks[c] = vid;
+      PL.pkgs = PL.pkgs || {};
+      PL.pkgs[c] = t;
+      openPlan(3);
+      toast(`${catOf(c).short}: ${partner(vid).name} (${t.toUpperCase()} tier)`, 'check');
+    },
     'plan-view'(el) { openLayer(el.dataset.cat, el.dataset.vid); },
     'close-layer'() { closeLayer(); },
     'layer-bg'(el, e) { if (e.target === el) closeLayer(); },
     'lv-cat'(el) { LV.cat = el.dataset.cat; LV.vid = PL.picks[LV.cat] || planOptions(LV.cat)[0].id; LV.artist = 0; renderLayerKeep(); },
-    'lv-partner'(el) { LV.vid = el.dataset.vid; LV.artist = 0; LV.tier = 'silver'; renderLayerKeep(true); },
+    'lv-partner'(el) {
+      LV.vid = el.dataset.vid;
+      LV.artist = 0;
+      const existingTier = (PL && PL.pkgs && PL.pkgs[LV.cat]) || (inCart(LV.vid) && inCart(LV.vid).pkg) || 'silver';
+      LV.tier = existingTier;
+      renderLayerKeep(true);
+    },
     'lv-artist'(el) { LV.artist = +el.dataset.i; renderLayerKeep(); },
     'lv-tier'(el) { LV.tier = el.dataset.t; renderLayerKeep(); },
     'lv-diet'(el) { PL.diet = el.dataset.diet; renderLayerKeep(); },
@@ -4553,6 +4654,29 @@
       closeLayer();
       openPlan(st === 2 ? 2 : 3);
       toast(`${v.name} selected (${tier} tier)`, 'check');
+    },
+    'select-pkg-add'(el, e) {
+      if (e) e.stopPropagation();
+      const vid = el.dataset.vid, pkgId = el.dataset.pkg;
+      PGTIER = pkgId;
+      const v = partner(vid);
+      if (!v) return;
+      const f = $(`form[data-form="add-to-cart"][data-vid="${vid}"]`);
+      const diet = f && f.diet ? f.diet.value : (v.vegOnly ? 'veg' : (S.cart.diet || 'veg'));
+      const p = v.packages.find(x => x.id === pkgId) || v.packages[0];
+      const g = S.cart.event.guests;
+      const tot = offerPrice(v, p, diet, g);
+      const ex = inCart(vid);
+      if (ex) {
+        ex.pkg = pkgId;
+        ex.diet = diet;
+      } else {
+        S.cart.items.push({ partnerId: vid, pkg: pkgId, diet });
+      }
+      S.cart.saved = S.cart.saved.filter(s => s.partnerId !== vid);
+      save();
+      render();
+      toast(`${p.name} package ${ex ? 'updated in' : 'added to'} cart · ${inr(tot)}`, 'cart');
     },
     'select-pkg'(el) {
       const vid = el.dataset.vid, pkgId = el.dataset.pkg;
@@ -4589,6 +4713,16 @@
         }
       });
 
+      // 1b. Update CTA buttons on tier cards
+      document.querySelectorAll('.ptc-cta').forEach(btn => {
+        const pId = btn.dataset.pkg;
+        const pObj = v.packages.find(x => x.id === pId);
+        const thisTot = pObj ? offerPrice(v, pObj, diet, g) : 0;
+        const isThisInCart = inCart(v.id) && inCart(v.id).pkg === pId;
+        btn.className = `ptc-cta ${isThisInCart ? 'in-cart' : ''}`;
+        btn.innerHTML = `${ic(isThisInCart ? 'check' : 'cart')} ${isThisInCart ? `${esc(pObj.name)} In Cart` : `Select ${esc(pObj.name)} · ${inr(thisTot)}`}`;
+      });
+
       // 2. Update sidebar form
       if (f) {
         const rad = f.querySelector(`input[name="pkg"][value="${pkgId}"]`);
@@ -4619,7 +4753,7 @@
         menuBox.innerHTML = `<h2>${ic('utensils')} Food &amp; Catering menu for ${esc(p.name)} package</h2>${menuHtml(v, pkgId, diet)}`;
       }
 
-      toast(`${p.name} package selected · ${v.perPlate ? `${inr(unitPrice(v, p, diet))} / plate` : inr(tot)}`, 'check');
+      toast(p.name + ' package selected · ' + (v.perPlate ? inr(unitPrice(v, p, diet)) + ' / plate' : inr(tot)), 'check');
     },
     'pg-diet'(el) {
       const diet = el.dataset.diet;
@@ -4649,6 +4783,13 @@
             if (num) num.textContent = inr(unitPrice(v, pkg, diet));
             const calc = c.querySelector('.ptc-calc');
             if (calc && v.perPlate) calc.innerHTML = `<b>${inr(offerPrice(v, pkg, diet, g))}</b> estimated for ${g} guests`;
+            const cta = c.querySelector('.ptc-cta');
+            if (cta) {
+              const thisTot = offerPrice(v, pkg, diet, g);
+              const isThisInCart = inCart(v.id) && inCart(v.id).pkg === pkg.id;
+              cta.className = `ptc-cta ${isThisInCart ? 'in-cart' : ''}`;
+              cta.innerHTML = `${ic(isThisInCart ? 'check' : 'cart')} ${isThisInCart ? `${esc(pkg.name)} In Cart` : `Select ${esc(pkg.name)} · ${inr(thisTot)}`}`;
+            }
           }
         });
 
@@ -4909,12 +5050,24 @@
       toast('Photo uploaded and published Live to customer page!', 'check');
     },
     'add-to-cart'(f) {
-      const vid = f.dataset.vid, pkg = f.pkg.value, diet = f.diet ? f.diet.value : 'veg';
-      if (f.date.value) S.cart.event.date = f.date.value;
+      const vid = f.dataset.vid;
+      const rad = f.querySelector('input[name="pkg"]:checked');
+      const pkg = (rad ? rad.value : (f.pkg ? f.pkg.value : null)) || PGTIER || 'silver';
+      const diet = (f.diet && f.diet.value) ? f.diet.value : (S.cart.diet || 'veg');
+      if (f.date && f.date.value) S.cart.event.date = f.date.value;
       const ex = inCart(vid);
-      if (ex) { ex.pkg = pkg; ex.diet = diet; } else S.cart.items.push({ partnerId: vid, pkg, diet });
+      if (ex) {
+        ex.pkg = pkg;
+        ex.diet = diet;
+      } else {
+        S.cart.items.push({ partnerId: vid, pkg, diet });
+      }
       S.cart.saved = S.cart.saved.filter(s => s.partnerId !== vid);
-      save(); render(); toast(ex ? 'Package updated' : `${partner(vid).name} added to your cart`, 'cart');
+      const v = partner(vid);
+      const p = v ? (v.packages.find(x => x.id === pkg) || v.packages[0]) : { name: pkg };
+      save();
+      render();
+      toast(ex ? `${p.name} package updated in cart` : `${partner(vid).name} (${p.name} package) added to your cart`, 'cart');
     },
     'login-phone'(f) {
       const name = f.name.value.trim(), phone = f.phone.value.trim(), city = f.city.value;
@@ -5212,5 +5365,5 @@
   document.body.insertAdjacentHTML('beforeend', `<button id="chat-fab" class="chat-fab" data-act="chat" aria-label="Chat with ShaadiKart Assistant">${ic('message')}<span>Chat</span></button><div id="chat-root"></div>`);
   footer();
   render();
-  window.SK_APP = { openLayer, renderLayer, ACT, S, D, render, go, getLV: () => LV, getPL: () => PL };
+  window.SK_APP = { openLayer, renderLayer, ACT, S, D, render, go, getLV: () => LV, getPL: () => PL, cartLines, cartTotals, openPlan, planToCart, planDraft };
 })();
