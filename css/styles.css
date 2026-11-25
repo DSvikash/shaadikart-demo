@@ -781,6 +781,33 @@ button.chip:hover { border-color: var(--lav-300); }
 .plan-tabs b { font-size: 11px; background: var(--green); color: #fff; border-radius: 999px; padding: 0 7px; }
 .plan-cats-main { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .plan-cats-main .plan-cat { aspect-ratio: 16 / 10; }
+.plan-cats-main .plan-tile-static { grid-column: 1 / -1; }
+.plan-cats-main .plan-tile-static .plan-cat.plan-others-card {
+  aspect-ratio: auto !important;
+  min-height: 64px;
+  height: 64px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 18px;
+  background-position: center;
+}
+.plan-cats-main .plan-tile-static .pc-ic {
+  position: static;
+  margin-right: 14px;
+  flex: none;
+}
+.plan-cats-main .plan-tile-static .pc-nm {
+  padding: 0;
+  text-align: left;
+  flex: 1;
+}
+.plan-cats-main .plan-tile-static .plan-cat .ck.go {
+  position: static;
+  margin-left: auto;
+  flex: none;
+}
 .plan-cats-oth { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
 .plan-cats-oth .plan-cat { aspect-ratio: 4 / 3; }
 .plan-cats .plan-cat { transition: transform .18s, box-shadow .18s, outline-color .18s; }
@@ -949,6 +976,8 @@ b.sf { color: var(--saffron-d); font-size: 16px; }
   .hs-cta { width: 100%; }
   .plan-cats-main { grid-template-columns: 1fr 1fr; }
   .plan-cats-main .plan-cat:first-child { grid-column: auto; aspect-ratio: 16 / 10; }
+  .plan-cats-main .plan-tile-static { grid-column: 1 / -1; }
+  .plan-cats-main .plan-tile-static .plan-cat.plan-others-card { min-height: 56px; height: 56px; padding: 0 14px; }
   .plan-cats-oth { grid-template-columns: 1fr 1fr; }
   .plan-tabs { width: 100%; }
   .plan-tabs button { flex: 1; justify-content: center; padding: 8px 10px; }

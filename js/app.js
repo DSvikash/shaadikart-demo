@@ -480,7 +480,7 @@
       <input ${nid} type="number" min="1" step="1" value="${g}" aria-label="Custom number of guests" style="margin-top:8px" ${sel === 'custom' ? '' : 'hidden'}></label>`;
   };
   const PLAN_STEPS = [['Choose Event', 'Wedding / Birthday / More'], ['Explore Partners', 'Compare &amp; Select'], ['Add to Cart', 'One Cart for All'], ['Book &amp; Celebrate', 'Make it Memorable']];
-  const PLAN_MAIN = ['venues', 'decor', 'photo', 'catering', 'beauty']; // large cards; every other category sits under "Others"
+  const PLAN_MAIN = ['venues', 'decor', 'photo', 'catering', 'beauty', 'haldi']; // large cards; every other category sits under "Others"
   let PL = null, LV = null;
   const planDraft = () => PL || (PL = { ...S.cart.event, diet: 'veg', cats: [], picks: {}, view: 'main' });
   const planSuggest = cat => D.PARTNERS.filter(v => v.cat === cat)
