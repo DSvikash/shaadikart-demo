@@ -203,7 +203,7 @@
       ],
       scenes: {
         arrival: { photo: 'photo-1519741497674-611481863552', caption: 'Guests arriving at Royal Banquet reception lobby with welcome drinks and floral entrance' },
-        dining: { photo: 'photo-1555244162-803834f70033', caption: 'Guests dining at dressed round banquet tables with royal silver service catering' },
+        dining: { photo: 'photo-1511795409834-ef04bbd61622', caption: 'Guests dining at dressed round banquet tables with royal silver service catering' },
         celebration: { photo: 'photo-1519689950823-0a2251441815', caption: 'Wedding celebration in full swing under chandelier lighting with couple on mandap stage' }
       }
     },
@@ -532,7 +532,7 @@
 
     // 16 PEOPLE Photos: 9 Published, 3 Draft, 4 Archived
     { id: 'rb-peop-1', url: 'photo-1519741497674-611481863552', category: 'people', status: 'published', title: 'Guests Arriving at Foyer', caption: 'Traditional dhol welcome and guests receiving welcome drinks.', uploadedAt: '02 Nov 2026', size: '4.4 MB' },
-    { id: 'rb-peop-2', url: 'photo-1555244162-803834f70033', category: 'people', status: 'published', title: 'Banquet Hall Dining Crowd', caption: 'Family and friends enjoying silver thali service at dining tables.', uploadedAt: '02 Nov 2026', size: '4.6 MB' },
+    { id: 'rb-peop-2', url: 'photo-1511795409834-ef04bbd61622', category: 'people', status: 'published', title: 'Banquet Hall Dining Crowd', caption: 'Family and friends enjoying silver thali service at dining tables.', uploadedAt: '02 Nov 2026', size: '4.6 MB' },
     { id: 'rb-peop-3', url: 'photo-1519689950823-0a2251441815', category: 'people', status: 'published', title: 'Ceremonial Mandap Celebration', caption: 'Bride, groom and elders gathered for sacred pheras.', uploadedAt: '03 Nov 2026', size: '5.1 MB' },
     { id: 'rb-peop-4', url: 'photo-1527529482837-4698179dc6ce', category: 'people', status: 'published', title: 'Reception Stage Toast', caption: 'Couples and wedding guests gathering on stage for portraits.', uploadedAt: '03 Nov 2026', size: '4.2 MB' },
     { id: 'rb-peop-5', url: 'photo-1768508950719-4d76978fdf44', category: 'people', status: 'published', title: 'Social Lounge Mingling', caption: 'Cocktail tables with guests socializing before dinner.', uploadedAt: '04 Nov 2026', size: '3.9 MB' },

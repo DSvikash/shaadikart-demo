@@ -1773,7 +1773,7 @@
           <p style="font-size:12.5px;color:#64567C;margin:0 0 14px;line-height:1.4">Our business support team is here to help you.</p>
           <button class="biz-gold-btn" data-act="biz-contact-support">Contact Support →</button>
         </div>
-        <div class="biz-help-avatar-wrap" style="background-image:url('${D.img('photo-1573496359142-b8d87734a5a2', 200)}')"></div>
+        <div class="biz-help-avatar-wrap" style="background-image:url('${D.img('photo-1544785349-c4a5301826fd', 200)}')"></div>
       </div>
     </div>`;
   }
@@ -2632,7 +2632,7 @@
       </div>
 
       <div style="display:flex;gap:18px;align-items:center;background:#f9f7fd;padding:20px;border-radius:12px;border:1px solid rgba(226,218,242,0.8);margin:14px 0 24px">
-        <div class="biz-help-avatar-wrap" style="background-image:url('${D.img('photo-1573496359142-b8d87734a5a2', 200)}')"></div>
+        <div class="biz-help-avatar-wrap" style="background-image:url('${D.img('photo-1544785349-c4a5301826fd', 200)}')"></div>
         <div>
           <h3 style="margin:0 0 4px;font-size:16px;color:#281448">Priya Verma · Senior Business Success Manager</h3>
           <p style="margin:0 0 10px;font-size:13px;color:#64567C">Assigned to ${esc(v.name)}. Available 7 days a week, 9:00 AM – 8:00 PM IST.</p>
@@ -4458,7 +4458,7 @@
     'biz-contact-support'() {
       openModal('Business Support Helpline', `<div class="modal-b" style="padding:0">
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
-          <div class="biz-help-avatar-wrap" style="width:50px;height:50px;background-image:url('${D.img('photo-1573496359142-b8d87734a5a2', 150)}')"></div>
+          <div class="biz-help-avatar-wrap" style="width:50px;height:50px;background-image:url('${D.img('photo-1544785349-c4a5301826fd', 150)}')"></div>
           <div>
             <h4 style="margin:0;font-size:15px;color:#281448">Our Business Support Team</h4>
             <span style="font-size:12px;color:#7A6F91">Dedicated support for verified businesses</span>
