@@ -228,8 +228,8 @@
     removed: ['tag-grey', 'x', 'Removed']
   };
   const statusTag = st => { const [c, i, l] = STATUS_TAG[st]; return `<span class="tag ${c}">${ic(i)}${l}</span>`; };
-  const liveSvcs = ev => ev.services.filter(s => !s.removed);
-  const activeSvcs = ev => ev.services.filter(s => ['confirmed', 'booked', 'paid', 'awaiting'].includes(svcStatus(s)));
+  const liveSvcs = ev => (ev && Array.isArray(ev.services)) ? ev.services.filter(s => !s.removed) : (ev && Array.isArray(ev.items) ? ev.items : []);
+  const activeSvcs = ev => (ev && Array.isArray(ev.services)) ? ev.services.filter(s => ['confirmed', 'booked', 'paid', 'awaiting'].includes(svcStatus(s))) : (ev && Array.isArray(ev.items) ? ev.items : []);
   function eventStatus(ev) {
     const st = liveSvcs(ev).map(svcStatus);
     if (!st.length || st.every(x => x === 'cancelled' || x === 'unavailable')) return ['tag-grey', 'Cancelled'];
@@ -616,12 +616,13 @@
   const layerRoot = () => { let r = $('#layer-root'); if (!r) { r = document.createElement('div'); r.id = 'layer-root'; document.body.appendChild(r); } return r; };
   const closeLayer = () => { const r = $('#layer-root'); if (r) r.innerHTML = ''; LV = null; };
   function renderLayer(animate) {
+    const pl = planDraft();
     const c = catOf(LV.cat), list = D.PARTNERS.filter(v => v.cat === LV.cat).sort((a, b) => b.rating - a.rating);
-    const v = partner(LV.vid), a = v.artists[LV.artist] || v.artists[0], diet = PL.diet, tier = LV.tier || 'silver', pk = v.packages.find(p => p.id === tier) || v.packages[0];
+    const v = partner(LV.vid), a = v.artists[LV.artist] || v.artists[0], diet = pl.diet || 'veg', tier = LV.tier || 'silver', pk = v.packages.find(p => p.id === tier) || v.packages[0];
     const rate = x => x.perPlate ? `${inr(fromPrice(x))} <small>/ plate</small>` : inr(fromPrice(x));
-    const tabs = PL.cats.length > 1 ? `<div class="lv-tabs">${PL.cats.map(id => `<button class="${id === LV.cat ? 'on' : ''}" data-act="lv-cat" data-cat="${id}">${ic(catOf(id).icon)}${esc(catOf(id).short)}</button>`).join('')}</div>` : '';
+    const tabs = (pl.cats && pl.cats.length > 1) ? `<div class="lv-tabs">${pl.cats.map(id => `<button class="${id === LV.cat ? 'on' : ''}" data-act="lv-cat" data-cat="${id}">${ic(catOf(id).icon)}${esc(catOf(id).short)}</button>`).join('')}</div>` : '';
     layerRoot().innerHTML = `<div class="modal-bg layer-bg${animate ? '' : ' still'}" data-act="layer-bg"><div class="modal layer" role="dialog" aria-modal="true" aria-label="${esc(c.name)} partners">
-      <div class="modal-h"><h3>${ic(c.icon)} ${esc(c.name)}</h3><button class="x-btn" data-act="close-layer" aria-label="Close">${ic('x')}</button></div>
+      <div class="modal-h"><h3>${ic(c.icon)} ${esc(c.name)}</h3><a href="#/category/${c.id}" class="link-btn lv-cat-link" style="margin-left:auto;margin-right:12px;font-size:13px;color:var(--primary);font-weight:600">View full catalog ${ic('arrowRight')}</a><button class="x-btn" data-act="close-layer" aria-label="Close">${ic('x')}</button></div>
       <div class="modal-b lv-b">
         ${tabs}
         <div class="lv-subs">${c.subs.map(s => `<span class="chip">${esc(s)}</span>`).join('')}</div>
@@ -629,7 +630,7 @@
           <div class="lv-list" role="list">${list.map(x => `<button class="lv-card ${x.id === LV.vid ? 'on' : ''}" data-act="lv-partner" data-vid="${x.id}" aria-pressed="${x.id === LV.vid}">
               <span class="ph" ${bg(x.photos[0], 300)}></span>
               <span class="lv-t"><b>${esc(x.name)}</b><small>${esc(x.area)}, ${esc(x.locality)}</small><span class="lv-m"><span class="stars">${ic('star')}${x.rating}</span><span class="lv-rate">${rate(x)}</span>${x.offer ? `<span class="tag tag-gold">${x.offer}% off</span>` : ''}</span></span>
-              ${PL.picks[LV.cat] === x.id ? `<i class="ck on">${ic('check')}</i>` : ''}</button>`).join('')}</div>
+              ${(pl.picks && pl.picks[LV.cat] === x.id) ? `<i class="ck on">${ic('check')}</i>` : ''}</button>`).join('')}</div>
           <div class="lv-detail" id="lv-detail">
             <div class="lv-dh"><h4>${esc(v.name)}</h4><div class="lv-dm"><span class="tag tag-green">${ic('shield')}ShaadiKart Verified</span><span class="stars">${ic('star')}${v.rating} <small>(${v.reviews} reviews)</small></span><span>${ic('pin')} ${esc(v.area)}, ${esc(v.locality)}</span></div></div>
             ${v.menu
@@ -643,7 +644,7 @@
               <div class="lv-works">${a.works.map(w => `<figure><span ${bg(w.img, 500)} role="img" aria-label="${esc(w.caption)}"></span><figcaption>${esc(w.caption)}</figcaption></figure>`).join('')}</div></div>
             ${v.sets ? `<h5 class="lv-h">${ic('camera')}Verified photo sets</h5>${setsHtml(v)}` : ''}
             <h5 class="lv-h">${ic('calendarCheck')}Past work <small>Illustrative examples for this concept demo</small></h5>${historyHtml(v)}
-            <div class="lv-act"><button class="btn btn-ghost" data-act="close-layer">Back to planner</button><button class="btn btn-gold" data-act="lv-choose">${PL.picks[LV.cat] === v.id ? 'Keep ' : 'Choose '}${esc(v.name)}</button></div>
+            <div class="lv-act"><button class="btn btn-ghost" data-act="close-layer">Back to planner</button><button class="btn btn-gold" data-act="lv-choose">${(pl.picks && pl.picks[LV.cat] === v.id) ? 'Keep ' : 'Choose '}${esc(v.name)}</button></div>
           </div></div></div></div></div>`;
   }
   function renderLayerKeep(toDetail) {
@@ -653,7 +654,8 @@
     if (toDetail && window.innerWidth <= 860) nm.scrollTop = $('#lv-detail').offsetTop - 70; else nm.scrollTop = st;
   }
   function openLayer(cat, vid) {
-    LV = { cat, vid: vid || PL.picks[cat] || planOptions(cat)[0].id, artist: 0, tier: 'silver' };
+    const pl = planDraft();
+    LV = { cat, vid: vid || (pl.picks && pl.picks[cat]) || planOptions(cat)[0].id, artist: 0, tier: 'silver' };
     renderLayer(true);
   }
 
@@ -2682,12 +2684,13 @@
   const setsHtml = v => {
     if (!v.sets) return '';
     const guests = (S.cart && S.cart.event && S.cart.event.guests) ? S.cart.event.guests : 250;
-    const decor = (typeof smeDecor === 'function' && S.cart && S.cart.event) ? smeDecor(S.cart.event) : null;
+    const decor = (typeof smeDecor === 'function' && S.cart) ? (smeDecor(S.cart) || (S.cart.event && smeDecor(S.cart.event))) : null;
     const alloc = (typeof guestAllocation === 'function') ? guestAllocation(guests, v, 2) : {
       total: guests,
       zones: {
         stage: { name: 'Mandap & Ceremony Seating', count: Math.round(guests * 0.30), pct: 30 },
         dining: { name: 'Dining Hall & Buffet Area', count: Math.round(guests * 0.40), tables: Math.ceil(guests * 0.04), pct: 40 },
+        tables: { name: 'Seated at Dining Tables', count: Math.round(guests * 0.40), tables: Math.ceil(guests * 0.04), pct: 40 },
         lounge: { name: 'Open Gathering & Social Lounge', count: Math.round(guests * 0.22), pct: 22 },
         entrance: { name: 'Entrance & Welcome Foyer', count: Math.max(0, guests - (Math.round(guests * 0.30) + Math.round(guests * 0.40) + Math.round(guests * 0.22))), pct: 8 }
       },
@@ -2947,7 +2950,7 @@
     'drapes': ['Drapes', 'Soft fabric drapes on the side walls and stage backdrop.', 15, 40],
     'lighting glow': ['Lighting glow', 'Warm fairy lights and uplighting for the evening.', 85, 24]
   };
-  const smeSvc = (ev, cat) => liveSvcs(ev).map(s => partner(s.partnerId)).find(p => p && p.cat === cat);
+  const smeSvc = (ev, cat) => (liveSvcs(ev) || []).map(s => partner(s.partnerId)).find(p => p && p.cat === cat);
   const smeVenue = ev => smeSvc(ev, 'venues');
   const smeDecor = ev => smeSvc(ev, 'decor');
 
@@ -4922,4 +4925,5 @@
   document.body.insertAdjacentHTML('beforeend', `<button id="chat-fab" class="chat-fab" data-act="chat" aria-label="Chat with ShaadiKart Assistant">${ic('message')}<span>Chat</span></button><div id="chat-root"></div>`);
   footer();
   render();
+  window.SK_APP = { openLayer, renderLayer, ACT, S, D };
 })();
