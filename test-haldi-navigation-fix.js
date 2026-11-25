@@ -98,3 +98,4 @@ assert.ok(css.includes('.pt-more { margin: 10px 0 0 auto; display: inline-flex;'
 console.log('   ✔ CSS touch target compliance (>= 44px) confirmed.');
 
 console.log('\n🎉 ALL HALDI & MEHENDI NAVIGATION & TARGET TESTS PASSED CLEANLY (0 ERRORS)!');
+process.exit(0);
